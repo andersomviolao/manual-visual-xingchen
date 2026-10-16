@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Xingchen — Configurações em português</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <header class="appbar">
+    <div><strong>Xingchen</strong><span>Referência das configurações</span></div>
+    <div class="toolbar">
+      <label>Idioma <select id="language" aria-label="Idioma da referência"><option value="pt">Português</option><option value="zh">Chinês original</option></select></label>
+      <label class="help-toggle"><input id="study" type="checkbox" checked> Ajuda ao selecionar</label>
+      <button id="export">Salvar exercício</button>
+      <button id="import">Abrir exercício</button>
+      <button id="reset">Restaurar campos</button>
+      <input id="import-file" type="file" accept=".json" hidden>
+    </div>
+  </header>
+  <div class="workspace">
+    <aside class="navigation">
+      <label class="search-label" for="search">Encontrar uma tela ou opção</label>
+      <input id="search" type="search" placeholder="Ex.: doação, tropas, muros…" autocomplete="off">
+      <nav id="navigation" aria-label="Telas de configurações"></nav>
+      <p class="source-note">APK oficial: 1355 · atualização interna: 1357. Base de 45 telas e 245 imagens conferida com o download oficial, mais ajustes nativos e avisos observados no LDPlayer.</p>
+      <button class="plain" id="about">Sobre esta referência</button>
+      <button class="plain" id="review">Revisão da versão 1357</button>
+    </aside>
+    <main>
+      <div class="stage-heading"><button id="back" title="Voltar à tela anterior">← Voltar</button><div id="breadcrumb"></div><button id="home">Tela principal</button></div>
+      <div class="phone" id="phone">
+        <div class="statusbar"><span>05:11</span><span>● ▣</span><span class="status-right">◆ ▰</span></div>
+        <div id="page-tabs" class="page-tabs" role="tablist" hidden></div>
+        <div id="screen" class="screen" tabindex="-1"></div>
+        <div class="confirm-wrap"><button id="confirm" class="confirm">Confirmar</button></div>
+      </div>
+      <p class="practice-label"><span></span>Modo de estudo · alterações salvas apenas neste navegador</p>
+    </main>
+    <aside class="inspector">
+      <div class="eyebrow">GUIA DE LEITURA</div>
+      <h1 id="screen-title">Configurações principais</h1>
+      <p id="screen-description"></p>
+      <div class="instruction">Use os controles como no aplicativo. Os botões azuis e as opções com janela própria abrem outras telas.</div>
+      <section id="control-help" aria-live="polite"><h2>Compare com o bot</h2><p>Selecione uma caixa, campo, ícone ou botão para ver aqui seu nome original e a tradução.</p></section>
+      <div class="inspector-footer"><strong>Referência visual</strong><p>Confirmar guarda o exercício. Iniciar, comprar, enviar e excluir são simulados; este HTML não se conecta ao bot.</p><a href="manual/Manual_Xingchen_Portugues_BR.pdf" target="_blank">Abrir o manual em português ↗</a></div>
+    </aside>
+  </div>
+  <dialog id="info-dialog"><div class="dialog-heading"><h2 id="info-title"></h2><button id="info-close" aria-label="Fechar">×</button></div><div id="info-body"></div><button id="info-confirm">Entendi</button></dialog>
+  <div id="toast" role="status"></div>
+  <script src="dados.js"></script>
+  <script src="aplicativo.js"></script>
+</body>
+</html>

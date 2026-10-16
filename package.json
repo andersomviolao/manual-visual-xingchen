@@ -1,0 +1,11 @@
+{
+  "name": "referencia-visual-xingchen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Referência visual das configurações do Xingchen em português.",
+  "scripts": {
+    "test": "node scripts/verificar-publicacao.cjs",
+    "test:referencia": "node HTML/dados/verificar.cjs"
+  },
+  "devDependencies": { "playwright": "1.62.1" }
+}

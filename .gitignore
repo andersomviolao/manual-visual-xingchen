@@ -1,0 +1,23 @@
+# Arquivos locais do aplicativo Android e documentos de origem.
+*.apk
+*.bak
+/Manual_*.pdf
+/tmp/
+
+# Capturas, resultados de testes e arquivos temporários.
+/HTML/conferencia/
+/verificacao/
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Exercícios preenchidos e credenciais não fazem parte do site.
+meu-exercicio*.json
+.env
+.env.*
+*.pem
+*.key
+credentials*.json
+
