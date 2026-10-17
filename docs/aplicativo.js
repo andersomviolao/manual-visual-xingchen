@@ -52,7 +52,7 @@
   };
   routes['卡密说明']='赠卡说明';
   function getVal(key,def){return Object.hasOwn(values,key)?values[key]:def;}
-  let arrival='Início da referência';
+  let arrival='Início da referência',androidNoticeDismissed=false;
   function go(name,newPage=0,push=true,source='Controle da tela'){
     if(!D.screens[name])return;
     const total=D.screens[name].children.filter(n=>n.tag==='Page').length;
@@ -92,7 +92,7 @@
     systemView='app';syncSystem();
   }
   function openPanel(){
-    if(!taskOpen||current==='星辰国际'){current='界面设置';page=0;history=[];render();}
+    if(!taskOpen||current==='星辰国际'){current='界面设置';page=0;history=[];androidNoticeDismissed=false;render();}
     taskOpen=true;systemView='app';syncSystem();
     if(!noticeShown){noticeShown=true;go('免费模式说明');}
   }
@@ -112,6 +112,7 @@
   function mainVisibility(n){
     if(current!=='界面设置'||page!==0||allMain)return true;
     const a=n.a,ids=n.children.map(c=>c.a.id||'');const has=id=>ids.includes(id);const farm=[6,8,9].includes(mode),donation=[8,9].includes(mode);
+    if(a.id==='紧急通知布局')return !androidNoticeDismissed;
     if(a.id==='循环任务布局')return mode===7;
     if(a.id==='国服')return Number(getVal('界面设置/0/游戏版本',0))===1;
     if(a.id==='游戏起名布局')return mode===1;
@@ -237,6 +238,7 @@
     '下拉框说明':['Seleção da função','① A lista contém 11 opções. Abra-a e deslize para cima ou para baixo para escolher a função.\n\n② O botão vermelho ■ à direita para o script imediatamente ao ser tocado.']
   };
   function action(id,n,el){
+    if(current==='界面设置'&&id==='关闭紧急通知'){androidNoticeDismissed=true;render(true);return;}
     if(['下载新','查询文件','上传指定文件','上传新'].includes(id)){info(localized('权限不够'),localized('①免费用户不支持上传下载 请访问官网 http://xccoc.fun 购买卡密。'));return;}
     if(current==='自助切号'&&id==='缩小窗口'){go('放大');return;}
     if(current==='放大'&&id==='展开'){back();return;}

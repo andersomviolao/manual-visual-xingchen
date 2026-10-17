@@ -35,6 +35,14 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   assert(await page.evaluate(()=>ReferenceApp.current)==='免费模式说明','Aviso inicial ausente.');
   await page.locator('#android-back').click();
   assert(await page.evaluate(()=>ReferenceApp.current)==='界面设置','Voltar não fechou aviso.');
+  const beforeNotice=await page.locator('#screen select[data-original-id="功能选择开关"]').boundingBox();
+  const beforeNoticeState=await page.evaluate(()=>ReferenceApp.system);
+  await page.locator('#screen button[data-original-id="关闭紧急通知"]').click();
+  const afterNotice=await page.locator('#screen select[data-original-id="功能选择开关"]').boundingBox();
+  assert(await page.locator('#screen [data-original-id="紧急通知布局"]').count()===0,'Fechar aviso não removeu todo o bloco.');
+  assert(afterNotice.y<beforeNotice.y-20,'Layout não subiu após fechar o aviso.');
+  assert(await page.evaluate(()=>ReferenceApp.current)==='界面设置','Fechar aviso saiu do painel.');
+  assert(JSON.stringify(await page.evaluate(()=>ReferenceApp.system))===JSON.stringify(beforeNoticeState),'Fechar aviso alterou o estado do bot.');
   await page.locator('#screen button[data-original-id="设置打鱼资源条件"]').click();
   await page.locator('#screen [data-original-id="手动指定分配资源"] input').click();
   assert(await page.evaluate(()=>ReferenceApp.current)==='进攻资源条件','Caixa não abriu os limites.');
@@ -50,6 +58,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   assert(await page.evaluate(()=>ReferenceApp.current)==='打鱼资源条件','Recentes não retomou a tela.');
   await page.locator('#android-back').click();
   assert(await page.evaluate(()=>ReferenceApp.current)==='界面设置','Pilha de navegação incorreta.');
+  assert(await page.locator('#screen [data-original-id="紧急通知布局"]').count()===0,'Aviso reapareceu ao retornar de outra tela.');
   let swipeBox=await page.locator('#screen [data-original-id="分辨率检测"]').boundingBox();
   await page.mouse.move(swipeBox.x+swipeBox.width-25,swipeBox.y+swipeBox.height/2);await page.mouse.down();await page.mouse.move(swipeBox.x+25,swipeBox.y+swipeBox.height/2,{steps:12});await page.mouse.up();
   assert(await page.evaluate(()=>ReferenceApp.page)===1,'Deslizar não abriu a página da nuvem.');
