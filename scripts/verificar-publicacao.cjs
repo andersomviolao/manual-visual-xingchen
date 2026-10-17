@@ -20,6 +20,12 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   const context=await browser.newContext({viewport:{width:1440,height:1080},acceptDownloads:true}),page=await context.newPage();
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)missing.push(r.url());});page.on('request',r=>requests.push(r.url()));
   await page.goto(base);await page.waitForFunction(()=>window.ReferenceApp);
+  const versionedResources=await page.locator('script[src],link[rel="stylesheet"]').evaluateAll(els=>els.map(el=>el.getAttribute('src')||el.getAttribute('href')));
+  for(const name of ['estilo.css','dados.js','aplicativo.js']){
+   const resource=versionedResources.find(url=>url.startsWith(name+'?v='));
+   const hash=require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(publish,name))).digest('hex').slice(0,12);
+   assert(resource===name+'?v='+hash,'Versão de cache não corresponde ao conteúdo: '+name);
+  }
   assert(await page.locator('#android-launcher').isVisible(),'Android não iniciou na tela inicial.');
   assert(await page.locator('.navigation,#previous-screen,.inspector').count()===0,'Interface antiga ainda presente.');
   await page.locator('#launch-bot').click();

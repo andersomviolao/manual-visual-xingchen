@@ -40,6 +40,12 @@ $taskIndex = [IO.File]::ReadAllText((Join-Path $taskSourceDir 'index.html'))
 $taskOldLink = '../Manual_Xingchen_Portugues_BR.pdf'
 if (-not $taskIndex.Contains($taskOldLink)) { throw 'O link esperado para o manual não foi encontrado no HTML de origem.' }
 $taskIndex = $taskIndex.Replace($taskOldLink, 'manual/Manual_Xingchen_Portugues_BR.pdf')
+# Muda o endereço dos recursos quando seu conteúdo muda, evitando versões antigas no cache.
+foreach ($taskResource in @('estilo.css','dados.js','aplicativo.js')) {
+    $taskResourceHash = (Get-FileHash -LiteralPath (Join-Path $taskSourceDir $taskResource) -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
+    $taskResourcePattern = '((?:src|href)="' + [regex]::Escape($taskResource) + ')(?:\?[^" ]*)?"'
+    $taskIndex = [regex]::Replace($taskIndex, $taskResourcePattern, ('${1}?v=' + $taskResourceHash + '"'))
+}
 [IO.File]::WriteAllText((Join-Path $taskPublishDir 'index.html'), $taskIndex, $taskUtf8)
 [IO.File]::WriteAllText((Join-Path $taskPublishDir '.nojekyll'), '', $taskUtf8)
 
