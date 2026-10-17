@@ -4,7 +4,7 @@ Referência interativa das configurações do Xingchen, com menus, campos e íco
 
 São **48 telas**, distribuídas em **57 páginas e abas**: 45 modelos do APK oficial 1355, os ajustes nativos e dois avisos observados na atualização interna 1357. Os controles permitem praticar configurações e consultar os textos chineses. As ações são simuladas e não controlam o jogo nem o aplicativo Android.
 
-Bot atual: **1358**, informado pelo usuário. A identificação foi atualizada; a comparação visual das telas da 1358 está pendente. Consulte [a situação da versão 1358](HTML/REVISAO_1358.md).
+Bot atual: **1358**, confirmado no LDPlayer. Foram conferidas visualmente **32 telas e 41 páginas/abas**, incluindo os 11 modos. As outras 16 telas estão identificadas como modelos não conferidos na 1358. Consulte [a revisão visual da 1358](HTML/REVISAO_1358.md).
 
 ## Usar
 
@@ -55,5 +55,5 @@ O teste serve `docs/` em um endereço com nome de repositório e confere as tela
 
 ## Alcance da referência
 
-A base dos modelos e das 245 imagens foi comparada com o APK oficial 1355. Os painéis observados foram conferidos na atualização interna 1357. A revisão não confirma uma cópia integral de todas as mensagens geradas em execução ou de todas as alterações remotas do bot. Consulte [a revisão](HTML/REVISAO_1357.md) e [o guia completo](HTML/LEIA-ME.md).
+A base dos modelos e das 245 imagens foi comparada com o APK oficial 1355. Os painéis e os 11 modos observados foram conferidos na atualização interna 1358. A revisão não confirma uma cópia integral de todas as mensagens geradas em execução ou de todas as alterações remotas do bot. Consulte [a revisão](HTML/REVISAO_1358.md) e [o guia completo](HTML/LEIA-ME.md).
 

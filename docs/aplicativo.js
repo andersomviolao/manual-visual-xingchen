@@ -63,7 +63,7 @@
     '打鱼造兵设置':'As mesmas imagens e a mesma ordem das tropas, feitiços e máquinas de cerco do APK. Os campos representam quantidades.',
     '打鱼资源条件':'Seleção de vilas, limites do ataque, intervalos e condições de melhoria dos muros.',
     '进攻资源条件':'Limites manuais de ouro, elixir e elixir negro, separados pelo nível do Centro de Vila.',
-    '自定义下兵':'Tela incluída no APK. Sua presença aqui não confirma que a versão 1357 exponha ou execute esse recurso.',
+    '自定义下兵':'Tela incluída no APK. Sua presença aqui não confirma que a versão atual exponha ou execute esse recurso.',
     '升级1':'Cinco abas da configuração individual: conta, construções, pesquisa, mascotes e Base do Construtor.',
     '通用切号':'Cinco abas com dez contas cada. Os tipos de dados e os campos QQ preservam a ordem original.',
     '文本框':'Modelo de janela de ajuda. O aplicativo preenche o texto durante a execução; esse conteúdo não está nas definições visuais do APK.',
@@ -76,8 +76,8 @@
     '刷经验':'Ajustes de deslize, heróis e momento de sair no modo de experiência.'
   };
   routes['卡密说明']='赠卡说明';
-  descriptions['免费模式说明']='Texto conferido no aviso inicial da atualização 1357. O fechamento automático foi desativado nesta referência para permitir a leitura.';
-  descriptions['赠卡说明']='Janela aberta pelo botão 送卡密 na versão gratuita 1357. A janela de validade de licença do APK continua acessível separadamente no menu.';
+  descriptions['免费模式说明']='Texto conferido no aviso inicial da atualização 1358. O fechamento automático foi desativado nesta referência para permitir a leitura.';
+  descriptions['赠卡说明']='Janela aberta pelo botão 送卡密 na versão gratuita 1358. A janela de validade de licença do APK continua acessível separadamente no menu.';
   function getVal(key,def){return Object.hasOwn(values,key)?values[key]:def;}
   let arrival='Início da referência';
   function locationLabel(name,tab){
@@ -142,7 +142,9 @@
       if(current==='界面设置'&&!find()&&entry.node){
         for(let i=0;i<11;i++){mode=i;content=create(pages[page]);if(find())break;}
       }
-      const screen=copy.node.querySelector('.screen');screen.replaceChildren(content);
+      const screen=copy.node.querySelector('.screen');screen.classList.remove('has-observed-dialog');screen.replaceChildren(content);
+      copy.node.querySelector('.versions-heading')?.remove();
+      copy.node.querySelector('.confirm-wrap').hidden=false;
       const tabbar=copy.node.querySelector('.page-tabs');tabbar.replaceChildren();tabbar.hidden=pages.length<2||(current==='界面设置'&&page===0&&entry.id!=='cloud-tab');
       pages.forEach((p,i)=>{const el=document.createElement('span');el.className='preview-tab';el.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));if(i===page)el.classList.add('active');if(entry.id==='cloud-tab'&&i===1){el.classList.add('origin-control');copy.target=el;}tabbar.append(el);});
       if(entry.id==='native-settings'){
@@ -188,8 +190,11 @@
     if(a.id==='国服')return Number(getVal('界面设置/0/游戏版本',0))===1;
     if(a.id==='游戏起名布局')return mode===1;
     if(a.id==='收件邮箱布局')return !!getVal('界面设置/0/发送邮件/0',false);
-    if(a.id==='偷袭账号选择布局')return mode===2;
-    if(a.id==='账号选择布局'||a.id==='账号地址布局')return ![2,8].includes(mode);
+    if(a.id==='通用功能1')return ![0,10].includes(mode);
+    if(a.id==='通用功能')return ![0,1,10].includes(mode);
+    if(a.id==='偷袭账号选择布局')return [2,3].includes(mode);
+    if(a.id==='账号选择布局')return ![0,2,3,8,10].includes(mode);
+    if(a.id==='账号地址布局')return ![0,1,8,10].includes(mode);
     if(a.id==='提取数据')return mode===0;
     if(a.id==='部落标签布局')return [2,3].includes(mode)||!!getVal('界面设置/0/加入部落/0',false);
     if(a.id==='检测信息布局')return mode===4;
@@ -202,7 +207,8 @@
     if(a.id==='捐兵打鱼布局')return mode!==9;
     if(has('打鱼时删兵重造'))return farm;
     if(has('定时下线'))return farm;
-    if(has('自动审批'))return ![8,9].includes(mode);
+    if(has('自动审批'))return mode===6;
+    if(a.id==='自动审批布局')return farm;
     if(a.id==='其他')return farm||mode===7;
     if(a.id==='刷经验模式')return mode===10;
     return true;
@@ -248,7 +254,7 @@
       el=document.createElement('div');el.className='ui-text';let text=a.text||'';
       if(a.id==='紧急通知说明')text='辅助仅支持在安卓12及以下系统运行。';
       if(a.id==='分辨率检测')text=language==='zh'?'系统:安卓9 CPU:4核 内存:2.68/4.04G 分辨率:720*1280 dpi320':'Sistema: Android 9 · CPU: 4 núcleos · 720 × 1280 · dpi 320';
-      if(a.id==='简单说明')text=language==='zh'?'数据包切号 单号时直接运行游戏':'Pacotes de dados · uma conta: abrir o jogo diretamente';
+      if(a.id==='简单说明'){const version=Number(getVal('界面设置/0/游戏版本',0));if(version===1)return null;text=version===2?(language==='zh'?'多版本 可以同时挂QQ 微信 国际服':'Várias versões: QQ, WeChat e servidor internacional ao mesmo tempo'):(language==='zh'?'数据包切号 单号时直接运行游戏':'Pacotes de dados · uma conta: abrir o jogo diretamente');}
       el.textContent=localized(text);el.title=text;
       if(!text&&!a.background&&!(Number(a.width)>0))el.style.display='none';
     }else if(tag==='Button'){
@@ -293,6 +299,7 @@
     '下兵说明':['Forma de lançar tropas','A lista da tela principal contém lançamento automático e lançamento por um lado. A janela de lançamento personalizado também existe nas definições do APK, mas sua disponibilidade na versão atual não foi confirmada.'],
     '序号说明':['Contas e números','Os números inicial e final definem a faixa de contas a executar. Os pacotes precisam corresponder às contas. Em uma conta direta, a tela observada permite executar o jogo sem alternar pacotes.'],
     '账号地址说明':['Pasta dos dados','Informe a pasta dos pacotes de conta. O manual usa /sdcard/星辰国际. Os caminhos originais são mantidos em chinês para não alterar o endereço.'],
+    '打鱼时捐兵说明':['Doação durante o farm','Esta opção controla a doação executada durante o farm. O aviso do bot orienta a não confundi-la com os modos de doação.'],
     '功能生效说明':['Funções adicionais','A tela contém supercarga, refinaria, aprendizes e equipar construções. As regras internas de execução não estão descritas nos arquivos visuais.'],
     '下拉框说明':['Os 11 modos','1. Troca manual e extração de dados\n2. Criar contas\n3. Ataques à Capital\n4. Doar Ouro da Capital\n5. Verificar informações\n6. Vincular e-mail\n7. Farm contínuo\n8. Tarefas em ciclo\n9. Doação com uma conta\n10. Doação com várias contas\n11. Ganhar experiência']
   };
@@ -311,18 +318,39 @@
     if(id==='打鱼同步按钮'||id==='捐兵同步按钮'||id==='同步按钮'||id==='同步复制按钮'){toast('Botão Copiar do modelo visual. Não altera configurações do bot.');return;}
     info(controlLabel(n)||'Ação de demonstração','Este botão está reproduzido para consulta. Ações de execução, compra, upload, download, exclusão, atualização e instalação são apenas demonstradas neste HTML.');
   }
+  function renderObservedDialog(content,spec){
+    const name=current,tab=page,savedMode=mode;
+    current=spec.parent;page=0;if(current==='界面设置'&&[0,1,10].includes(mode))mode=6;
+    let background;
+    try{background=create(D.screens[current].children.filter(n=>n.tag==='Page')[0]);}finally{current=name;page=tab;mode=savedMode;}
+    background.classList.add('observed-background');background.setAttribute('inert','');
+    background.setAttribute('aria-hidden','true');
+    const layer=document.createElement('div');layer.className='observed-layer';
+    const sheet=document.createElement('div');sheet.className='observed-sheet';sheet.style.width=spec.width+'px';sheet.style.minHeight=spec.minHeight+'px';
+    sheet.setAttribute('role','region');sheet.setAttribute('aria-label',names[current]);
+    sheet.append(content);
+    if(!spec.noConfirm){const wrap=document.createElement('div');wrap.className='observed-confirm';const b=document.createElement('button');b.className='confirm';b.textContent=language==='zh'?'确定':'Confirmar';b.onclick=()=>$('#confirm').click();wrap.append(b);sheet.append(wrap);}
+    const footer=document.createElement('div');footer.className='observed-background-confirm';footer.setAttribute('aria-hidden','true');footer.setAttribute('inert','');footer.textContent=language==='zh'?'确定':'Confirmar';
+    layer.append(sheet);screenEl.replaceChildren(background,footer,layer);
+  }
   function render(keepScroll=false){
+    $('#phone > .versions-heading')?.remove();
     const scroll=keepScroll?screenEl.scrollTop:0,tree=D.screens[current],pages=tree.children.filter(n=>n.tag==='Page');page=Math.min(page,pages.length-1);const tabbed=pages.length>1;tabs.hidden=!tabbed;tabs.replaceChildren();
     if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
     if(current==='界面设置'&&page===0)tabs.hidden=true;
     const content=create(pages[page]);screenEl.replaceChildren(content);screenEl.scrollTop=scroll;
+    const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#phone > .confirm-wrap').hidden=!!sheet;
+    if(sheet)renderObservedDialog(content,sheet);
     if(livePopups[current]){
       const popupName=current,popupPage=page;current='界面设置';page=0;const background=create(D.screens['界面设置'].children[0]);current=popupName;page=popupPage;content.classList.add('runtime-page');background.classList.add('runtime-background');background.setAttribute('inert','');content.prepend(background);
     }
     if(current==='星辰国际'){
       const head=document.createElement('div');head.className='native-heading initial-heading';const title=document.createElement('span');title.textContent=localized('星辰国际');const b=document.createElement('button');b.textContent=localized('设置');b.onclick=()=>go('应用设置',0,true,'Botão → '+b.textContent);head.append(title,b);screenEl.prepend(head);
     }
+    if(current==='通用切号'){const head=document.createElement('div');head.className='native-heading versions-heading';head.textContent=language==='zh'?'双端版本50开':'Várias versões — 50 contas';$('#phone').insertBefore(head,tabs);}
     $('#screen-title').textContent=current==='界面设置'&&page===1?'Ativação de celular na nuvem':names[current];$('#screen-description').textContent=descriptions[current]||'Layout, ícones, opções e campos preservados das definições visuais do aplicativo original.';
+    const checked=D.review.screens.includes(current);$('#screen-verification').textContent=checked?'Conferida visualmente na 1358 · 16/10/2026':'Modelo do APK 1355 · acesso e aparência não conferidos na 1358';$('#screen-verification').classList.toggle('unverified',!checked);
+    if(current==='界面设置')$('#screen-description').textContent=page===1?'No bot, deslize a tela principal para a esquerda para abrir esta página. Campos e botões conferidos na 1358.':'Os 11 modos foram conferidos na 1358. No bot, deslize para a esquerda para abrir a ativação de aparelhos na nuvem.';
     renderPath();$('#language').value=language;
     $('#confirm').textContent=language==='zh'?'确定':'Confirmar';nav();
     requestAnimationFrame(()=>{fitRows();if(keepScroll)screenEl.scrollTop=scroll;});
@@ -338,7 +366,7 @@
   toolbarOptions.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();toolbarOptions.open=false;toolbarOptions.querySelector('summary').focus();}});
 
   $('#home').onclick=()=>go('界面设置',0,true,'Botão Tela principal');$('#search').oninput=nav;
-  $('#review').onclick=()=>info('Versão 1358 — situação da referência','O bot está na atualização interna 1358, conforme informado pelo usuário. A identificação no HTML foi atualizada.\n\nA base visual continua sendo o APK 1355. A última comparação visual registrada dos painéis foi com a atualização 1357. Não houve nova conferência das telas ou das alterações internas da 1358.\n\nNa consulta de 16/10/2026, o histórico oficial ainda listava 1357. Portanto, ele não permite descrever as mudanças da 1358.\n\nA referência mantém 48 telas e 57 páginas/abas. Consulte REVISAO_1358.md para a situação atual e REVISAO_1357.md para a comparação anterior.');
+  $('#review').onclick=()=>info('Revisão visual da versão 1358','Conferência direta no LDPlayer em 16/10/2026, na instância construtor muros 2. A execução do bot foi parada.\n\nForam observadas 32 telas e 41 páginas/abas, incluindo os 11 modos principais e as cinco abas das 50 contas. Foram ajustadas as regras de exibição por modo, as janelas sobrepostas e o título das 50 contas. As grades conferidas mantêm a mesma ordem de controles e ícones.\n\nAs outras 16 telas continuam identificadas como modelos do APK, sem conferência visual na 1358. Não se afirma que alterações internas de execução foram reproduzidas.\n\nVeja REVISAO_1358.md para os caminhos, diferenças e limites da comparação.');
   $('#language').onchange=e=>{language=e.target.value;save();render(true);};
   $('#confirm').onclick=()=>{save();if(current==='界面设置'){toast('Exercício salvo. O bot real não foi iniciado.');}else if(history.length)back();else toast('Exercício salvo neste navegador.');};
   $('#info-close').onclick=$('#info-confirm').onclick=()=>$('#info-dialog').close();
@@ -346,7 +374,7 @@
   $('#reset').onclick=()=>{values={};mode=6;save();render();toast('Campos restaurados ao modelo do APK.');};
   $('#export').onclick=()=>{const text=JSON.stringify({format:'xingchen-referencia-1',values,language},null,2);const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='meu-exercicio-xingchen.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
   $('#import').onclick=()=>$('#import-file').click();$('#import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.format!=='xingchen-referencia-1'||!data.values||typeof data.values!=='object'||Array.isArray(data.values))throw Error();for(const value of Object.values(data.values))if(!['string','number','boolean'].includes(typeof value))throw Error();values=data.values;language=['pt','zh'].includes(data.language)?data.language:'pt';mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;save();render();toast('Exercício aberto.');}catch{info('Arquivo inválido','Escolha um exercício JSON salvo por esta referência.');}e.target.value='';};
-  $('#about').onclick=()=>info('Sobre esta referência',`Reprodução local das 45 definições de tela contidas no APK original 1355. Foram traduzidos os 755 textos chineses visíveis dessas definições e preservados os recursos de imagem. A tela principal foi comparada com a atualização 1357 aberta no LDPlayer.\n\nA navegação e a exibição dos campos por modo foram recriadas para estudo. Não são uma cópia do funcionamento interno do bot. Janelas auxiliares e funções antigas também estão disponíveis no menu lateral.\n\nAlgumas mensagens de ajuda são geradas durante a execução e não constam das definições. Quando não foi possível verificar o texto, a referência informa essa limitação. Ícones de equipamentos recentes podem ter traduções descritivas.\n\nNenhuma chave, compra, envio de dados ou ação no jogo é executada. Os valores iniciais vêm dos modelos do APK; não são uma leitura da sua conta.`);
+  $('#about').onclick=()=>info('Sobre esta referência',`Reprodução local das 45 definições de tela contidas no APK original 1355. Foram traduzidos os 755 textos chineses visíveis dessas definições e preservados os recursos de imagem. A tela principal foi comparada com a atualização 1358 aberta no LDPlayer.\n\nA navegação e a exibição dos campos por modo foram recriadas para estudo. Não são uma cópia do funcionamento interno do bot. Janelas auxiliares e funções antigas também estão disponíveis no menu lateral.\n\nAlgumas mensagens de ajuda são geradas durante a execução e não constam das definições. Quando não foi possível verificar o texto, a referência informa essa limitação. Ícones de equipamentos recentes podem ter traduções descritivas.\n\nNenhuma chave, compra, envio de dados ou ação no jogo é executada. Os valores iniciais vêm dos modelos do APK; não são uma leitura da sua conta.`);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#info-dialog').open&&history.length)back();});
   mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;
   function resizePhone(){

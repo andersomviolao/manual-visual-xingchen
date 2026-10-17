@@ -46,8 +46,8 @@ $taskReview = [IO.File]::ReadAllText((Join-Path $taskSourceDir 'REVISAO_1357.md'
 $taskReview = [regex]::Replace($taskReview, 'C:\\Users\\[^\r\n`]+\\星辰辅助1355\.apk', '星辰辅助1355.apk')
 [IO.File]::WriteAllText((Join-Path $taskPublishDir 'REVISAO_1357.md'), $taskReview, $taskUtf8)
 
+Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1358.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1358.md') -Force
+
 $taskFiles = @(Get-ChildItem -LiteralPath $taskPublishDir -Recurse -File)
 $taskSize = ($taskFiles | Measure-Object -Property Length -Sum).Sum
 Write-Output ("Publicação preparada: docs/ — {0} arquivos, {1:N2} MB." -f $taskFiles.Count, ($taskSize / 1MB))
-
-Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1358.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1358.md') -Force

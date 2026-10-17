@@ -2,11 +2,11 @@
 
 Abra **index.html** no Edge. Basta dar dois cliques no arquivo; não é preciso instalar Python, iniciar um servidor ou usar a internet.
 
-A conferência com o download oficial e com os painéis observados na atualização 1357 está em **[REVISAO_1357.md](REVISAO_1357.md)**. O site continua entregando o APK 1355; a 1357 é uma atualização interna do script.
+A revisão visual atual está em **[REVISAO_1358.md](REVISAO_1358.md)**. A comparação anterior dos arquivos-base do APK está preservada em [REVISAO_1357.md](REVISAO_1357.md).
 
 ## Versão atual
 
-O bot já está na **1358**, conforme informado pelo usuário. O HTML identifica essa versão; a base visual e a conferência anterior continuam descritas abaixo. A comparação visual da 1358 está pendente. Veja [REVISAO_1358.md](REVISAO_1358.md).
+O bot foi conferido diretamente na **1358** no LDPlayer: 32 telas, 41 páginas/abas e os 11 modos. Os ajustes de visibilidade e de janelas menores estão aplicados. Outras 16 telas permanecem como modelos do APK sem conferência na 1358, identificadas no guia de cada tela. Veja [REVISAO_1358.md](REVISAO_1358.md).
 
 ## O que foi reproduzido
 
@@ -30,7 +30,7 @@ O bot já está na **1358**, conforme informado pelo usuário. O HTML identifica
 
 ## Fidelidade e limites
 
-A base visual é o **APK 1355**. A tela principal foi comparada com a versão **1357**, atualizada no LDPlayer. O HTML preserva as definições disponíveis no APK, incluindo telas auxiliares ou antigas que podem não estar expostas na atualização atual. Não se afirma uma reprodução integral de todas as alterações remotas da versão 1357.
+A base visual é o **APK 1355**. A tela principal e seus 11 modos foram comparados com a versão **1358**, atualizada no LDPlayer. O HTML preserva as definições disponíveis no APK, incluindo telas auxiliares ou antigas que podem não estar expostas na atualização atual. Não se afirma uma reprodução integral de todas as alterações remotas da versão 1358.
 
 O português ocupa mais espaço que o chinês. Há ajustes de tamanho de fonte, quebra de linha e altura para manter a legibilidade. A organização e as imagens foram preservadas; não é uma cópia pixel a pixel.
 
@@ -69,8 +69,8 @@ Foi feita uma conferência automática de renderização das 48 telas e suas 57 
 
 A miniatura à esquerda mostra a tela da interface do bot que contém o controle para abrir a tela atual. O botão ou caixa aparece destacado na miniatura; “Para abrir no bot” mostra seu nome. Se o controle depender de um modo, o modo é informado. Clique na miniatura para abrir a tela de origem.
 
-O menu lateral é um atalho da referência: mesmo entrando por ele, a indicação mostra o controle da interface do bot, não o item do menu lateral nem a última tela visitada. O caminho usa as relações de navegação reproduzidas no HTML; não houve nova conferência ao vivo. Telas auxiliares sem relação de acesso confirmada ficam identificadas como tal.
+O menu lateral é um atalho da referência: mesmo entrando por ele, a indicação mostra o controle da interface do bot, não o item do menu lateral nem a última tela visitada. O caminho usa as relações de navegação reproduzidas no HTML; os caminhos listados no relatório foram conferidos ao vivo na 1358. Telas auxiliares sem relação de acesso confirmada ficam identificadas como tal.
 
-Conferência em 16/10/2026: o histórico oficial em http://xccoc.fun/msg/log.txt ainda informa atualização interna 1357; https://921015.xyz/fz_update informa APK 1355. Nenhum dispositivo estava conectado ao emulador nesta conferência; não houve nova validação visual do aplicativo em execução.
+Na consulta anterior, o histórico oficial ainda listava 1357. A conferência atual foi feita visualmente no aplicativo em execução: atualização interna 1358 e APK 1355. O bot foi parado ao final.
 
 A barra superior mantém o nome e o idioma à vista. Abra **Opções** para salvar ou abrir exercícios, restaurar campos e ativar ou desativar a ajuda ao selecionar.

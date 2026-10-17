@@ -55,3 +55,20 @@
 .preview-phone .origin-control{outline:5px solid #e44d1f!important;outline-offset:3px;background-color:#fff0ac!important;box-shadow:0 0 0 8px #fff7c8!important}
 .preview-tab{padding:5px 8px;flex:1;font-size:12px;color:#5e9abb}
 .preview-tab.active{background:#70b6d9;color:white}
+
+/* Diálogos observados em execução na 1358. */
+.confirm-wrap[hidden]{display:none}
+.screen.has-observed-dialog{position:relative;overflow:hidden;isolation:isolate;padding:0}
+.observed-background{pointer-events:none;height:100%;overflow:hidden}
+.observed-layer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;z-index:2}
+.observed-sheet{background:#fff;border:1px solid #b4ccda;box-shadow:0 2px 8px #234b601a;max-width:100%;max-height:100%;display:flex;flex-direction:column;overflow:auto;padding:9px 6px}
+.observed-sheet>.ui-page{flex:1;min-height:0;height:auto!important}
+.observed-sheet .ui-row{flex-wrap:wrap;row-gap:4px}
+.observed-confirm{padding:14px 8px 0;margin-top:auto}
+.observed-confirm .confirm{height:53px}
+.observed-sheet .ui-page[data-name='军队配置链接']{min-height:250px}
+.versions-heading{flex-shrink:0;justify-content:center;padding:14px;color:#858585;border-bottom:1px solid #eee}
+.screen-verification{padding:8px 10px;border-left:3px solid #6d9e84;background:#edf5f0;font-size:11px!important}
+.screen-verification.unverified{border-color:#c1a165;background:#faf6ec}
+
+.observed-background-confirm{position:absolute;bottom:10px;left:18px;right:18px;height:53px;border:1px solid #4e9fc7;border-radius:5px;background:linear-gradient(#72bcdf,#63b1d7);color:white;font-size:24px;text-align:center;line-height:53px;pointer-events:none}

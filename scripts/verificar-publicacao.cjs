@@ -37,6 +37,24 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.locator('#navigation button').filter({hasText:'Ativação de celular na nuvem'}).click();
   assert(await page.locator('#navigation [aria-current="page"]').innerText()==='Ativação de celular na nuvem','Destaque da página incorreto.');
   await page.locator('#previous-screen').click();
+  await page.locator('#home').click();
+  for(let mode=0;mode<11;mode++){
+   await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption(String(mode));
+   const count=id=>page.locator('#screen [data-original-id="'+id+'"]').count();
+   assert(!!await count('通用功能1')===![0,10].includes(mode),'Linha de tarefas incorreta no modo '+mode);
+   assert(!!await count('通用功能')===![0,1,10].includes(mode),'Funções comuns incorretas no modo '+mode);
+   assert(!!await count('账号地址布局')===![0,1,8,10].includes(mode),'Pasta de conta incorreta no modo '+mode);
+   assert(!!await count('偷袭账号选择布局')===[2,3].includes(mode),'Faixa da Capital incorreta no modo '+mode);
+   assert(!!await count('自动审批')===(mode===6),'Aprovação indevida no modo '+mode);
+  }
+  for(const [name,spec] of Object.entries(await page.evaluate(()=>BOT_DATA.review.dialogs))){
+   await page.evaluate(name=>ReferenceApp.go(name),name);
+   const box=await page.locator('#screen .observed-sheet').boundingBox(),phone=await page.locator('#phone').boundingBox();
+   assert(box.width<phone.width,'Diálogo ocupou largura total: '+name);
+   assert(await page.locator('#screen .observed-background[inert]').count()===1,'Fundo do diálogo sem isolamento: '+name);
+   assert(await page.locator('#phone > .confirm-wrap').isHidden(),'Confirmar externo duplicado: '+name);
+   if(!spec.noConfirm){await page.locator('#screen .observed-confirm button').click();assert(await page.evaluate(()=>ReferenceApp.current)!==name,'Confirmar não fechou diálogo: '+name);}
+  }
   const screens=await page.evaluate(()=>Object.entries(BOT_DATA.screens).map(([name,n])=>({name,pages:n.children.filter(c=>c.tag==='Page').length})));
   let rendered=0;
   for(const {name,pages} of screens)for(let i=0;i<pages;i++){
@@ -49,6 +67,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
    assert((await r.body()).equals(fs.readFileSync(path.join(publish,'assets',name))),'Imagem diferente: '+name);
   }));
   await page.evaluate(()=>ReferenceApp.go('界面设置'));
+  await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('6');
   const manual=await page.locator('a[href$=".pdf"]').evaluate(el=>el.href);assert(manual.startsWith(base+'manual/'),'Link do manual fora do site.');
   const r=await context.request.get(manual);assert(r.status()===200,'Manual ausente.');const bytes=await r.body();
   assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'manual','Manual_Xingchen_Portugues_BR.pdf'))),'PDF diferente.');
@@ -73,7 +92,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
 
   assert(!errors.length,'Erros JavaScript: '+errors);assert(!missing.length,'Recursos ausentes: '+missing);
   assert(requests.every(u=>u.startsWith(base)||u.startsWith('blob:')),'Solicitação a um serviço externo.');assert(fs.existsSync(path.join(publish,'.nojekyll')),'.nojekyll ausente.');
-  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','48 telas e 57 páginas/abas','245 imagens com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','miniatura à esquerda e retorno','origem do menu e destaque por página','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas']};
+  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','48 telas e 57 páginas/abas','245 imagens com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','miniatura à esquerda e retorno','origem do menu e destaque por página','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas','exibição de campos nos 11 modos conferidos','seis diálogos sobre o painel e confirmação' ]};
   const out=path.join(root,'verificacao');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'publicacao.json'),JSON.stringify(result,null,2));await page.screenshot({path:path.join(out,'publicacao-celular.png'),fullPage:true});console.log(JSON.stringify(result,null,2));
  }finally{if(browser)await browser.close();await new Promise(ok=>server.close(ok));}
 })().catch(e=>{console.error(e);process.exitCode=1;});
