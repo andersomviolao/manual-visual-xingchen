@@ -12,3 +12,46 @@
 .ui-page[data-name="界面设置"] select[data-original-id="自定义下兵方式"]{flex:0 0 52%!important;width:52%!important}.ui-page[data-name="界面设置"] [data-original-id="雷闪"]{flex:1 1 0!important}.ui-page[data-name="界面设置"] select[data-original-id="游戏版本"]{min-width:165px}.ui-page[data-name="界面设置"] .ui-check span{word-break:normal}
 .ui-page[data-name="界面设置"] .ui-layout[data-original-id="游戏版本布局1"]:has(>select[data-original-id="游戏版本"]){min-width:175px;flex-shrink:0!important}
 .runtime-page{position:relative;min-height:850px;overflow:hidden}.runtime-background{pointer-events:none;opacity:1}.runtime-popup{position:absolute;top:276px;left:20px;right:20px;background:#fff;border:4px solid #79746f;border-radius:8px;min-height:264px;box-shadow:0 2px 4px #0002;font:15px/1.45 Arial,sans-serif;z-index:2}.runtime-popup-head{position:relative;background:linear-gradient(#9b9490,#7e7773);color:white;text-align:center;padding:5px 34px 5px 10px;min-height:28px;font-size:14px;display:flex;align-items:center;justify-content:center}.runtime-close{position:absolute;right:2px;top:1px;background:#ef242c;color:white;font-weight:bold;border:2px solid #9a161b;border-radius:5px;padding:1px 5px;line-height:19px;cursor:pointer}.runtime-popup-body{padding:18px 12px;min-height:230px;white-space:pre-line;color:#171717;overflow-wrap:anywhere}
+
+/* Miniatura da tela anterior ao lado da tela em estudo. */
+.stage-heading{max-width:640px;margin-bottom:6px}
+.navigation-origin{font-size:12px;line-height:1.6;color:#506f81;margin:0 auto 14px;max-width:640px;overflow-wrap:anywhere}
+.screen-comparison{display:flex;align-items:flex-start;justify-content:center;gap:20px;max-width:640px;margin:auto}
+.current-screen{flex:1;min-width:0;max-width:480px}
+.previous-screen{flex:0 0 130px;min-width:0;padding:10px;background:#f8fbfd;border:1px solid #c5d9e5;border-radius:9px;color:#38586b;text-align:left;box-shadow:0 3px 12px #2f566a0d}
+.previous-screen[hidden]{display:none}
+.previous-screen:hover{border-color:#367c9f;background:#eaf4fa;box-shadow:0 4px 16px #2f566a20}
+.previous-eyebrow,.previous-title,.previous-hint{display:block;font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+.previous-eyebrow{font-weight:600;margin-bottom:9px;color:#367c9f}
+.previous-title{margin-top:9px;font-weight:600}
+.previous-hint{color:#71828a;margin-top:5px;font-size:10px}
+.previous-preview{display:block;width:100%;overflow:hidden;background:white;border:1px solid #cbdce5;border-radius:3px;position:relative;pointer-events:none}
+.previous-preview .preview-phone{width:480px!important;max-width:none!important;min-height:0!important;margin:0;transform-origin:top left;box-shadow:none;border-radius:0;pointer-events:none}
+.previous-preview *{pointer-events:none!important}
+.stage-heading button:disabled{opacity:.45;cursor:default}
+@media(max-width:740px){.screen-comparison{gap:10px}.previous-screen{flex-basis:86px;padding:6px}.previous-eyebrow,.previous-title{font-size:10px}.previous-hint{font-size:9px}.navigation-origin{padding:0 7px}.current-screen .phone{min-height:0}}
+@media print{.previous-screen,.navigation-origin{display:none}.screen-comparison{display:block}}
+
+.previous-click-label{display:block;margin-top:12px;font-size:10px;color:#637d8d}
+.previous-trigger{display:block;margin-top:4px;padding:7px 6px;background:#e4f1fa;border-left:3px solid #367c9f;border-radius:3px;font-size:11px;line-height:1.5;font-weight:600;color:#245e7d;overflow-wrap:anywhere}
+@media(max-width:740px){.previous-trigger{font-size:10px;padding:5px 4px}.previous-click-label{font-size:9px}}
+
+/* Barra compacta: idioma sempre acessível e ferramentas agrupadas. */
+.appbar{min-height:46px;padding:7px 18px;gap:12px;flex-direction:row;align-items:center}
+.appbar .brand{font-size:18px;margin:0;white-space:nowrap}
+.toolbar{gap:8px;flex-wrap:nowrap;font-size:12px;justify-content:flex-end}
+.toolbar select{font-size:12px;padding:5px 7px;max-width:145px}
+.toolbar-options{position:relative}
+.toolbar-options summary{cursor:pointer;list-style:none;border:1px solid #d0dee5;border-radius:6px;background:white;color:#38586b;padding:5px 10px;white-space:nowrap}
+.toolbar-options summary::-webkit-details-marker{display:none}
+.toolbar-options summary:after{content:' ▾';font-size:10px}
+.toolbar-options[open] summary{background:#eaf4fa}
+.toolbar-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:20;width:210px;padding:8px;background:white;border:1px solid #d0dee5;border-radius:8px;box-shadow:0 8px 24px #234b6026;display:flex;flex-direction:column;gap:5px}
+.toolbar-menu .help-toggle{display:flex;font-size:12px;padding:7px 4px}
+.toolbar-menu button{text-align:left;font-size:12px;padding:8px 9px}
+.stage-heading{justify-content:flex-end}
+@media(max-width:740px){.appbar{padding:6px 10px;gap:8px;min-height:42px}.appbar .brand{font-size:16px}.toolbar{gap:6px}.toolbar select{max-width:125px;font-size:11px;padding:4px 5px}.toolbar-options summary{font-size:11px;padding:4px 8px}}
+
+.preview-phone .origin-control{outline:5px solid #e44d1f!important;outline-offset:3px;background-color:#fff0ac!important;box-shadow:0 0 0 8px #fff7c8!important}
+.preview-tab{padding:5px 8px;flex:1;font-size:12px;color:#5e9abb}
+.preview-tab.active{background:#70b6d9;color:white}

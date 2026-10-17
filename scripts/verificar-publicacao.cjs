@@ -20,6 +20,23 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   const context=await browser.newContext({viewport:{width:1440,height:1080},acceptDownloads:true}),page=await context.newPage();
   page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)missing.push(r.url());});page.on('request',r=>requests.push(r.url()));
   await page.goto(base);await page.waitForFunction(()=>window.ReferenceApp);
+  await page.locator('#navigation button').filter({hasText:'Recursos de farm e muros'}).click();
+  assert((await page.locator('#previous-trigger').innerText()).includes('Botão → '),'Controle do bot ausente após atalho lateral.');
+  assert(!(await page.locator('#previous-trigger').innerText()).includes('Menu lateral'),'Menu lateral usado como caminho do bot.');
+  assert(await page.locator('#previous-preview .origin-control').count()===1,'Controle sem destaque na miniatura.');
+  await page.locator('#screen [data-original-id="手动指定分配资源"] input').click();
+  assert((await page.locator('#previous-trigger').innerText()).startsWith('Caixa → '),'Nome da caixa ausente na miniatura.');
+  assert(await page.locator('#previous-title').innerText()==='Recursos de farm e muros','Miniatura da tela anterior incorreta.');
+  assert(await page.locator('#previous-preview .ui-page').count()===1,'Prévia visual ausente.');
+  const mini=await page.locator('#previous-screen').boundingBox(),actual=await page.locator('#phone').boundingBox();
+  assert(mini.x+mini.width<=actual.x,'Miniatura não está à esquerda.');
+  await page.locator('#previous-screen').click();
+  assert(await page.evaluate(()=>ReferenceApp.current)==='打鱼资源条件','Retorno pela barra falhou.');
+  await page.locator('#previous-screen').click();
+  assert(await page.evaluate(()=>ReferenceApp.current)==='界面设置','Voltar após caminho falhou.');
+  await page.locator('#navigation button').filter({hasText:'Ativação de celular na nuvem'}).click();
+  assert(await page.locator('#navigation [aria-current="page"]').innerText()==='Ativação de celular na nuvem','Destaque da página incorreto.');
+  await page.locator('#previous-screen').click();
   const screens=await page.evaluate(()=>Object.entries(BOT_DATA.screens).map(([name,n])=>({name,pages:n.children.filter(c=>c.tag==='Page').length})));
   let rendered=0;
   for(const {name,pages} of screens)for(let i=0;i<pages;i++){
@@ -36,19 +53,27 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   const r=await context.request.get(manual);assert(r.status()===200,'Manual ausente.');const bytes=await r.body();
   assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'manual','Manual_Xingchen_Portugues_BR.pdf'))),'PDF diferente.');
   await page.locator('#screen button[data-original-id="打鱼造兵设置"]').click();assert(await page.evaluate(()=>ReferenceApp.current)==='打鱼造兵设置','Navegação falhou.');
+  assert((await page.locator('#previous-trigger').innerText()).includes('Botão → '+await page.locator('#previous-preview [data-original-id="打鱼造兵设置"]').innerText()),'Nome do botão ausente na miniatura.');
   await page.locator('input[data-original-id="兵13"]').fill('10');
-  const wait=page.waitForEvent('download');await page.locator('#export').click();const download=await wait;
+  const wait=page.waitForEvent('download');await page.locator('#toolbar-options summary').click();await page.locator('#export').click();const download=await wait;
   const saved=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert(saved.values['打鱼造兵设置/0/兵13']==='10','Exportação falhou.');
-  await page.locator('#reset').click();await page.locator('#import-file').setInputFiles({name:'exercicio.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(saved))});
+  await page.locator('#toolbar-options summary').click();await page.locator('#reset').click();await page.locator('#import-file').setInputFiles({name:'exercicio.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(saved))});
   await page.waitForFunction(()=>ReferenceApp.values['打鱼造兵设置/0/兵13']==='10');
   await page.reload();await page.waitForFunction(()=>window.ReferenceApp);await page.evaluate(()=>ReferenceApp.go('打鱼造兵设置'));
   assert(await page.locator('input[data-original-id="兵13"]').inputValue()==='10','Persistência falhou.');
   await page.locator('#language').selectOption('zh');assert((await page.locator('#screen').innerText()).includes('打鱼造兵'),'Troca de idioma falhou.');
   await page.locator('#language').selectOption('pt');await page.locator('#home').click();await page.setViewportSize({width:390,height:844});await page.waitForTimeout(80);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2),'Largura excedida no celular.');
+  assert(await page.locator('#back').count()===0,'Botão Voltar ainda presente.');
+  assert((await page.locator('.appbar').boundingBox()).height<=48,'Barra superior alta no celular.');
+  await page.locator('#toolbar-options summary').click();
+  assert(await page.locator('#study').isVisible(),'Ajuda inacessível no celular.');
+  assert(await page.locator('#import').isVisible(),'Ferramentas inacessíveis no celular.');
+  await page.locator('#toolbar-options summary').click();
+
   assert(!errors.length,'Erros JavaScript: '+errors);assert(!missing.length,'Recursos ausentes: '+missing);
   assert(requests.every(u=>u.startsWith(base)||u.startsWith('blob:')),'Solicitação a um serviço externo.');assert(fs.existsSync(path.join(publish,'.nojekyll')),'.nojekyll ausente.');
-  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','48 telas e 57 páginas/abas','245 imagens com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas']};
+  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','48 telas e 57 páginas/abas','245 imagens com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','miniatura à esquerda e retorno','origem do menu e destaque por página','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas']};
   const out=path.join(root,'verificacao');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'publicacao.json'),JSON.stringify(result,null,2));await page.screenshot({path:path.join(out,'publicacao-celular.png'),fullPage:true});console.log(JSON.stringify(result,null,2));
  }finally{if(browser)await browser.close();await new Promise(ok=>server.close(ok));}
 })().catch(e=>{console.error(e);process.exitCode=1;});

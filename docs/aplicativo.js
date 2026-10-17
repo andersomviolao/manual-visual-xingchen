@@ -79,9 +79,107 @@
   descriptions['免费模式说明']='Texto conferido no aviso inicial da atualização 1357. O fechamento automático foi desativado nesta referência para permitir a leitura.';
   descriptions['赠卡说明']='Janela aberta pelo botão 送卡密 na versão gratuita 1357. A janela de validade de licença do APK continua acessível separadamente no menu.';
   function getVal(key,def){return Object.hasOwn(values,key)?values[key]:def;}
-  function go(name,newPage=0,push=true){if(!D.screens[name])return;if(push)history.push({name:current,page,scroll:screenEl.scrollTop});current=name;page=newPage;render();}
-  function back(){const prev=history.pop();if(prev){current=prev.name;page=prev.page;render();screenEl.scrollTop=prev.scroll;}else go('界面设置',0,false);}
-  function nav(){const q=$('#search').value.trim().toLocaleLowerCase('pt-BR');let count=0;const frag=document.createDocumentFragment();for(const [group,keys]of groups){const match=keys.filter(k=>!q||(`${names[k]} ${k} ${D.screens[k].searchText||''}`).toLocaleLowerCase('pt-BR').includes(q));if(!match.length)continue;const title=document.createElement('div');title.className='nav-group';title.textContent=group;frag.append(title);for(const k of match){const b=document.createElement('button');b.className='nav-item'+(k===current?' active':'');b.textContent=names[k];b.title=k;b.onclick=()=>go(k);frag.append(b);count++;}}if(!q||'ativação de celular na nuvem'.includes(q)){const b=document.createElement('button');b.className='nav-item';b.textContent='Ativação de celular na nuvem';b.onclick=()=>go('界面设置',1);frag.append(b);count++;}if(!count){const p=document.createElement('p');p.className='nav-empty';p.textContent='Nenhuma tela encontrada.';frag.append(p);}$('#navigation').replaceChildren(frag);}
+  let arrival='Início da referência';
+  function locationLabel(name,tab){
+    const pages=D.screens[name].children.filter(n=>n.tag==='Page');
+    if(name==='界面设置'&&tab===1)return 'Ativação de celular na nuvem';
+    return names[name]+(pages.length>1?' · '+localized(pages[tab]?.a.title||'设置'):'');
+  }
+  function go(name,newPage=0,push=true,source='Controle da tela'){
+    if(!D.screens[name])return;
+    const total=D.screens[name].children.filter(n=>n.tag==='Page').length;
+    newPage=Math.max(0,Math.min(Number(newPage)||0,total-1));
+    if(current===name&&page===newPage)return;
+    if(push)history.push({name:current,page,scroll:screenEl.scrollTop,arrival,preview:capturePreview()});
+    current=name;page=newPage;arrival=source;render();
+  }
+  function returnTo(index){
+    const prev=history[index];if(!prev)return;
+    history=history.slice(0,index);current=prev.name;page=prev.page;arrival=prev.arrival;
+    render();screenEl.scrollTop=prev.scroll;
+  }
+  function back(){if(history.length)returnTo(history.length-1);}
+  function capturePreview(){
+    const phone=$('#phone'),copy=phone.cloneNode(true);
+    const originals=phone.querySelectorAll('input,select,textarea');
+    copy.querySelectorAll('input,select,textarea').forEach((el,i)=>{
+      el.value=originals[i].value;if('checked' in el)el.checked=originals[i].checked;
+    });
+    copy.removeAttribute('id');copy.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
+    copy.querySelectorAll('.ui-selected').forEach(el=>el.classList.remove('ui-selected'));
+    copy.classList.add('preview-phone');copy.style.zoom='1';
+    copy.style.height=phone.offsetHeight+'px';
+    copy.setAttribute('inert','');
+    return {node:copy,scroll:screenEl.scrollTop,height:phone.offsetHeight};
+  }
+  // Relações entre controles e janelas da referência, nunca itens do menu lateral.
+  function botEntries(target){
+    const entries=[];
+    const ordered=['界面设置',...Object.keys(D.screens).filter(k=>k!=='界面设置')];
+    for(const name of ordered)D.screens[name].children.filter(n=>n.tag==='Page').forEach((p,tab)=>{
+      (function walk(n){
+        const id=n.a.id;
+        let destination=routes[id];
+        if(id==='手动指定分配资源'&&name==='打鱼资源条件')destination='进攻资源条件';
+        if(/^账号\d+设置$/.test(id)||id==='跳转指定账号设置')destination='升级1';
+        if(/^账号\d+打鱼设置$/.test(id))destination='打鱼造兵设置';
+        if(destination===target&&name!==target&&['Button','CheckBoxGroup','RadioGroup'].includes(n.tag))
+          entries.push({name,page:tab,id,node:n});
+        n.children.forEach(walk);
+      })(p);
+    });
+    if(target==='应用设置')entries.unshift({name:'星辰国际',page:0,id:'native-settings',label:localized('设置')});
+    if(target==='界面设置'&&page===1)entries.unshift({name:'界面设置',page:0,id:'cloud-tab',label:'Ativação de celular na nuvem',kind:'Aba'});
+    return entries;
+  }
+  function originPreview(entry){
+    const saved={current,page,mode},copy=capturePreview();
+    try{
+      current=entry.name;page=entry.page;
+      const pages=D.screens[current].children.filter(n=>n.tag==='Page');
+      let content=create(pages[page]);
+      const find=()=>[...content.querySelectorAll('[data-original-id]')].find(el=>el.dataset.originalId===entry.id);
+      if(current==='界面设置'&&!find()&&entry.node){
+        for(let i=0;i<11;i++){mode=i;content=create(pages[page]);if(find())break;}
+      }
+      const screen=copy.node.querySelector('.screen');screen.replaceChildren(content);
+      const tabbar=copy.node.querySelector('.page-tabs');tabbar.replaceChildren();tabbar.hidden=pages.length<2||(current==='界面设置'&&page===0&&entry.id!=='cloud-tab');
+      pages.forEach((p,i)=>{const el=document.createElement('span');el.className='preview-tab';el.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));if(i===page)el.classList.add('active');if(entry.id==='cloud-tab'&&i===1){el.classList.add('origin-control');copy.target=el;}tabbar.append(el);});
+      if(entry.id==='native-settings'){
+        const head=document.createElement('div');head.className='native-heading';head.textContent=localized('星辰国际');const el=document.createElement('span');el.textContent=entry.label;el.className='origin-control';head.append(el);screen.prepend(head);copy.target=el;
+      }else if(entry.node){copy.target=find();if(copy.target)copy.target.classList.add('origin-control');}
+      const modes=D.screens['界面设置'].children[0];
+      let modeName='';(function walk(n){if(n.a.id==='功能选择开关')modeName=localized(n.children[mode]?.a.text||'');n.children.forEach(walk);})(modes);
+      copy.modeName=current==='界面设置'&&page===0?modeName:'';copy.originMode=mode;
+      copy.node.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
+      return copy;
+    }finally{current=saved.current;page=saved.page;mode=saved.mode;}
+  }
+  function renderPath(){
+    const entries=botEntries(current),previous=history.at(-1);
+    const entry=entries.find(e=>previous&&e.name===previous.name&&e.page===previous.page&&!arrival.startsWith('Menu lateral')&&arrival.endsWith(e.label||(e.node?.tag==='Button'?localized(e.node.a.title||''):localized(e.node?.children[0]?.a.text||''))))||entries[0];
+    const button=$('#previous-screen'),preview=$('#previous-preview');
+    button.hidden=!entry;preview.replaceChildren();
+    if(entry){
+      const label=locationLabel(entry.name,entry.page),snapshot=originPreview(entry);
+      $('#previous-title').textContent=label;
+      const kind=entry.kind||(entry.node?.tag==='Button'?'Botão':'Caixa');
+      const control=entry.label||(entry.node?.tag==='Button'?localized(entry.node.a.title||''):localized(entry.node.children[0]?.a.text||''))||controlLabel(entry.node);
+      $('#previous-trigger').textContent=kind+' → '+control;
+      $('#previous-mode').textContent=snapshot.modeName?'Modo: '+snapshot.modeName:'';
+      button.setAttribute('aria-label','Abrir tela de origem: '+label);button.title='Abrir '+label;
+      button.onclick=()=>{mode=snapshot.originMode;go(entry.name,entry.page,true,'Tela de origem do controle');};
+      preview.append(snapshot.node);preview.style.aspectRatio='480 / '+snapshot.height;
+      requestAnimationFrame(()=>{
+        if(!snapshot.target?.isConnected)return;
+        const screen=snapshot.node.querySelector('.screen'),scale=preview.clientWidth/480;
+        screen.scrollTop+=(snapshot.target.getBoundingClientRect().top-screen.getBoundingClientRect().top)/scale-screen.clientHeight/2;
+      });
+    }
+    $('#navigation-origin').textContent=entry?'No bot: '+locationLabel(entry.name,entry.page)+' → '+$('#previous-trigger').textContent:current==='界面设置'?'Tela principal do bot.':'Caminho dentro do bot não confirmado para esta tela auxiliar.';
+    resizePhone();
+  }
+  function nav(){const q=$('#search').value.trim().toLocaleLowerCase('pt-BR');let count=0;const frag=document.createDocumentFragment();for(const [group,keys]of groups){const match=keys.filter(k=>!q||(`${names[k]} ${k} ${D.screens[k].searchText||''}`).toLocaleLowerCase('pt-BR').includes(q));if(!match.length)continue;const title=document.createElement('div');title.className='nav-group';title.textContent=group;frag.append(title);for(const k of match){const b=document.createElement('button');b.className='nav-item'+(k===current&&page===0?' active':'');b.textContent=names[k];b.title=k;b.setAttribute('aria-current',k===current&&page===0?'page':'false');b.onclick=()=>go(k,0,true,'Menu lateral → '+group+' → '+names[k]);frag.append(b);count++;}}if(!q||'ativação de celular na nuvem'.includes(q)){const b=document.createElement('button');b.className='nav-item'+(current==='界面设置'&&page===1?' active':'');b.setAttribute('aria-current',current==='界面设置'&&page===1?'page':'false');b.textContent='Ativação de celular na nuvem';b.onclick=()=>go('界面设置',1,true,'Menu lateral → Ativação de celular na nuvem');frag.append(b);count++;}if(!count){const p=document.createElement('p');p.className='nav-empty';p.textContent='Nenhuma tela encontrada.';frag.append(p);}$('#navigation').replaceChildren(frag);}
   for(const [k,tree]of Object.entries(D.screens)){const arr=[];(function collect(n){if(n.a.text)arr.push(tr(n.a.text));if(n.a.title)arr.push(tr(n.a.title));n.children.forEach(collect);})(tree);tree.searchText=arr.join(' ');}
   function mainVisibility(n){
     if(current!=='界面设置'||page!==0||allMain)return true;
@@ -166,11 +264,11 @@
       el.oninput=()=>{values[key]=el.value;save();};el.onfocus=()=>showControl({...n,a:{...a,title:inputLabel(n,parent)}});
     }else if(tag==='ComboBox'){
       el=document.createElement('select');el.className='ui-select';el.setAttribute('aria-label',tr(a.id)||'Selecionar opção');n.children.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=localized(c.a.text);o.title=c.a.text;el.append(o);});const def=Number(a.select)||0;el.value=current==='界面设置'&&a.id==='功能选择开关'?mode:getVal(key,def);
-      el.onchange=()=>{values[key]=Number(el.value);showControl({...n,a:{...a,title:n.children[Number(el.value)]?.a.text}});save();if(a.id==='功能选择开关'){mode=Number(el.value);render();}else if(a.id==='游戏版本'){if(Number(el.value)===2)go('通用切号');else render();}else if(a.id==='授权选择'&&Number(el.value)===2)go('QQ切号');};
+      el.onchange=()=>{values[key]=Number(el.value);showControl({...n,a:{...a,title:n.children[Number(el.value)]?.a.text}});save();if(a.id==='功能选择开关'){mode=Number(el.value);render();}else if(a.id==='游戏版本'){if(Number(el.value)===2)go('通用切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);else render();}else if(a.id==='授权选择'&&Number(el.value)===2)go('QQ切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);};
     }else if(tag==='CheckBoxGroup'||tag==='RadioGroup'){
       el=document.createElement('div');el.className=tag==='RadioGroup'?'ui-radio-group':'ui-check-group';
       n.children.forEach((c,i)=>{const label=document.createElement('label');label.className='ui-check';const input=document.createElement('input');input.type=tag==='RadioGroup'?'radio':'checkbox';input.name=key;const ck=key+'/'+i;input.checked=!!getVal(ck,(a.select||'').split(',').includes(String(i)));const text=document.createElement('span');text.textContent=localized(c.a.text||'');if(c.a.textcolor)label.style.color=color(c.a.textcolor);label.title=c.a.text||a.id||'';input.setAttribute('aria-label',tr(c.a.text)||tr(a.id)||'Selecionar item');label.append(input,text);el.append(label);
-        input.onchange=()=>{if(tag==='RadioGroup')n.children.forEach((_,j)=>values[key+'/'+j]=j===i);else values[ck]=input.checked;save();showControl(n);if(input.checked&&routes[a.id])go(routes[a.id]);else if(current==='打鱼资源条件'&&a.id==='手动指定分配资源'&&input.checked){values[current+'/'+page+'/辅助自动分配资源/0']=false;go('进攻资源条件');}else if(current==='打鱼资源条件'&&['辅助自动分配资源','强制进攻','不判断死鱼'].includes(a.id)){const sibling={'辅助自动分配资源':'手动指定分配资源','强制进攻':'不判断死鱼','不判断死鱼':'强制进攻'}[a.id];if(input.checked)values[current+'/'+page+'/'+sibling+'/0']=false;save();render(true);}else if(current==='界面设置'&&a.id==='发送邮件')render(true);};
+        input.onchange=()=>{if(tag==='RadioGroup')n.children.forEach((_,j)=>values[key+'/'+j]=j===i);else values[ck]=input.checked;save();showControl(n);if(input.checked&&routes[a.id])go(routes[a.id],0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));else if(current==='打鱼资源条件'&&a.id==='手动指定分配资源'&&input.checked){values[current+'/'+page+'/辅助自动分配资源/0']=false;go('进攻资源条件',0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));}else if(current==='打鱼资源条件'&&['辅助自动分配资源','强制进攻','不判断死鱼'].includes(a.id)){const sibling={'辅助自动分配资源':'手动指定分配资源','强制进攻':'不判断死鱼','不判断死鱼':'强制进攻'}[a.id];if(input.checked)values[current+'/'+page+'/'+sibling+'/0']=false;save();render(true);}else if(current==='界面设置'&&a.id==='发送邮件')render(true);};
       });
     }else if(tag==='WebView'){
       el=document.createElement('div');el.className='ui-web';el.textContent=language==='zh'?'教程加载中 请等待……':'Área de conteúdo online do aplicativo. Nesta cópia, consulte o manual local em português.';
@@ -199,15 +297,15 @@
     '下拉框说明':['Os 11 modos','1. Troca manual e extração de dados\n2. Criar contas\n3. Ataques à Capital\n4. Doar Ouro da Capital\n5. Verificar informações\n6. Vincular e-mail\n7. Farm contínuo\n8. Tarefas em ciclo\n9. Doação com uma conta\n10. Doação com várias contas\n11. Ganhar experiência']
   };
   function action(id,n,el){
-    if(routes[id]){go(routes[id]);return;}
+    if(routes[id]){go(routes[id],0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
     if(id==='停止运行'||id==='停止脚本'){toast('Simulação parada. Nenhuma ação foi executada no jogo.');return;}
     if(id.startsWith('关闭')||id==='取消反馈'){back();return;}
     if(id==='清空设置'||id==='清空造兵设置'){screenEl.querySelectorAll('input.ui-input').forEach(input=>{input.value='';values[input.dataset.key]='';});save();toast('Campos desta tela limpos no exercício.');return;}
     if(id==='取消建筑勾选'||id==='取消科技勾选'||id==='全选科技'){screenEl.querySelectorAll('input[type=checkbox]').forEach(input=>{input.checked=id==='全选科技';const group=input.closest('[data-original-id]');if(group)values[`${current}/${page}/${group.dataset.originalId}/0`]=input.checked;});save();toast(id==='全选科技'?'Pesquisas selecionadas no exercício.':'Seleções removidas no exercício.');return;}
     if(helpTexts[id]){info(...helpTexts[id]);return;}
     if(id==='计算兵种数量'||id==='计算法术数量'){const prefix=id==='计算兵种数量'?'兵':'法';const fields=[...screenEl.querySelectorAll('.ui-input')].filter(i=>i.dataset.originalId.startsWith(prefix));const total=fields.reduce((s,i)=>s+(Number(i.value)||0),0);info('Contagem do exercício',`${total} unidades preenchidas.\n\nEsta referência soma quantidades. O botão do bot calcula espaço de alojamento; esse cálculo não é reproduzido aqui. Confira a capacidade total no jogo antes de atacar.`);return;}
-    if(/^账号\d+设置$/.test(id)||id==='跳转指定账号设置'||id==='上一个'||id==='下一个'){go('升级1');return;}
-    if(/^账号\d+打鱼设置$/.test(id)){go('打鱼造兵设置');return;}
+    if(/^账号\d+设置$/.test(id)||id==='跳转指定账号设置'||id==='上一个'||id==='下一个'){go('升级1',0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
+    if(/^账号\d+打鱼设置$/.test(id)){go('打鱼造兵设置',0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
     if(id.endsWith('说明')){info(controlLabel(n),`Este é o botão de informações do controle “${id}”.\n\nO conteúdo dessa ajuda é preenchido pelo aplicativo e não está presente nos arquivos visuais. Consulte o manual em português ou a janela correspondente no bot para obter a regra exata.`);return;}
     if(n.a.background&&!['bt.webp','tt.webp','说明.webp','背景框.png'].includes(n.a.background)){showControl(n);return;}
     if(id==='打鱼同步按钮'||id==='捐兵同步按钮'||id==='同步按钮'||id==='同步复制按钮'){toast('Botão Copiar do modelo visual. Não altera configurações do bot.');return;}
@@ -215,17 +313,17 @@
   }
   function render(keepScroll=false){
     const scroll=keepScroll?screenEl.scrollTop:0,tree=D.screens[current],pages=tree.children.filter(n=>n.tag==='Page');page=Math.min(page,pages.length-1);const tabbed=pages.length>1;tabs.hidden=!tabbed;tabs.replaceChildren();
-    if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>{page=i;render();};tabs.append(b);});
+    if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
     if(current==='界面设置'&&page===0)tabs.hidden=true;
     const content=create(pages[page]);screenEl.replaceChildren(content);screenEl.scrollTop=scroll;
     if(livePopups[current]){
       const popupName=current,popupPage=page;current='界面设置';page=0;const background=create(D.screens['界面设置'].children[0]);current=popupName;page=popupPage;content.classList.add('runtime-page');background.classList.add('runtime-background');background.setAttribute('inert','');content.prepend(background);
     }
     if(current==='星辰国际'){
-      const head=document.createElement('div');head.className='native-heading initial-heading';const title=document.createElement('span');title.textContent=localized('星辰国际');const b=document.createElement('button');b.textContent=localized('设置');b.onclick=()=>go('应用设置');head.append(title,b);screenEl.prepend(head);
+      const head=document.createElement('div');head.className='native-heading initial-heading';const title=document.createElement('span');title.textContent=localized('星辰国际');const b=document.createElement('button');b.textContent=localized('设置');b.onclick=()=>go('应用设置',0,true,'Botão → '+b.textContent);head.append(title,b);screenEl.prepend(head);
     }
     $('#screen-title').textContent=current==='界面设置'&&page===1?'Ativação de celular na nuvem':names[current];$('#screen-description').textContent=descriptions[current]||'Layout, ícones, opções e campos preservados das definições visuais do aplicativo original.';
-    $('#breadcrumb').textContent=names[current];$('#back').disabled=history.length===0;$('#language').value=language;
+    renderPath();$('#language').value=language;
     $('#confirm').textContent=language==='zh'?'确定':'Confirmar';nav();
     requestAnimationFrame(()=>{fitRows();if(keepScroll)screenEl.scrollTop=scroll;});
   }
@@ -233,7 +331,13 @@
     // Portuguese often needs two lines where Chinese fits in one.
     screenEl.querySelectorAll('.ui-row').forEach(row=>{if(row.scrollWidth>row.clientWidth+3){row.querySelectorAll(':scope > .ui-text,:scope > .ui-check-group span,:scope > .ui-select,:scope > .ui-button:not(.icon)').forEach(el=>{el.style.fontSize=Math.min(parseFloat(getComputedStyle(el).fontSize),13)+'px';});}if(row.scrollWidth>row.clientWidth+10&&row.querySelector('.ui-text:not(:empty)')){row.style.flexWrap='wrap';row.style.rowGap='3px';}});
   }
-  $('#back').onclick=back;$('#home').onclick=()=>go('界面设置');$('#search').oninput=nav;
+  $('#previous-screen').onclick=back;
+  const toolbarOptions=$('#toolbar-options');
+  toolbarOptions.addEventListener('click',e=>{if(e.target.closest('button'))toolbarOptions.open=false;});
+  document.addEventListener('click',e=>{if(!toolbarOptions.contains(e.target))toolbarOptions.open=false;});
+  toolbarOptions.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();toolbarOptions.open=false;toolbarOptions.querySelector('summary').focus();}});
+
+  $('#home').onclick=()=>go('界面设置',0,true,'Botão Tela principal');$('#search').oninput=nav;
   $('#review').onclick=()=>info('Revisão da versão 1357','O download oficial continua sendo o APK 1355. A versão 1357 é a atualização interna exibida no painel.\n\nO APK foi baixado novamente e é idêntico ao arquivo da raiz do projeto. As 45 definições de tela e 245 imagens da referência correspondem aos arquivos desse APK.\n\nForam conferidos no LDPlayer: ajustes nativos, entrada, painel de farm, grade de tropas e filtros de recursos. Os dois avisos do modo gratuito foram acrescentados, e o destino do botão de licença foi corrigido.\n\nA referência tem 48 telas e 57 páginas/abas. As demais mensagens geradas durante a execução e todos os arquivos internos da atualização 1357 não foram comparados integralmente. Veja REVISAO_1357.md na pasta HTML para o relatório completo.');
   $('#language').onchange=e=>{language=e.target.value;save();render(true);};
   $('#confirm').onclick=()=>{save();if(current==='界面设置'){toast('Exercício salvo. O bot real não foi iniciado.');}else if(history.length)back();else toast('Exercício salvo neste navegador.');};
@@ -245,7 +349,13 @@
   $('#about').onclick=()=>info('Sobre esta referência',`Reprodução local das 45 definições de tela contidas no APK original 1355. Foram traduzidos os 755 textos chineses visíveis dessas definições e preservados os recursos de imagem. A tela principal foi comparada com a atualização 1357 aberta no LDPlayer.\n\nA navegação e a exibição dos campos por modo foram recriadas para estudo. Não são uma cópia do funcionamento interno do bot. Janelas auxiliares e funções antigas também estão disponíveis no menu lateral.\n\nAlgumas mensagens de ajuda são geradas durante a execução e não constam das definições. Quando não foi possível verificar o texto, a referência informa essa limitação. Ícones de equipamentos recentes podem ter traduções descritivas.\n\nNenhuma chave, compra, envio de dados ou ação no jogo é executada. Os valores iniciais vêm dos modelos do APK; não são uma leitura da sua conta.`);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#info-dialog').open&&history.length)back();});
   mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;
-  function resizePhone(){const small=window.innerWidth<=740;$('#phone').style.zoom=small?String(Math.min(1,(window.innerWidth-10)/480)):'';}
-  window.addEventListener('resize',resizePhone);resizePhone();render();
+  function resizePhone(){
+    const width=$('.current-screen').clientWidth;
+    $('#phone').style.zoom=String(Math.min(1,width/480));
+    const preview=$('#previous-preview'),mini=preview.querySelector('.preview-phone');
+    if(mini)mini.style.transform='scale('+preview.clientWidth/480+')';
+  }
+  new ResizeObserver(resizePhone).observe($('.current-screen'));
+  window.addEventListener('resize',resizePhone);render();
   window.ReferenceApp={go,get current(){return current;},get page(){return page;},get mode(){return mode;},get values(){return {...values};},get screenNames(){return {...names};}};
 })();

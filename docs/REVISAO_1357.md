@@ -60,3 +60,9 @@ Portanto, esta revisão confirma os arquivos-base e os painéis observados. Não
 Os resultados e o hash verificados foram preservados neste relatório. As capturas, cópias temporárias de download e relatórios auxiliares foram descartados na limpeza do projeto.
 
 O teste `scripts/verificar-publicacao.cjs`, na raiz do repositório, permite conferir novamente as telas, as imagens, o PDF e a navegação do site publicado. O teste `HTML/dados/verificar.cjs` pode gerar novas capturas da referência quando necessário.
+
+## Nova consulta em 16/10/2026
+
+O histórico oficial `http://xccoc.fun/msg/log.txt` continua informando atualização interna **1357**, de 16 de outubro. O indicador `https://921015.xyz/fz_update` continua informando **1355**. Esta consulta não encontrou uma versão posterior nesses indicadores. Não havia dispositivo conectado ao emulador para nova conferência visual em execução.
+
+Foi aprimorada a navegação da referência: miniatura clicável da tela anterior à esquerda da atual, origem da entrada e destaque correto da página atual no menu lateral. As trocas de abas também atualizam a miniatura. Esses recursos orientam o estudo do HTML e não representam uma nova tela do bot.

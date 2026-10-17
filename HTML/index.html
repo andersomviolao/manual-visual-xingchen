@@ -8,13 +8,18 @@
 </head>
 <body>
   <header class="appbar">
-    <div><strong>Xingchen</strong><span>Referência das configurações</span></div>
+    <strong class="brand">Xingchen</strong>
     <div class="toolbar">
-      <label>Idioma <select id="language" aria-label="Idioma da referência"><option value="pt">Português</option><option value="zh">Chinês original</option></select></label>
-      <label class="help-toggle"><input id="study" type="checkbox" checked> Ajuda ao selecionar</label>
-      <button id="export">Salvar exercício</button>
-      <button id="import">Abrir exercício</button>
-      <button id="reset">Restaurar campos</button>
+      <select id="language" aria-label="Idioma da referência"><option value="pt">Português</option><option value="zh">Chinês original</option></select>
+      <details class="toolbar-options" id="toolbar-options">
+        <summary>Opções</summary>
+        <div class="toolbar-menu">
+          <label class="help-toggle"><input id="study" type="checkbox" checked> Ajuda ao selecionar</label>
+          <button id="export">Salvar exercício</button>
+          <button id="import">Abrir exercício</button>
+          <button id="reset">Restaurar campos</button>
+        </div>
+      </details>
       <input id="import-file" type="file" accept=".json" hidden>
     </div>
   </header>
@@ -28,12 +33,26 @@
       <button class="plain" id="review">Revisão da versão 1357</button>
     </aside>
     <main>
-      <div class="stage-heading"><button id="back" title="Voltar à tela anterior">← Voltar</button><div id="breadcrumb"></div><button id="home">Tela principal</button></div>
+      <div class="stage-heading"><button id="home">Tela principal</button></div>
+      <p id="navigation-origin" class="navigation-origin" aria-live="polite"></p>
+      <div class="screen-comparison">
+        <button id="previous-screen" class="previous-screen" hidden>
+          <span class="previous-eyebrow">Tela de origem no bot</span>
+          <span id="previous-preview" class="previous-preview" aria-hidden="true"></span>
+          <span id="previous-title" class="previous-title"></span>
+          <span class="previous-click-label">Para abrir no bot:</span>
+          <span id="previous-trigger" class="previous-trigger"></span>
+          <span id="previous-mode" class="previous-hint"></span>
+          <span class="previous-hint">Clique para abrir a tela de origem</span>
+        </button>
+        <div class="current-screen">
       <div class="phone" id="phone">
         <div class="statusbar"><span>05:11</span><span>● ▣</span><span class="status-right">◆ ▰</span></div>
         <div id="page-tabs" class="page-tabs" role="tablist" hidden></div>
         <div id="screen" class="screen" tabindex="-1"></div>
         <div class="confirm-wrap"><button id="confirm" class="confirm">Confirmar</button></div>
+      </div>
+        </div>
       </div>
       <p class="practice-label"><span></span>Modo de estudo · alterações salvas apenas neste navegador</p>
     </main>

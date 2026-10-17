@@ -60,3 +60,13 @@ HTML + CSS + JavaScript é adequado para esta referência: abre no navegador, pe
 ## Verificação
 
 Foi feita uma conferência automática de renderização das 48 telas e suas 57 páginas/abas, carregamento de imagens, tradução dos rótulos, navegação para tropas, persistência depois de recarregar, troca de idioma, seleção dos 11 modos, busca e apresentação em largura de celular. Foram inspecionadas visualmente capturas de telas principais. Isso verifica o HTML; não verifica o funcionamento do bot no jogo.
+
+## Tela de origem no bot
+
+A miniatura à esquerda mostra a tela da interface do bot que contém o controle para abrir a tela atual. O botão ou caixa aparece destacado na miniatura; “Para abrir no bot” mostra seu nome. Se o controle depender de um modo, o modo é informado. Clique na miniatura para abrir a tela de origem.
+
+O menu lateral é um atalho da referência: mesmo entrando por ele, a indicação mostra o controle da interface do bot, não o item do menu lateral nem a última tela visitada. O caminho usa as relações de navegação reproduzidas no HTML; não houve nova conferência ao vivo. Telas auxiliares sem relação de acesso confirmada ficam identificadas como tal.
+
+Conferência em 16/10/2026: o histórico oficial em http://xccoc.fun/msg/log.txt ainda informa atualização interna 1357; https://921015.xyz/fz_update informa APK 1355. Nenhum dispositivo estava conectado ao emulador nesta conferência; não houve nova validação visual do aplicativo em execução.
+
+A barra superior mantém o nome e o idioma à vista. Abra **Opções** para salvar ou abrir exercícios, restaurar campos e ativar ou desativar a ajuda ao selecionar.
