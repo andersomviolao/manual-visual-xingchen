@@ -255,7 +255,7 @@
       el=document.createElement('button');el.type='button';el.className='ui-button';el.textContent=localized(a.title||'');
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='pt')el.textContent='Licença';
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='zh')el.textContent='送卡密';
-      if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?'官网 xccoc.fun　热更新版本:1357':'Site xccoc.fun · Atualização: 1357';
+      if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?'官网 xccoc.fun　热更新版本:1358':'Site xccoc.fun · Atualização: 1358';
       if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("assets/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
       else el.title=a.title||a.id||'';
       el.onclick=()=>{showControl(n);action(a.id||'',n,el);};
@@ -338,7 +338,7 @@
   toolbarOptions.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();toolbarOptions.open=false;toolbarOptions.querySelector('summary').focus();}});
 
   $('#home').onclick=()=>go('界面设置',0,true,'Botão Tela principal');$('#search').oninput=nav;
-  $('#review').onclick=()=>info('Revisão da versão 1357','O download oficial continua sendo o APK 1355. A versão 1357 é a atualização interna exibida no painel.\n\nO APK foi baixado novamente e é idêntico ao arquivo da raiz do projeto. As 45 definições de tela e 245 imagens da referência correspondem aos arquivos desse APK.\n\nForam conferidos no LDPlayer: ajustes nativos, entrada, painel de farm, grade de tropas e filtros de recursos. Os dois avisos do modo gratuito foram acrescentados, e o destino do botão de licença foi corrigido.\n\nA referência tem 48 telas e 57 páginas/abas. As demais mensagens geradas durante a execução e todos os arquivos internos da atualização 1357 não foram comparados integralmente. Veja REVISAO_1357.md na pasta HTML para o relatório completo.');
+  $('#review').onclick=()=>info('Versão 1358 — situação da referência','O bot está na atualização interna 1358, conforme informado pelo usuário. A identificação no HTML foi atualizada.\n\nA base visual continua sendo o APK 1355. A última comparação visual registrada dos painéis foi com a atualização 1357. Não houve nova conferência das telas ou das alterações internas da 1358.\n\nNa consulta de 16/10/2026, o histórico oficial ainda listava 1357. Portanto, ele não permite descrever as mudanças da 1358.\n\nA referência mantém 48 telas e 57 páginas/abas. Consulte REVISAO_1358.md para a situação atual e REVISAO_1357.md para a comparação anterior.');
   $('#language').onchange=e=>{language=e.target.value;save();render(true);};
   $('#confirm').onclick=()=>{save();if(current==='界面设置'){toast('Exercício salvo. O bot real não foi iniciado.');}else if(history.length)back();else toast('Exercício salvo neste navegador.');};
   $('#info-close').onclick=$('#info-confirm').onclick=()=>$('#info-dialog').close();

@@ -4,6 +4,10 @@ Abra **index.html** no Edge. Basta dar dois cliques no arquivo; não é preciso 
 
 A conferência com o download oficial e com os painéis observados na atualização 1357 está em **[REVISAO_1357.md](REVISAO_1357.md)**. O site continua entregando o APK 1355; a 1357 é uma atualização interna do script.
 
+## Versão atual
+
+O bot já está na **1358**, conforme informado pelo usuário. O HTML identifica essa versão; a base visual e a conferência anterior continuam descritas abaixo. A comparação visual da 1358 está pendente. Veja [REVISAO_1358.md](REVISAO_1358.md).
+
 ## O que foi reproduzido
 
 - As 45 definições de tela presentes no APK original `星辰辅助1355.apk`, com suas abas, ordem de controles, agrupamentos, campos, listas, caixas e imagens disponíveis.
