@@ -68,9 +68,9 @@ Esses são ajustes de fidelidade do HTML. Não se conclui que cada um foi introd
 | Várias versões, cinco abas | Versão do jogo → 多版本 | Contas 1–10, 11–20, 21–30, 31–40 e 41–50 conferidas; cabeçalho corrigido |
 | QQ | Servidor chinês → autorização de várias contas QQ | Vinte contas e avisos compatíveis; nenhum login realizado |
 
-## Modelos não conferidos na 1358
+## Modelos pendentes na revisão inicial de 16/10
 
-As **16 telas restantes** são modelos auxiliares, antigos ou de conteúdo preenchido em execução. Não foi encontrado ou percorrido seu acesso nesta sessão. Permanecem nos dados originais para referência de desenvolvimento; a versão com simulador Android não oferece atalhos artificiais para acessá-las. Isso evita apresentar modelos do APK como telas verificadas da versão atual.
+Na revisão inicial, as **16 telas restantes** eram modelos auxiliares, antigos ou de conteúdo preenchido em execução. Seu acesso não havia sido encontrado ou percorrido naquela sessão. A tabela complementar abaixo atualiza esse resultado. Permanecem nos dados originais para referência de desenvolvimento; a versão com simulador Android não oferece atalhos artificiais para acessá-las. Isso evita apresentar modelos do APK como telas verificadas da versão atual.
 
 - `交流群`
 - `使用说明`
@@ -102,3 +102,40 @@ A barra lateral, a miniatura de origem e o painel de estudo foram removidos. O H
 Voltar fecha edição ou janelas e percorre a pilha de telas; Início preserva a tarefa; Recentes permite retomá-la ou removê-la. Estes são comportamentos implementados para a simulação e testados no HTML. Não houve uma nova conferência visual no emulador nesta etapa, nem validação de todos os comportamentos do Android real.
 
 A lista de telas conferidas acima continua limitada à observação direta de 16/10/2026. A apresentação nova não amplia essa cobertura nem comprova uma reprodução integral do bot.
+
+## Conferência complementar em 17/10/2026
+
+A sessão percorreu os acessos do tutorial, ajuda de seleção de função, consultas de nuvem e os modos manual e experiência. O cabeçalho mostrou atualização interna 1358. Foram abertas somente as configurações de execução: não se extraíram dados, trocaram contas, testaram gestos no jogo ou iniciaram ataques. Ao final, foram repostos o servidor internacional e Tarefas em ciclo [8/11], e o botão vermelho parou o assistente.
+
+O total passa a **37 telas/estruturas e 46 páginas/abas observadas**, entre 48 definições e 57 páginas nos dados. Isso inclui a moldura genérica de ajuda e a moldura do navegador, com as limitações abaixo; não significa 37 telas integralmente idênticas ao HTML.
+
+| Modelo antes pendente | Acesso procurado e evidência | Situação |
+|---|---|---|
+| 文本框 — Informações | Ícone azul ao lado do modo; consultas de nuvem também usam a mesma moldura cinza, borda marrom e X vermelho | Moldura confirmada; apenas as mensagens abertas foram conferidas |
+| 浏览器 — Tutorial | Painel → 教程; abriu moldura de página inteira, X e documento Tencent Docs | Acesso e moldura confirmados; HTML mostra o PDF local traduzido com aviso explícito de substituição |
+| 自助切号 — Troca manual | Modo 手动切号/提数据 [1/11] → 确定 | Confirmada: caminho, tipo de dados, número, extração, troca, parar, instalar e ocultar; ações reais não acionadas |
+| 放大 — Janela reduzida | Painel manual → 隐藏窗口 | Confirmada: pequena janela à direita com 弹出 e 隐藏; 弹出 restituiu o painel manual |
+| 刷经验 — Experiência | Modo 刷经验 [11/11] → 确定 | Confirmada: painel preto inferior direito, mapas, tempos, coordenada, teste, saída, heróis e iniciar; interrompido pelo Volume (+) antes de iniciar |
+| 文件列表 — Arquivos | 查看下载设置 e 查看下载文件 | Bloqueada: ambos abrem 权限不够, com proibição de envio/consulta para usuário gratuito; lista não vista |
+| 卡密说明 — Licença antiga | Botão 送卡密 do painel | O acesso disponível abre a oferta 赠卡说明 já conferida; o modelo antigo não foi aberto |
+| 网 — Loja interna | Oferta de licença e entrada | Foram encontrados endereços textuais do site; janela interna do modelo não foi aberta |
+| 交流群 — Grupo | Entrada e avisos do painel | Entrada orienta consultar grupos no site; janela antiga de grupo não foi localizada |
+| 使用说明 — Instruções | Entrada, modo e tutorial | Há instruções na entrada e tutorial online; nenhum acesso confirmado ao modelo antigo separado |
+| 城墙 — Muros | Recursos de farm e muros | Condições atuais estão no painel de recursos já conferido; acesso ao modelo separado não confirmado |
+| 自定义下兵 — Lançamento personalizado | Lista de lançamento do painel | A referência observada oferece automático e um lado; acesso ao editor antigo não confirmado |
+| 捐兵造兵设置 — Tropas de doação | Modos de doação de uma e várias contas revisados | Acesso atual ao modelo separado não confirmado; não se iniciou doação no jogo |
+| 捐兵统计 — Estatísticas | Modos de doação e janelas manuais | Nenhum painel de estatísticas aberto; pode depender de execução de doações, que não foi feita |
+| 反馈 — Relato | Entrada e ícone flutuante durante o modo manual | O caminho antigo do manual não foi reproduzido nesta instância; formulário não aberto e nenhum relato enviado |
+| 更新公告 — Atualização | Abertura atual do aplicativo | Nenhuma oferta de atualização apareceu; aviso depende de evento e não foi forçado |
+
+Não localizar um acesso não comprova que a tela foi removida. A licença atual impede validar a lista de nuvem. Conteúdo pago, avisos futuros e formulários ainda não acessados continuam fora da garantia visual.
+
+### Correções decorrentes desta sessão
+
+- Confirmar no modo manual e no modo experiência agora abre os respectivos painéis no simulador; Ocultar e Expandir reproduzem o caminho observado.
+- Painéis de execução recebem posição e apresentação próprias sobre a tela Android e não exibem Confirmar externo.
+- A ajuda da seleção de função usa o texto observado; a mensagem de nuvem usa Permissão insuficiente.
+- A moldura das informações usa cabeçalho cinza, X vermelho e borda marrom, sem botão Entendi visível.
+- O tutorial ocupa sua moldura e usa o PDF local em português. O documento online Tencent Docs não é uma cópia fiel nem foi integralmente auditado.
+
+Os controles de experiência já existiam nas definições originais; a correção necessária era seu acesso e apresentação durante a execução simulada. Nenhuma alegação de controles novos introduzidos na 1358 é feita.

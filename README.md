@@ -12,7 +12,7 @@ A simulação não executa o bot nem ações no jogo. O estado de execução, os
 
 ## Alcance
 
-A base contém 45 definições do APK 1355, mais ajustes nativos e dois avisos observados: **48 telas e 57 páginas/abas** nos dados. Na atualização interna **1358**, foram conferidas diretamente **32 telas, 41 páginas/abas e os 11 modos**. As outras 16 definições auxiliares não foram confirmadas nessa versão e não têm atalhos artificiais na interface pública.
+A base contém 45 definições do APK 1355, mais ajustes nativos e dois avisos observados: **48 telas e 57 páginas/abas** nos dados. Na atualização interna **1358**, foram conferidas diretamente **37 telas/estruturas, 46 páginas/abas e os 11 modos**. Após a complementação de 17/10, outras 11 definições auxiliares ainda não tiveram confirmação visual completa nessa versão e não têm atalhos artificiais na interface pública.
 
 A apresentação Android e seu fluxo foram acrescentados em 17/10/2026. Não se afirma uma emulação completa do Android ou identidade visual e funcional integral com o bot. Consulte [o guia](HTML/LEIA-ME.md) e [a revisão visual](HTML/REVISAO_1358.md).
 

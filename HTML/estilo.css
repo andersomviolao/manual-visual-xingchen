@@ -49,3 +49,36 @@ body.android-simulator{background:#e9edf0;color:#283844;min-height:100dvh}
 @media(max-width:520px){.phone{border-radius:2px}.device-stage{min-height:calc(100dvh - 36px);padding:3px 0}.simulation-footer{font-size:9px;gap:8px}.simulation-tools{width:240px;right:0}}
 
 .initial-heading{padding-right:142px}.initial-heading>span{font-size:23px;line-height:1.25}.initial-heading button{right:12px;font-size:16px;top:24px}
+
+/* Janelas observadas durante a execução manual e de experiência em 17/10. */
+.screen.runtime-window-host{position:relative;background:transparent;overflow:auto;padding:0;display:flex;align-items:center;justify-content:center}
+.app-surface:has(.runtime-window-host){background:transparent}
+.execution-window[data-execution='自助切号']{width:450px;min-height:365px;background:white;border:1px solid #999;flex:none}
+.execution-window[data-execution='自助切号']>.ui-layout:nth-child(3){padding:28px 0 36px}
+.screen:has([data-execution='放大']){align-items:flex-start;justify-content:flex-end;padding-top:480px}
+.execution-window[data-execution='放大']{width:135px;background:white;border:1px solid #90b5c9;min-height:40px}
+.execution-window[data-execution='放大'] .ui-button{border:0;border-radius:0;background:white}
+.screen:has([data-execution='刷经验']){align-items:flex-end;justify-content:flex-end}
+.execution-window[data-execution='刷经验']{width:270px;background:black;border:2px solid #a8c4d5;min-height:380px}
+.execution-window[data-execution='刷经验'] .ui-text,.execution-window[data-execution='刷经验'] .ui-check{color:#888}
+.execution-window[data-execution='刷经验'] [data-original-id='更新公告']{background:transparent!important;color:white}
+.execution-window[data-execution='刷经验'] .ui-check input{background:transparent}
+.execution-window[data-execution='刷经验'] .ui-radio-group input:checked:after{content:'';inset:3px;border-radius:50%;background:#7fbbd9}
+.execution-window[data-execution='刷经验'] .ui-input{color:#888}
+.execution-window[data-execution='刷经验'] .ui-row>.ui-check-group{flex:1 1 0!important}
+.execution-window[data-execution='刷经验'] .ui-check{padding:2px;gap:3px;font-size:11px}
+.execution-window[data-execution='刷经验'] .ui-check span{overflow-wrap:anywhere}
+.execution-window[data-execution='刷经验'] .ui-check input{width:21px;height:21px}
+.tutorial-host>.ui-page{height:100%;display:flex;flex-direction:column}
+.tutorial-host>.ui-page>.ui-col{flex:1!important;min-height:0}
+.tutorial-host .ui-col:has(>.ui-web){flex:1!important;min-height:0}
+.tutorial-host .ui-web{display:flex;flex-direction:column;flex:1!important;padding:0;min-height:0;background:white}
+.tutorial-host iframe{border:0;flex:1;width:100%;min-height:400px}
+.tutorial-substitution{font-size:12px;margin:0;padding:7px;background:#f4f4f4;color:#555}
+.android-dialog{background:transparent;padding:20px}
+.android-dialog-sheet{padding:0;border:4px solid #79746f;border-radius:7px;color:#171717;font:16px/1.45 Arial,sans-serif;min-height:264px}
+.dialog-heading{position:relative;background:linear-gradient(#9b9490,#7e7773);color:white;justify-content:center;padding:5px 32px 5px 8px;min-height:28px}
+.dialog-heading h2{font-size:14px;font-weight:normal;text-align:center}
+.dialog-heading button{position:absolute;right:2px;top:1px;background:#ef242c;color:white;font-size:22px;border:2px solid #9a161b;border-radius:5px;line-height:19px;padding:1px 5px}
+#info-body{display:flex;align-items:center;min-height:225px;padding:18px 12px;margin:0;line-height:1.45}
+#info-confirm{display:none}

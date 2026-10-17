@@ -81,6 +81,30 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
    await page.locator('#android-back').click();
    assert(await page.evaluate(()=>ReferenceApp.current)!==name,'Voltar não fechou diálogo: '+name);
   }
+  await page.evaluate(()=>ReferenceApp.go('界面设置'));
+  await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('0');
+  await page.locator('#confirm').click();
+  assert(await page.evaluate(()=>ReferenceApp.current)==='自助切号','Modo manual não abriu seu painel.');
+  assert(await page.locator('#app-surface > .confirm-wrap').isHidden(),'Painel manual exibiu confirmação externa.');
+  await page.locator('#screen button[data-original-id="缩小窗口"]').click();
+  assert(await page.evaluate(()=>ReferenceApp.current)==='放大','Ocultar não abriu janela reduzida.');
+  await page.locator('#screen button[data-original-id="展开"]').click();
+  assert(await page.evaluate(()=>ReferenceApp.current)==='自助切号','Expandir não retomou painel manual.');
+  await page.locator('#screen button[data-original-id="停止脚本"]').click();
+  assert(!await page.evaluate(()=>ReferenceApp.system.running),'Parar painel manual falhou.');
+  await page.evaluate(()=>ReferenceApp.go('界面设置'));
+  await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('10');
+  await page.locator('#confirm').click();
+  assert(await page.evaluate(()=>ReferenceApp.current)==='刷经验','Experiência não abriu os parâmetros.');
+  assert(await page.locator('#screen [data-original-id="退出选择"] input').count()===2,'Opções de saída ausentes.');
+  await page.evaluate(()=>ReferenceApp.go('界面设置'));
+  await page.locator('#screen button[data-original-id="查询文件"]').click();
+  assert(await page.locator('#info-title').innerText()==='Permissão insuficiente','Mensagem da licença diferente da observada.');
+  assert(await page.locator('#info-confirm').isHidden(),'Ajuda mostra botão externo ao modelo nativo.');
+  await page.locator('#info-close').click();
+  await page.locator('#screen button[data-original-id="查看教程"]').click();
+  assert(await page.locator('#screen iframe').count()===1,'Tutorial local não abriu.');
+  assert(await page.locator('#app-surface > .confirm-wrap').isHidden(),'Tutorial exibiu confirmação externa.');
   const screens=await page.evaluate(()=>Object.entries(BOT_DATA.screens).map(([name,n])=>({name,pages:n.children.filter(c=>c.tag==='Page').length})));
   let rendered=0;
   for(const {name,pages} of screens)for(let i=0;i<pages;i++){

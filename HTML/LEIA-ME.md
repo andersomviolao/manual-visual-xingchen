@@ -27,7 +27,7 @@ Os campos continuam salvos no navegador. O formato dos exercícios anteriores fo
 
 ## Fidelidade e limites
 
-A estrutura vem das 45 definições visuais do APK 1355 e de telas adicionais observadas. O painel do bot real foi conferido na atualização interna **1358**. A conferência direta de 16/10/2026 cobriu **32 telas, 41 páginas/abas e os 11 modos**. Consulte [REVISAO_1358.md](REVISAO_1358.md).
+A estrutura vem das 45 definições visuais do APK 1355 e de telas adicionais observadas. O painel do bot real foi conferido na atualização interna **1358**. As conferências diretas de 16 e 17/10/2026 cobriram **37 telas/estruturas, 46 páginas/abas e os 11 modos**. Consulte [REVISAO_1358.md](REVISAO_1358.md).
 
 A mudança para simulação Android foi implementada em **17/10/2026**. A navegação de Voltar, Início, Recentes e os estados do aplicativo foram implementados no HTML; não são uma emulação completa do Android, nem uma reprodução comprovada de todos os comportamentos internos do bot. As outras 16 definições auxiliares continuam nos dados para referência de desenvolvimento, sem menu de acesso artificial na interface pública.
 

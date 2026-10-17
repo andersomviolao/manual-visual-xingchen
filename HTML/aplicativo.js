@@ -24,6 +24,8 @@
   names['应用设置']='Ajustes gerais do aplicativo';
   names['免费模式说明']='Aviso do modo gratuito';names['赠卡说明']='Oferta de licença';
   const extra={
+    '权限不够':'Permissão insuficiente',
+    '①免费用户不支持上传下载 请访问官网 http://xccoc.fun 购买卡密。':'① Usuários gratuitos não podem enviar ou baixar arquivos. Acesse o site oficial http://xccoc.fun para comprar uma chave.',
     '星辰国际':'Xingchen Internacional','守卫':'Guarda','终极炸弹':'Bomba Suprema','背景框':'Quadro de fundo','银币':'Moedas de prata',
     '设置':'Configurações','音量加(+)控制脚本开始/停止':'Volume (+) inicia ou para o script','脚本停止或者结束的时候振动提醒':'Vibrar quando o script parar ou terminar','开机自启动脚本':'Iniciar o script ao ligar','开启或者关闭节点服务':'Ativar ou desativar o serviço de nós',
     '辅助仅支持在安卓12及以下系统运行。':'O assistente funciona apenas no Android 12 ou anterior.',
@@ -75,7 +77,9 @@
     else{systemView='home';taskOpen=false;syncSystem();}
   }
   function syncSystem(){
-    $('#android-launcher').hidden=systemView!=='home';
+    const runtime=systemView==='app'&&['自助切号','放大','刷经验'].includes(current);
+    $('#android-launcher').hidden=systemView!=='home'&&!runtime;
+    $('#android-launcher').inert=runtime;
     $('#app-surface').hidden=systemView!=='app';
     $('#android-recents').hidden=systemView!=='recents';
     $('#floating-bot').hidden=!floatingAvailable||systemView!=='home';
@@ -189,6 +193,7 @@
       el.onclick=()=>{showControl(n);action(a.id||'',n,el);};
     }else if(tag==='EditText'){
       el=document.createElement('input');el.className='ui-input';el.type='text';if(a.inputtype==='1')el.inputMode='decimal';el.autocomplete='off';el.spellcheck=false;el.value=getVal(key,localized(a.text||''));el.setAttribute('aria-label',inputLabel(n,parent));el.title=inputLabel(n,parent)+(a.id?' · '+a.id:'');el.dataset.key=key;el.dataset.originalId=a.id||'';
+      if(a.id==='数据路径')el.value=getVal(key,a.text||'');
       el.oninput=()=>{values[key]=el.value;save();};el.onfocus=()=>showControl({...n,a:{...a,title:inputLabel(n,parent)}});
     }else if(tag==='ComboBox'){
       el=document.createElement('select');el.className='ui-select';el.setAttribute('aria-label',tr(a.id)||'Selecionar opção');n.children.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=localized(c.a.text);o.title=localized(c.a.text);el.append(o);});const def=Number(a.select)||0;el.value=current==='界面设置'&&a.id==='功能选择开关'?mode:getVal(key,def);
@@ -200,6 +205,12 @@
       });
     }else if(tag==='WebView'){
       el=document.createElement('div');el.className='ui-web';el.textContent=language==='zh'?'教程加载中 请等待……':'Área de conteúdo online do aplicativo. Nesta cópia, consulte o manual local em português.';
+      if(current==='浏览器'){
+        el.replaceChildren();const note=document.createElement('p');note.className='tutorial-substitution';note.textContent='Manual local em português. O bot abre um documento online do Tencent Docs; o conteúdo remoto não é reproduzido aqui.';
+        const frame=document.createElement('iframe');frame.title='Manual do Xingchen em português';frame.src=document.querySelector('a[href$=".pdf"]').href;
+        const link=document.createElement('a');link.href=frame.src;link.target='_blank';link.rel='noopener';link.textContent=' Abrir manual em outra aba';note.append(link);
+        el.append(note,frame);
+      }
       if(current==='星辰国际'){
         el.classList.add('initial-notice');
         el.textContent=language==='zh'?'①辅助新官网：921015.xyz 输入到浏览器访问\n②卡密、云机、辅助相关下载、反馈、群聊、联系作者等访问官网查看。\n③辅助运行需要具备以下条件：安卓13以下 root权限 分辨率必须720*1280 dpi:320 不能使用场景皮肤，国服可以使用大本营皮肤。\n④mumu模拟器请到模拟器的【设置中心-其他】不要勾选后台挂机时保活运行。':'① Novo site indicado no aplicativo: 921015.xyz. Digite no navegador para visitar.\n② O site reúne licenças, aparelhos na nuvem, downloads, relatos, grupos e contato com o autor.\n③ Requisitos: Android inferior a 13, root, resolução 720 × 1280 e 320 dpi. Não usar cenários personalizados; o servidor chinês permite aparência do Centro de Vila.\n④ No MuMu, abra Central de configurações → Outros e deixe desmarcada a opção de manter a execução ativa durante o uso em segundo plano.';
@@ -223,10 +234,14 @@
     '账号地址说明':['Pasta dos dados','Informe a pasta dos pacotes de conta. O manual usa /sdcard/星辰国际. Os caminhos originais são mantidos em chinês para não alterar o endereço.'],
     '打鱼时捐兵说明':['Doação durante o farm','Esta opção controla a doação executada durante o farm. O aviso do bot orienta a não confundi-la com os modos de doação.'],
     '功能生效说明':['Funções adicionais','A tela contém supercarga, refinaria, aprendizes e equipar construções. As regras internas de execução não estão descritas nos arquivos visuais.'],
-    '下拉框说明':['Os 11 modos','1. Troca manual e extração de dados\n2. Criar contas\n3. Ataques à Capital\n4. Doar Ouro da Capital\n5. Verificar informações\n6. Vincular e-mail\n7. Farm contínuo\n8. Tarefas em ciclo\n9. Doação com uma conta\n10. Doação com várias contas\n11. Ganhar experiência']
+    '下拉框说明':['Seleção da função','① A lista contém 11 opções. Abra-a e deslize para cima ou para baixo para escolher a função.\n\n② O botão vermelho ■ à direita para o script imediatamente ao ser tocado.']
   };
   function action(id,n,el){
-    if(['下载新','查询文件','上传指定文件','上传新'].includes(id)){info('Modo gratuito','Usuários gratuitos não podem enviar ou baixar configurações nem usar funções da nuvem.');return;}
+    if(['下载新','查询文件','上传指定文件','上传新'].includes(id)){info(localized('权限不够'),localized('①免费用户不支持上传下载 请访问官网 http://xccoc.fun 购买卡密。'));return;}
+    if(current==='自助切号'&&id==='缩小窗口'){go('放大');return;}
+    if(current==='放大'&&id==='展开'){back();return;}
+    if(current==='放大'&&id==='隐藏'){systemView='home';syncSystem();return;}
+    if(current==='自助切号'&&['账号-','账号+'].includes(id)){const input=screenEl.querySelector('[data-original-id="账号数据"]');input.value=Math.max(1,(Number(input.value)||1)+(id==='账号+'?1:-1));input.dispatchEvent(new Event('input'));return;}
     if(routes[id]){go(routes[id],0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
     if(id==='停止运行'||id==='停止脚本'){stopSimulation();return;}
     if(id.startsWith('关闭')||id==='取消反馈'){back();return;}
@@ -262,7 +277,11 @@
     if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
     if(current==='界面设置')tabs.hidden=true;
     const content=create(pages[page]);screenEl.replaceChildren(content);screenEl.scrollTop=scroll;
-    const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#app-surface > .confirm-wrap').hidden=!!sheet;
+    const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#app-surface > .confirm-wrap').hidden=!!sheet||tree.a.showconfirm==='false';
+    const runtime=['自助切号','放大','刷经验'].includes(current);
+    screenEl.classList.toggle('runtime-window-host',runtime);
+    screenEl.classList.toggle('tutorial-host',current==='浏览器');
+    if(runtime){content.classList.add('execution-window');content.dataset.execution=current;}
     if(sheet)renderObservedDialog(content,sheet);
     if(livePopups[current]){
       const popupName=current,popupPage=page;current='界面设置';page=0;const background=create(D.screens['界面设置'].children[0]);current=popupName;page=popupPage;content.classList.add('runtime-page');background.classList.add('runtime-background');background.setAttribute('inert','');content.prepend(background);
@@ -294,7 +313,9 @@
     if(current==='星辰国际'){
       floatingAvailable=true;running=false;taskOpen=false;noticeShown=false;history=[];systemView='home';syncSystem();
     }else if(current==='界面设置'&&page===0){
-      running=true;floatingAvailable=true;systemView='home';syncSystem();toast('Execução iniciada na simulação');
+      running=true;floatingAvailable=true;
+      if(mode===0||mode===10){go(mode===0?'自助切号':'刷经验');}
+      else{systemView='home';syncSystem();toast('Execução iniciada na simulação');}
     }else if(history.length)back();
     else{systemView='home';syncSystem();}
   };
