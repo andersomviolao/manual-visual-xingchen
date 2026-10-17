@@ -1,76 +1,47 @@
-# Referência visual do Xingchen em português
+# Xingchen — simulação Android em português
 
-Abra **index.html** no Edge. Basta dar dois cliques no arquivo; não é preciso instalar Python, iniciar um servidor ou usar a internet.
+Abra **index.html** no navegador. Não precisa instalar dependências, iniciar servidor nem conectar o bot real.
 
-A revisão visual atual está em **[REVISAO_1358.md](REVISAO_1358.md)**. A comparação anterior dos arquivos-base do APK está preservada em [REVISAO_1357.md](REVISAO_1357.md).
+## Como navegar
 
-## Versão atual
+1. A página começa na tela inicial do Android. Toque no ícone **Xingchen** para abrir o aplicativo.
+2. Na entrada, **Configurações** abre os ajustes nativos. O triângulo **Voltar**, na barra inferior, retorna à entrada.
+3. Confirme a entrada para voltar ao Android com o ícone flutuante do bot disponível na borda esquerda.
+4. Toque no ícone flutuante e feche o aviso gratuito pelo X ou pelo botão Voltar. O painel de configurações será exibido.
+5. Navegue pelos botões, caixas, listas e abas da interface traduzida. Não há barra lateral, miniaturas ou atalhos para telas antigas.
+6. No painel principal, deslize para a esquerda para abrir a ativação de aparelhos na nuvem; deslize para a direita para voltar. Nas janelas com abas, também é possível trocar de página por gesto.
 
-O bot foi conferido diretamente na **1358** no LDPlayer: 32 telas, 41 páginas/abas e os 11 modos. Os ajustes de visibilidade e de janelas menores estão aplicados. Outras 16 telas permanecem como modelos do APK sem conferência na 1358, identificadas no guia de cada tela. Veja [REVISAO_1358.md](REVISAO_1358.md).
+## Barra de navegação Android
 
-## O que foi reproduzido
+- **Voltar**: dispensa a edição em andamento, fecha a janela informativa ou retorna à janela anterior. Na raiz, retorna à tela inicial do Android. No computador, Escape faz a mesma navegação.
+- **Início**: abre a tela inicial e mantém a tarefa, os campos e a janela atual para retomar depois.
+- **Aplicativos recentes**: mostra a tarefa Xingchen; toque no cartão para retomá-la. **Limpar tudo** remove a tarefa recente, sem apagar os campos salvos do exercício.
 
-- As 45 definições de tela presentes no APK original `星辰辅助1355.apk`, com suas abas, ordem de controles, agrupamentos, campos, listas, caixas e imagens disponíveis.
-- Uma 46ª tela: os ajustes nativos do aplicativo, conferidos diretamente no LDPlayer, com os quatro interruptores, dados do sistema e botões de registros e conexão remota. A tela inicial também inclui o aviso roxo observado na atualização 1357.
-- Mais duas janelas observadas na atualização 1357: Aviso do modo gratuito e Oferta de licença. O botão de licença do painel abre a oferta exibida no modo gratuito. Total: 48 telas e 57 páginas/abas.
-- Tradução dos 755 textos chineses visíveis dessas definições. Caminhos de arquivos conservam sua grafia para continuarem identificáveis.
-- Os 11 modos da tela principal e uma apresentação dos campos por modo, reconstruída para estudo.
-- Ícones originais das tropas, feitiços, máquinas de cerco, construções, heróis, mascotes e equipamentos.
-- Navegação por botões e pelo menu lateral, pesquisa por opções, troca entre português e chinês, consulta do nome original ao selecionar um controle, salvamento local e exportação/importação do exercício em JSON.
-- Atalho para a segunda página da tela principal: ativação de celulares na nuvem.
+Confirmar no painel principal inicia apenas o estado de execução da simulação. O botão vermelho para esse estado e retorna ao Android. Nenhum jogo é aberto e nenhuma função do bot real é executada.
 
-## Como praticar
+## Opções fora do dispositivo
 
-1. Na tela principal, escolha um modo na lista vermelha.
-2. Marque as opções, preencha quantidades e abra os botões de configuração. Funções com janela própria abrem ao serem marcadas. O menu lateral dá acesso direto a todas as telas.
-3. Selecione um controle para consultar o texto chinês no painel de ajuda. Para comparar a tela toda, mude Idioma para Chinês original.
-4. Use Confirmar para guardar o exercício ou voltar à tela anterior. As alterações ficam apenas no armazenamento deste navegador.
-5. Use Salvar exercício para baixar uma cópia JSON; Abrir exercício recupera esse arquivo. Restaurar campos volta aos valores de modelo do APK.
-6. Reproduza manualmente no bot real a configuração que quiser usar.
+No rodapé, **Opções da simulação** reúne o idioma de comparação, salvar e abrir exercício JSON, restaurar campos, o manual e o relatório da revisão. Esses recursos ficam fora da interface do aplicativo.
+
+Os campos continuam salvos no navegador. O formato dos exercícios anteriores foi preservado. Recarregar a página retorna ao Android, sem retomar uma execução. Não use senhas ou chaves reais nos campos de prática.
 
 ## Fidelidade e limites
 
-A base visual é o **APK 1355**. A tela principal e seus 11 modos foram comparados com a versão **1358**, atualizada no LDPlayer. O HTML preserva as definições disponíveis no APK, incluindo telas auxiliares ou antigas que podem não estar expostas na atualização atual. Não se afirma uma reprodução integral de todas as alterações remotas da versão 1358.
+A estrutura vem das 45 definições visuais do APK 1355 e de telas adicionais observadas. O painel do bot real foi conferido na atualização interna **1358**. A conferência direta de 16/10/2026 cobriu **32 telas, 41 páginas/abas e os 11 modos**. Consulte [REVISAO_1358.md](REVISAO_1358.md).
 
-O português ocupa mais espaço que o chinês. Há ajustes de tamanho de fonte, quebra de linha e altura para manter a legibilidade. A organização e as imagens foram preservadas; não é uma cópia pixel a pixel.
+A mudança para simulação Android foi implementada em **17/10/2026**. A navegação de Voltar, Início, Recentes e os estados do aplicativo foram implementados no HTML; não são uma emulação completa do Android, nem uma reprodução comprovada de todos os comportamentos internos do bot. As outras 16 definições auxiliares continuam nos dados para referência de desenvolvimento, sem menu de acesso artificial na interface pública.
 
-Algumas mensagens de ajuda, anúncios, estatísticas, listas de arquivos, dados de licença e conteúdos de páginas são preenchidos durante a execução do aplicativo. Esses textos não constam das definições visuais. Quando não há texto verificado, a referência informa isso, em vez de inventar instruções. Algumas ajudas conhecidas foram incluídas com base nas telas observadas e no manual traduzido.
+A tradução pode exigir quebras de linha e rolagem diferentes do chinês. Conteúdos remotos, contas, licença, compras, arquivos na nuvem, instalação e ações no jogo não são executados. Não se afirma igualdade visual pixel a pixel ou equivalência funcional integral.
 
-Dois fundos citados pelos modelos (`qq.png` e `背景框.png`) não estavam entre as imagens fornecidas nesse pacote; foram substituídos por apresentação simples. Nomes de alguns equipamentos e itens recentes usam tradução descritiva.
+O ícone em `system/bot-icon.png` foi extraído do APK local, preservando a arte original. Os demais 245 recursos de imagem continuam em `assets/`.
 
-Os campos começam com os valores dos modelos do APK, **não com a configuração atual da sua conta**. A navegação, as regras de exibição e as ações dos controles são uma simulação de estudo. Os botões de cálculo somam quantidades no exercício; não reproduzem o cálculo de alojamento do bot. Não servem para validar a capacidade do exército.
+## Onde editar e verificar
 
-Este HTML não executa o bot, não acessa a instância do LDPlayer, não faz compras, não transmite dados, não altera licenças e não envia configurações ao aplicativo. Não contém os scripts executáveis do bot. Não use os campos de exemplo para guardar senhas ou chaves reais.
+- `index.html`: tela inicial Android, superfície do aplicativo e navegação inferior.
+- `estilo.css`: controles, janelas e apresentação do dispositivo.
+- `aplicativo.js`: navegação, estados do Android e renderização dos controles.
+- `dados.js`: definições, traduções e metadados da conferência.
+- `dados/`: fontes XML, traduções e registro da conferência visual.
+- `system/`: ícone original do aplicativo.
 
-## Onde editar
-
-| Arquivo ou pasta | Conteúdo |
-|---|---|
-| `index.html` | Estrutura da página, navegação e área de estudo |
-| `estilo.css` | Cores, fontes, dimensões e aparência dos controles |
-| `aplicativo.js` | Renderização, navegação, campos por modo, ajudas e salvamento |
-| `dados.js` | Definições das telas e traduções carregadas pelo navegador |
-| `assets/` | Imagens disponíveis no APK |
-| `dados/interfaces-originais.json` | XML visual original das 45 telas, sem scripts do bot |
-| `dados/traducoes.json` | Traduções dos textos originais |
-| `dados/traduzir.py` | Fonte da tradução organizada por texto |
-| `dados/gerar.py` | Gera novamente `dados.js` depois de editar as definições ou traduções |
-| `conferencia/` | Pasta temporária criada pelos testes para capturas e relatórios; pode ser descartada |
-
-Para mudanças visuais simples, comece por `estilo.css`. Para mudar um texto diretamente, procure-o em `dados.js`. Se preferir manter os dados organizados, edite `dados/traducoes.json` e gere novamente `dados.js` com `dados/gerar.py` usando Python.
-
-HTML + CSS + JavaScript é adequado para esta referência: abre no navegador, permite clicar e preencher os controles e facilita a comparação visual. Python é útil para gerar os dados, mas não é necessário para usar a referência.
-
-## Verificação
-
-Foi feita uma conferência automática de renderização das 48 telas e suas 57 páginas/abas, carregamento de imagens, tradução dos rótulos, navegação para tropas, persistência depois de recarregar, troca de idioma, seleção dos 11 modos, busca e apresentação em largura de celular. Foram inspecionadas visualmente capturas de telas principais. Isso verifica o HTML; não verifica o funcionamento do bot no jogo.
-
-## Tela de origem no bot
-
-A miniatura à esquerda mostra a tela da interface do bot que contém o controle para abrir a tela atual. O botão ou caixa aparece destacado na miniatura; “Para abrir no bot” mostra seu nome. Se o controle depender de um modo, o modo é informado. Clique na miniatura para abrir a tela de origem.
-
-O menu lateral é um atalho da referência: mesmo entrando por ele, a indicação mostra o controle da interface do bot, não o item do menu lateral nem a última tela visitada. O caminho usa as relações de navegação reproduzidas no HTML; os caminhos listados no relatório foram conferidos ao vivo na 1358. Telas auxiliares sem relação de acesso confirmada ficam identificadas como tal.
-
-Na consulta anterior, o histórico oficial ainda listava 1357. A conferência atual foi feita visualmente no aplicativo em execução: atualização interna 1358 e APK 1355. O bot foi parado ao final.
-
-A barra superior mantém o nome e o idioma à vista. Abra **Opções** para salvar ou abrir exercícios, restaurar campos e ativar ou desativar a ajuda ao selecionar.
+Após editar, execute `scripts/preparar-publicacao.ps1`, na raiz. O script atualiza `docs/`, incluindo o manual e os arquivos do simulador. O teste `scripts/verificar-publicacao.cjs` verifica o site sob uma subpasta, o fluxo de entrada, navegação Android, gestos, campos por modo, janelas, imagens, manual e exercícios.

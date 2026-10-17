@@ -70,7 +70,7 @@ Esses são ajustes de fidelidade do HTML. Não se conclui que cada um foi introd
 
 ## Modelos não conferidos na 1358
 
-As **16 telas restantes** são modelos auxiliares, antigos ou de conteúdo preenchido em execução. Não foi encontrado ou percorrido seu acesso nesta sessão. Continuam disponíveis para consulta e exibem esse limite explicitamente. Isso evita apresentar modelos do APK como telas verificadas da versão atual.
+As **16 telas restantes** são modelos auxiliares, antigos ou de conteúdo preenchido em execução. Não foi encontrado ou percorrido seu acesso nesta sessão. Permanecem nos dados originais para referência de desenvolvimento; a versão com simulador Android não oferece atalhos artificiais para acessá-las. Isso evita apresentar modelos do APK como telas verificadas da versão atual.
 
 - `交流群`
 - `使用说明`
@@ -94,3 +94,11 @@ O histórico oficial consultado anteriormente ainda listava 1357. A comprovaçã
 ## Validação do HTML
 
 Testes locais: 48 telas e 57 páginas/abas renderizadas, 245 imagens carregadas, manual PDF, navegação, origem por controle do bot, exportação/importação, persistência e idiomas. Foram acrescentadas verificações de visibilidade nos 11 modos e das seis janelas sobrepostas. Essas verificações automáticas testam a referência, não executam o bot no jogo.
+
+## Mudança da apresentação em 17/10/2026
+
+A barra lateral, a miniatura de origem e o painel de estudo foram removidos. O HTML inicia em uma tela Android com o ícone original do aplicativo. O fluxo de entrada, o ícone flutuante, as telas do bot traduzidas, os gestos entre páginas e a barra inferior substituem a navegação própria da referência.
+
+Voltar fecha edição ou janelas e percorre a pilha de telas; Início preserva a tarefa; Recentes permite retomá-la ou removê-la. Estes são comportamentos implementados para a simulação e testados no HTML. Não houve uma nova conferência visual no emulador nesta etapa, nem validação de todos os comportamentos do Android real.
+
+A lista de telas conferidas acima continua limitada à observação direta de 16/10/2026. A apresentação nova não amplia essa cobertura nem comprova uma reprodução integral do bot.

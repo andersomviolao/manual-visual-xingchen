@@ -2,72 +2,58 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Xingchen — Configurações em português</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#272d37">
+  <title>Xingchen — Simulador Android em português</title>
   <link rel="stylesheet" href="estilo.css">
 </head>
-<body>
-  <header class="appbar">
-    <strong class="brand">Xingchen</strong>
-    <div class="toolbar">
-      <select id="language" aria-label="Idioma da referência"><option value="pt">Português</option><option value="zh">Chinês original</option></select>
-      <details class="toolbar-options" id="toolbar-options">
-        <summary>Opções</summary>
-        <div class="toolbar-menu">
-          <label class="help-toggle"><input id="study" type="checkbox" checked> Ajuda ao selecionar</label>
-          <button id="export">Salvar exercício</button>
-          <button id="import">Abrir exercício</button>
-          <button id="reset">Restaurar campos</button>
-        </div>
-      </details>
-      <input id="import-file" type="file" accept=".json" hidden>
-    </div>
-  </header>
-  <div class="workspace">
-    <aside class="navigation">
-      <label class="search-label" for="search">Encontrar uma tela ou opção</label>
-      <input id="search" type="search" placeholder="Ex.: doação, tropas, muros…" autocomplete="off">
-      <nav id="navigation" aria-label="Telas de configurações"></nav>
-      <p class="source-note">Atualização 1358 conferida no LDPlayer: 32 telas e 41 páginas/abas, incluindo os 11 modos. As demais 16 telas estão identificadas como modelos não conferidos nessa versão.</p>
-      <button class="plain" id="about">Sobre esta referência</button>
-      <button class="plain" id="review">Revisão visual da versão 1358</button>
-    </aside>
-    <main>
-      <div class="stage-heading"><button id="home">Tela principal</button></div>
-      <p id="navigation-origin" class="navigation-origin" aria-live="polite"></p>
-      <div class="screen-comparison">
-        <button id="previous-screen" class="previous-screen" hidden>
-          <span class="previous-eyebrow">Tela de origem no bot</span>
-          <span id="previous-preview" class="previous-preview" aria-hidden="true"></span>
-          <span id="previous-title" class="previous-title"></span>
-          <span class="previous-click-label">Para abrir no bot:</span>
-          <span id="previous-trigger" class="previous-trigger"></span>
-          <span id="previous-mode" class="previous-hint"></span>
-          <span class="previous-hint">Clique para abrir a tela de origem</span>
-        </button>
-        <div class="current-screen">
+<body class="android-simulator">
+  <main class="device-stage" aria-label="Simulador Android">
+    <div class="device-frame" id="device-frame">
       <div class="phone" id="phone">
-        <div class="statusbar"><span>05:11</span><span>● ▣</span><span class="status-right">◆ ▰</span></div>
-        <div id="page-tabs" class="page-tabs" role="tablist" hidden></div>
-        <div id="screen" class="screen" tabindex="-1"></div>
-        <div class="confirm-wrap"><button id="confirm" class="confirm">Confirmar</button></div>
-      </div>
+        <div class="statusbar"><time id="android-clock">21:00</time><span class="status-dot" aria-hidden="true"></span><span class="status-right" aria-hidden="true"><span class="wifi-symbol"></span><span class="battery-symbol"></span></span></div>
+        <div class="android-display" id="android-display">
+          <section id="android-launcher" class="android-launcher" aria-label="Tela inicial do Android">
+            <div class="launcher-search"><span aria-hidden="true">⌕</span><input id="launcher-search" aria-label="Pesquisar aplicativos" placeholder="Pesquisar aplicativos" autocomplete="off"></div>
+            <div class="launcher-apps"><button id="launch-bot" class="launcher-app" aria-label="Abrir Xingchen"><img src="system/bot-icon.png" alt=""><span>Xingchen</span></button></div>
+            <p id="launcher-empty" class="launcher-empty" hidden>Nenhum aplicativo encontrado</p>
+            <span class="launcher-page-dot" aria-hidden="true"></span>
+          </section>
+          <section id="app-surface" class="app-surface" aria-label="Aplicativo Xingchen" hidden>
+            <div id="page-tabs" class="page-tabs" role="tablist" hidden></div>
+            <div id="screen" class="screen" tabindex="-1"></div>
+            <div class="confirm-wrap"><button id="confirm" class="confirm">Confirmar</button></div>
+          <div id="info-dialog" class="android-dialog" role="dialog" aria-modal="true" aria-labelledby="info-title" hidden><div class="android-dialog-sheet"><div class="dialog-heading"><h2 id="info-title"></h2><button id="info-close" aria-label="Fechar">×</button></div><div id="info-body"></div><button id="info-confirm">Entendi</button></div></div>
+          </section>
+          <section id="android-recents" class="android-recents" aria-label="Aplicativos recentes" hidden>
+            <div class="recents-title">Aplicativos recentes</div>
+            <button id="recent-app" class="recent-app"><span class="recent-heading"><img src="system/bot-icon.png" alt="">Xingchen</span><span id="recent-preview" class="recent-preview" aria-hidden="true"></span></button>
+            <p id="recents-empty" class="recents-empty">Nenhum aplicativo recente</p>
+            <button id="clear-recents" class="clear-recents">Limpar tudo</button>
+          </section>
+          <button id="floating-bot" class="floating-bot" aria-label="Abrir painel do Xingchen" title="Abrir painel do Xingchen" hidden><img src="system/bot-icon.png" alt=""></button>
+
+          <div id="toast" role="status"></div>
         </div>
+        <nav class="android-navbar" aria-label="Navegação do Android">
+          <button id="android-back" aria-label="Voltar" title="Voltar"><span class="android-back-icon" aria-hidden="true"></span></button>
+          <button id="android-home" aria-label="Início" title="Início"><span class="android-home-icon" aria-hidden="true"></span></button>
+          <button id="android-overview" aria-label="Aplicativos recentes" title="Aplicativos recentes"><span class="android-overview-icon" aria-hidden="true"></span></button>
+        </nav>
       </div>
-      <p class="practice-label"><span></span>Modo de estudo · alterações salvas apenas neste navegador</p>
-    </main>
-    <aside class="inspector">
-      <div class="eyebrow">GUIA DE LEITURA</div>
-      <h1 id="screen-title">Configurações principais</h1>
-      <p id="screen-description"></p>
-      <p id="screen-verification" class="screen-verification"></p>
-      <div class="instruction">Use os controles como no aplicativo. Os botões azuis e as opções com janela própria abrem outras telas.</div>
-      <section id="control-help" aria-live="polite"><h2>Compare com o bot</h2><p>Selecione uma caixa, campo, ícone ou botão para ver aqui seu nome original e a tradução.</p></section>
-      <div class="inspector-footer"><strong>Referência visual</strong><p>Confirmar guarda o exercício. Iniciar, comprar, enviar e excluir são simulados; este HTML não se conecta ao bot.</p><a href="../Manual_Xingchen_Portugues_BR.pdf" target="_blank">Abrir o manual em português ↗</a></div>
-    </aside>
-  </div>
-  <dialog id="info-dialog"><div class="dialog-heading"><h2 id="info-title"></h2><button id="info-close" aria-label="Fechar">×</button></div><div id="info-body"></div><button id="info-confirm">Entendi</button></dialog>
-  <div id="toast" role="status"></div>
+    </div>
+  </main>
+  <footer class="simulation-footer">
+    <span>Simulação de interface · sem ações no jogo</span>
+    <details id="toolbar-options" class="simulation-options"><summary>Opções da simulação</summary><div class="simulation-tools">
+      <label>Idioma <select id="language" aria-label="Idioma"><option value="pt">Português do Brasil</option><option value="zh">Chinês original</option></select></label>
+      <button id="export">Salvar exercício</button><button id="import">Abrir exercício</button><button id="reset">Restaurar campos</button>
+      <a id="review" href="REVISAO_1358.md" target="_blank" rel="noopener">Sobre a reprodução da 1358</a>
+      <a href="../Manual_Xingchen_Portugues_BR.pdf" target="_blank" rel="noopener">Manual em português</a>
+      <p>A estrutura observada na 1358 foi traduzida para estudo. Há telas e comportamentos ainda não verificados; esta simulação não reproduz todo o Android nem executa o bot.</p>
+      <input id="import-file" type="file" accept=".json" hidden>
+    </div></details>
+  </footer>
   <script src="dados.js"></script>
   <script src="aplicativo.js"></script>
 </body>

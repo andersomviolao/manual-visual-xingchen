@@ -24,7 +24,7 @@
   names['应用设置']='Ajustes gerais do aplicativo';
   names['免费模式说明']='Aviso do modo gratuito';names['赠卡说明']='Oferta de licença';
   const extra={
-    '守卫':'Guarda','终极炸弹':'Bomba Suprema','背景框':'Quadro de fundo','银币':'Moedas de prata',
+    '星辰国际':'Xingchen Internacional','守卫':'Guarda','终极炸弹':'Bomba Suprema','背景框':'Quadro de fundo','银币':'Moedas de prata',
     '设置':'Configurações','音量加(+)控制脚本开始/停止':'Volume (+) inicia ou para o script','脚本停止或者结束的时候振动提醒':'Vibrar quando o script parar ou terminar','开机自启动脚本':'Iniciar o script ao ligar','开启或者关闭节点服务':'Ativar ou desativar o serviço de nós',
     '辅助仅支持在安卓12及以下系统运行。':'O assistente funciona apenas no Android 12 ou anterior.',
     '××':'Conteúdo preenchido pelo aplicativo durante a execução.',
@@ -35,154 +35,76 @@
     '超级大雪怪':'Superyeti','战吼狂人':'Guerreiro de Grito','收债哥布林':'Goblin Cobrador','废墟女巫':'Bruxa das Ruínas','皮卡凯恩':'P.E.K.K.A Kaine','铁壁终结者':'Destruidor Blindado','陨石戈仑':'Golem Meteórico','霸天巨人':'Gigante Titânico','飞龙公爵':'Duque Dragão','超级兵':'Supertropa','法术':'Feitiço','说明':'Informações','停止运行':'Parar execução','编辑':'Editar'
   };
   function tr(s=''){return extra[s]??D.translations[s]??names[s]??s;}
-  const groups=[
-    ['Começar',['界面设置','星辰国际','应用设置']],
-    ['Farm e doação',['打鱼造兵设置','打鱼资源条件','进攻资源条件','自定义下兵','捐兵造兵设置','多号捐兵设置','捐兵统计','军队配置链接','满资源设置']],
-    ['Melhorias',['升级建筑','升级科技','升级战宠','升级武器','城墙','多号独立设置','升级1']],
-    ['Clã e tarefas',['通用任务','部落增援','部落战联赛','竞赛','夜世界','语言设置','智能换阵','买卖药水','使用药水','宝石加速','兑换物品活动','链接奖励']],
-    ['Contas e ferramentas',['自助切号','通用切号','QQ切号','特殊功能','刷经验','文件列表']],
-    ['Janelas auxiliares',['免费模式说明','赠卡说明','卡密说明','使用说明','文本框','反馈','更新公告','浏览器','网','交流群','放大']]
-  ];
   let stored={};try{stored=JSON.parse(localStorage.getItem('xingchen-estudo-v1')||'{}');}catch{}
-  let values=stored.values||{},language=stored.language||'pt',current='界面设置',page=0,mode=6,history=[],allMain=false;
-  const screenEl=$('#screen'),help=$('#control-help'),tabs=$('#page-tabs');
+  let values=stored.values||{},language=stored.language||'pt',current='星辰国际',page=0,mode=6,history=[],allMain=false;
+  const screenEl=$('#screen'),tabs=$('#page-tabs');
   const localized=s=>language==='zh'?s:tr(s);
-  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function save(){try{localStorage.setItem('xingchen-estudo-v1',JSON.stringify({values,language}));}catch{toast('O navegador não permitiu salvar automaticamente. Use Salvar exercício.');}}
   function toast(t){$('#toast').textContent=t;$('#toast').classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').classList.remove('visible'),3500);}
-  function info(title,text){$('#info-title').textContent=title;$('#info-body').textContent=text;$('#info-dialog').showModal();}
+  function info(title,text){$('#info-title').textContent=title;$('#info-body').textContent=text;$('#info-dialog').hidden=false;}
   const assetName=bg=>tr((bg||'').replace(/\.(webp|png|jpe?g)$/i,''));
   function controlLabel(n){const a=n.a,o=n.children.find(c=>c.tag==='Option');return tr(a.title||a.text||o?.a.text||((a.background&&!a.background.startsWith('#'))?assetName(a.background):''))||'Campo de configuração';}
-  function showControl(n){if(!$('#study').checked)return;const a=n.a,o=n.children.find(c=>c.tag==='Option');const original=a.title||a.text||o?.a.text||a.background?.replace(/\.(webp|png)$/,'')||a.id||'';help.innerHTML=`<h2>${esc(controlLabel(n))}</h2><p>Nome no aplicativo chinês:</p><span class="original">${esc(original)}</span><p class="control-id">Controle original: ${esc(a.id||n.tag)}</p><p>${esc(controlExplanation(n))}</p>`;}
-  function controlExplanation(n){const a=n.a;if(a.id==='打鱼时删兵重造')return 'Ao iniciar, o bot exclui e refaz o exército configurado uma vez. Reiniciar o assistente reinicia essa condição. Essa opção não é uma garantia de conferência antes de cada ataque.';if(a.id==='金币条件'||a.id==='金币条件end')return 'O campo usa unidades de 10 mil. Por exemplo: 100 corresponde a 1.000.000 de recursos.';if(n.tag==='EditText')return 'Digite para praticar o preenchimento. O valor fica somente neste exercício; transfira-o manualmente para o bot quando desejar.';if(n.tag==='ComboBox')return 'Abra a lista para consultar as opções traduzidas. O texto original da opção aparece ao passar o mouse.';if(n.tag==='CheckBoxGroup'||n.tag==='RadioGroup')return 'A caixa marcada representa a função ativada. Algumas opções abrem uma janela própria ao serem marcadas. Todas as telas também estão no menu lateral.';if(n.tag==='Button'&&a.background&&!['bt.webp','tt.webp','说明.webp'].includes(a.background))return 'O ícone foi preservado do aplicativo original. Confira a tradução acima para identificá-lo.';return 'Referência do controle original. Use o menu lateral para consultar todas as janelas incluídas no APK.';}
+  function showControl(){}
   const routes={
     '通用任务':'通用任务','特殊功能':'特殊功能','打鱼造兵设置':'打鱼造兵设置','多号打鱼造兵设置':'打鱼造兵设置','设置打鱼资源条件':'打鱼资源条件','多号捐兵兵种':'多号捐兵设置','搜索部落语言选择':'语言设置','卡密说明':'卡密说明','查看教程':'浏览器','升级建筑':'升级建筑','升级科技':'升级科技','升级战宠':'升级战宠','升级武器':'升级武器','多号升级':'多号独立设置','限时活动':'兑换物品活动','智能换阵':'智能换阵','买卖药水':'买卖药水','使用药水':'使用药水','链接兑换奖励':'链接奖励','宝石加速':'宝石加速','夜世界开荒':'夜世界','竞赛':'竞赛','捐部落战援兵':'部落增援','自动联赛':'部落战联赛','求援':'军队配置链接','满资源不进攻':'满资源设置','下载新':'文件列表','查询文件':'文件列表','上传指定文件':'文件列表','发起部落战':'部落战联赛'
   };
-  const descriptions={
-    '界面设置':'Escolha um dos 11 modos na lista da tela. As opções específicas mudam conforme o modo selecionado.',
-    '打鱼造兵设置':'As mesmas imagens e a mesma ordem das tropas, feitiços e máquinas de cerco do APK. Os campos representam quantidades.',
-    '打鱼资源条件':'Seleção de vilas, limites do ataque, intervalos e condições de melhoria dos muros.',
-    '进攻资源条件':'Limites manuais de ouro, elixir e elixir negro, separados pelo nível do Centro de Vila.',
-    '自定义下兵':'Tela incluída no APK. Sua presença aqui não confirma que a versão atual exponha ou execute esse recurso.',
-    '升级1':'Cinco abas da configuração individual: conta, construções, pesquisa, mascotes e Base do Construtor.',
-    '通用切号':'Cinco abas com dez contas cada. Os tipos de dados e os campos QQ preservam a ordem original.',
-    '文本框':'Modelo de janela de ajuda. O aplicativo preenche o texto durante a execução; esse conteúdo não está nas definições visuais do APK.',
-    '浏览器':'Modelo da janela do tutorial. O manual local em português está disponível abaixo.',
-    '网':'Modelo da janela da loja. Esta referência não abre compras.',
-    '反馈':'Modelo visual de envio de relato. Nenhum dado é enviado.',
-    '文件列表':'Modelo visual da lista de arquivos. Não consulta arquivos da conta na nuvem.',
-    '更新公告':'Modelo da janela de atualização. Os detalhes da atualização são preenchidos pelo aplicativo.',
-    '交流群':'Janela auxiliar de grupo incluída no APK.',
-    '刷经验':'Ajustes de deslize, heróis e momento de sair no modo de experiência.'
-  };
   routes['卡密说明']='赠卡说明';
-  descriptions['免费模式说明']='Texto conferido no aviso inicial da atualização 1358. O fechamento automático foi desativado nesta referência para permitir a leitura.';
-  descriptions['赠卡说明']='Janela aberta pelo botão 送卡密 na versão gratuita 1358. A janela de validade de licença do APK continua acessível separadamente no menu.';
   function getVal(key,def){return Object.hasOwn(values,key)?values[key]:def;}
   let arrival='Início da referência';
-  function locationLabel(name,tab){
-    const pages=D.screens[name].children.filter(n=>n.tag==='Page');
-    if(name==='界面设置'&&tab===1)return 'Ativação de celular na nuvem';
-    return names[name]+(pages.length>1?' · '+localized(pages[tab]?.a.title||'设置'):'');
-  }
   function go(name,newPage=0,push=true,source='Controle da tela'){
     if(!D.screens[name])return;
     const total=D.screens[name].children.filter(n=>n.tag==='Page').length;
     newPage=Math.max(0,Math.min(Number(newPage)||0,total-1));
-    if(current===name&&page===newPage)return;
-    if(push)history.push({name:current,page,scroll:screenEl.scrollTop,arrival,preview:capturePreview()});
-    current=name;page=newPage;arrival=source;render();
+    if(current===name&&page===newPage){systemView='app';taskOpen=true;syncSystem();return;}
+    if(push&&name!==current)history.push({name:current,page,scroll:screenEl.scrollTop,arrival});
+    current=name;page=newPage;arrival=source;systemView='app';taskOpen=true;render();syncSystem();
   }
   function returnTo(index){
     const prev=history[index];if(!prev)return;
     history=history.slice(0,index);current=prev.name;page=prev.page;arrival=prev.arrival;
-    render();screenEl.scrollTop=prev.scroll;
+    render();screenEl.scrollTop=prev.scroll;syncSystem();
   }
-  function back(){if(history.length)returnTo(history.length-1);}
-  function capturePreview(){
-    const phone=$('#phone'),copy=phone.cloneNode(true);
-    const originals=phone.querySelectorAll('input,select,textarea');
-    copy.querySelectorAll('input,select,textarea').forEach((el,i)=>{
-      el.value=originals[i].value;if('checked' in el)el.checked=originals[i].checked;
-    });
-    copy.removeAttribute('id');copy.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
-    copy.querySelectorAll('.ui-selected').forEach(el=>el.classList.remove('ui-selected'));
-    copy.classList.add('preview-phone');copy.style.zoom='1';
-    copy.style.height=phone.offsetHeight+'px';
-    copy.setAttribute('inert','');
-    return {node:copy,scroll:screenEl.scrollTop,height:phone.offsetHeight};
+  let systemView='home',taskOpen=false,floatingAvailable=false,running=false,noticeShown=false,previousSystemView='home';
+  function back(){
+    if(systemView==='recents'){systemView=previousSystemView;syncSystem();return;}
+    if(systemView==='home')return;
+    const focused=document.activeElement;
+    if(focused?.matches('input,textarea,select')){focused.blur();return;}
+    if(!$('#info-dialog').hidden){$('#info-dialog').hidden=true;return;}
+    if(history.length)returnTo(history.length-1);
+    else{systemView='home';taskOpen=false;syncSystem();}
   }
-  // Relações entre controles e janelas da referência, nunca itens do menu lateral.
-  function botEntries(target){
-    const entries=[];
-    const ordered=['界面设置',...Object.keys(D.screens).filter(k=>k!=='界面设置')];
-    for(const name of ordered)D.screens[name].children.filter(n=>n.tag==='Page').forEach((p,tab)=>{
-      (function walk(n){
-        const id=n.a.id;
-        let destination=routes[id];
-        if(id==='手动指定分配资源'&&name==='打鱼资源条件')destination='进攻资源条件';
-        if(/^账号\d+设置$/.test(id)||id==='跳转指定账号设置')destination='升级1';
-        if(/^账号\d+打鱼设置$/.test(id))destination='打鱼造兵设置';
-        if(destination===target&&name!==target&&['Button','CheckBoxGroup','RadioGroup'].includes(n.tag))
-          entries.push({name,page:tab,id,node:n});
-        n.children.forEach(walk);
-      })(p);
-    });
-    if(target==='应用设置')entries.unshift({name:'星辰国际',page:0,id:'native-settings',label:localized('设置')});
-    if(target==='界面设置'&&page===1)entries.unshift({name:'界面设置',page:0,id:'cloud-tab',label:'Ativação de celular na nuvem',kind:'Aba'});
-    return entries;
+  function syncSystem(){
+    $('#android-launcher').hidden=systemView!=='home';
+    $('#app-surface').hidden=systemView!=='app';
+    $('#android-recents').hidden=systemView!=='recents';
+    $('#floating-bot').hidden=!floatingAvailable||systemView!=='home';
+    $('#floating-bot').classList.toggle('running',running);
+    $('#phone').classList.toggle('launcher-visible',systemView!=='app'||!['星辰国际','应用设置'].includes(current));
+    $('#phone').dataset.view=systemView;
   }
-  function originPreview(entry){
-    const saved={current,page,mode},copy=capturePreview();
-    try{
-      current=entry.name;page=entry.page;
-      const pages=D.screens[current].children.filter(n=>n.tag==='Page');
-      let content=create(pages[page]);
-      const find=()=>[...content.querySelectorAll('[data-original-id]')].find(el=>el.dataset.originalId===entry.id);
-      if(current==='界面设置'&&!find()&&entry.node){
-        for(let i=0;i<11;i++){mode=i;content=create(pages[page]);if(find())break;}
-      }
-      const screen=copy.node.querySelector('.screen');screen.classList.remove('has-observed-dialog');screen.replaceChildren(content);
-      copy.node.querySelector('.versions-heading')?.remove();
-      copy.node.querySelector('.confirm-wrap').hidden=false;
-      const tabbar=copy.node.querySelector('.page-tabs');tabbar.replaceChildren();tabbar.hidden=pages.length<2||(current==='界面设置'&&page===0&&entry.id!=='cloud-tab');
-      pages.forEach((p,i)=>{const el=document.createElement('span');el.className='preview-tab';el.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));if(i===page)el.classList.add('active');if(entry.id==='cloud-tab'&&i===1){el.classList.add('origin-control');copy.target=el;}tabbar.append(el);});
-      if(entry.id==='native-settings'){
-        const head=document.createElement('div');head.className='native-heading';head.textContent=localized('星辰国际');const el=document.createElement('span');el.textContent=entry.label;el.className='origin-control';head.append(el);screen.prepend(head);copy.target=el;
-      }else if(entry.node){copy.target=find();if(copy.target)copy.target.classList.add('origin-control');}
-      const modes=D.screens['界面设置'].children[0];
-      let modeName='';(function walk(n){if(n.a.id==='功能选择开关')modeName=localized(n.children[mode]?.a.text||'');n.children.forEach(walk);})(modes);
-      copy.modeName=current==='界面设置'&&page===0?modeName:'';copy.originMode=mode;
-      copy.node.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
-      return copy;
-    }finally{current=saved.current;page=saved.page;mode=saved.mode;}
+  function openApp(){
+    if(!taskOpen){current='星辰国际';page=0;history=[];taskOpen=true;$('#info-dialog').hidden=true;render();}
+    systemView='app';syncSystem();
   }
-  function renderPath(){
-    const entries=botEntries(current),previous=history.at(-1);
-    const entry=entries.find(e=>previous&&e.name===previous.name&&e.page===previous.page&&!arrival.startsWith('Menu lateral')&&arrival.endsWith(e.label||(e.node?.tag==='Button'?localized(e.node.a.title||''):localized(e.node?.children[0]?.a.text||''))))||entries[0];
-    const button=$('#previous-screen'),preview=$('#previous-preview');
-    button.hidden=!entry;preview.replaceChildren();
-    if(entry){
-      const label=locationLabel(entry.name,entry.page),snapshot=originPreview(entry);
-      $('#previous-title').textContent=label;
-      const kind=entry.kind||(entry.node?.tag==='Button'?'Botão':'Caixa');
-      const control=entry.label||(entry.node?.tag==='Button'?localized(entry.node.a.title||''):localized(entry.node.children[0]?.a.text||''))||controlLabel(entry.node);
-      $('#previous-trigger').textContent=kind+' → '+control;
-      $('#previous-mode').textContent=snapshot.modeName?'Modo: '+snapshot.modeName:'';
-      button.setAttribute('aria-label','Abrir tela de origem: '+label);button.title='Abrir '+label;
-      button.onclick=()=>{mode=snapshot.originMode;go(entry.name,entry.page,true,'Tela de origem do controle');};
-      preview.append(snapshot.node);preview.style.aspectRatio='480 / '+snapshot.height;
-      requestAnimationFrame(()=>{
-        if(!snapshot.target?.isConnected)return;
-        const screen=snapshot.node.querySelector('.screen'),scale=preview.clientWidth/480;
-        screen.scrollTop+=(snapshot.target.getBoundingClientRect().top-screen.getBoundingClientRect().top)/scale-screen.clientHeight/2;
-      });
+  function openPanel(){
+    if(!taskOpen||current==='星辰国际'){current='界面设置';page=0;history=[];render();}
+    taskOpen=true;systemView='app';syncSystem();
+    if(!noticeShown){noticeShown=true;go('免费模式说明');}
+  }
+  function stopSimulation(){running=false;floatingAvailable=false;taskOpen=false;history=[];systemView='home';$('#info-dialog').hidden=true;syncSystem();toast('Assistente parado');}
+  function overview(){
+    if(systemView==='recents'){systemView=previousSystemView;syncSystem();return;}
+    previousSystemView=systemView;
+    $('#recent-app').hidden=!taskOpen;$('#clear-recents').hidden=!taskOpen;$('#recents-empty').hidden=taskOpen;
+    const preview=$('#recent-preview');preview.replaceChildren();
+    if(taskOpen){
+      const copy=$('#app-surface').cloneNode(true),originals=$('#app-surface').querySelectorAll('input,select,textarea');
+      copy.querySelectorAll('input,select,textarea').forEach((el,i)=>{el.value=originals[i].value;if('checked'in el)el.checked=originals[i].checked;});
+      copy.removeAttribute('id');copy.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));copy.hidden=false;copy.classList.add('recent-copy');copy.setAttribute('inert','');preview.append(copy);copy.querySelector('.screen').scrollTop=screenEl.scrollTop;
     }
-    $('#navigation-origin').textContent=entry?'No bot: '+locationLabel(entry.name,entry.page)+' → '+$('#previous-trigger').textContent:current==='界面设置'?'Tela principal do bot.':'Caminho dentro do bot não confirmado para esta tela auxiliar.';
-    resizePhone();
+    systemView='recents';syncSystem();
   }
-  function nav(){const q=$('#search').value.trim().toLocaleLowerCase('pt-BR');let count=0;const frag=document.createDocumentFragment();for(const [group,keys]of groups){const match=keys.filter(k=>!q||(`${names[k]} ${k} ${D.screens[k].searchText||''}`).toLocaleLowerCase('pt-BR').includes(q));if(!match.length)continue;const title=document.createElement('div');title.className='nav-group';title.textContent=group;frag.append(title);for(const k of match){const b=document.createElement('button');b.className='nav-item'+(k===current&&page===0?' active':'');b.textContent=names[k];b.title=k;b.setAttribute('aria-current',k===current&&page===0?'page':'false');b.onclick=()=>go(k,0,true,'Menu lateral → '+group+' → '+names[k]);frag.append(b);count++;}}if(!q||'ativação de celular na nuvem'.includes(q)){const b=document.createElement('button');b.className='nav-item'+(current==='界面设置'&&page===1?' active':'');b.setAttribute('aria-current',current==='界面设置'&&page===1?'page':'false');b.textContent='Ativação de celular na nuvem';b.onclick=()=>go('界面设置',1,true,'Menu lateral → Ativação de celular na nuvem');frag.append(b);count++;}if(!count){const p=document.createElement('p');p.className='nav-empty';p.textContent='Nenhuma tela encontrada.';frag.append(p);}$('#navigation').replaceChildren(frag);}
-  for(const [k,tree]of Object.entries(D.screens)){const arr=[];(function collect(n){if(n.a.text)arr.push(tr(n.a.text));if(n.a.title)arr.push(tr(n.a.title));n.children.forEach(collect);})(tree);tree.searchText=arr.join(' ');}
   function mainVisibility(n){
     if(current!=='界面设置'||page!==0||allMain)return true;
     const a=n.a,ids=n.children.map(c=>c.a.id||'');const has=id=>ids.includes(id);const farm=[6,8,9].includes(mode),donation=[8,9].includes(mode);
@@ -239,7 +161,7 @@
       el=document.createElement('div');el.className='native-settings';
       const head=document.createElement('div');head.className='native-heading';head.textContent=localized('设置');el.append(head);
       for(const [id,def]of [['音量加(+)控制脚本开始/停止',true],['脚本停止或者结束的时候振动提醒',true],['开机自启动脚本',false],['开启或者关闭节点服务',true]]){
-        const label=document.createElement('label');label.className='native-row native-toggle';const text=document.createElement('span');text.textContent=localized(id);const input=document.createElement('input');input.type='checkbox';input.setAttribute('role','switch');input.setAttribute('aria-label',tr(id));const k='native/'+id;input.checked=getVal(k,def);input.onchange=()=>{values[k]=input.checked;save();showControl({tag:'CheckBoxGroup',a:{id,title:tr(id)},children:[]});};label.title=id;label.append(text,input);el.append(label);
+        const label=document.createElement('label');label.className='native-row native-toggle';const text=document.createElement('span');text.textContent=localized(id);const input=document.createElement('input');input.type='checkbox';input.setAttribute('role','switch');input.setAttribute('aria-label',tr(id));const k='native/'+id;input.checked=getVal(k,def);input.onchange=()=>{values[k]=input.checked;save();showControl({tag:'CheckBoxGroup',a:{id,title:tr(id)},children:[]});};label.title=localized(id);label.append(text,input);el.append(label);
       }
       for(const [zh,pt]of [['当前系统型号: SM-G977N','Modelo do sistema: SM-G977N'],['当前系统版本: 9','Versão do Android: 9'],['当前分辨率: 720X1280:320(DPI)','Resolução: 720 × 1280 · 320 dpi'],['系统总共内存: 3945(M)','Memória total: 3945 MB'],['虚拟按键: 无','Botões virtuais: nenhum'],['当前apk版本号:1355','Versão do APK: 1355'],['当前引擎版本3.8.6','Versão do mecanismo: 3.8.6']]){const row=document.createElement('div');row.className='native-row';row.textContent=language==='zh'?zh:pt;row.title=zh;el.append(row);}
       for(const [zh,pt]of [['打开日志','Abrir registros'],['连接远程电脑开发助手','Conectar ao auxiliar de desenvolvimento remoto']]){const row=document.createElement('div');row.className='native-row';const b=document.createElement('button');b.textContent=language==='zh'?zh:pt;b.className='native-green';b.onclick=()=>info(pt,'Controle reproduzido para consulta. Não abre registros nem inicia conexão remota.');row.append(b);el.append(row);}
@@ -255,7 +177,7 @@
       if(a.id==='紧急通知说明')text='辅助仅支持在安卓12及以下系统运行。';
       if(a.id==='分辨率检测')text=language==='zh'?'系统:安卓9 CPU:4核 内存:2.68/4.04G 分辨率:720*1280 dpi320':'Sistema: Android 9 · CPU: 4 núcleos · 720 × 1280 · dpi 320';
       if(a.id==='简单说明'){const version=Number(getVal('界面设置/0/游戏版本',0));if(version===1)return null;text=version===2?(language==='zh'?'多版本 可以同时挂QQ 微信 国际服':'Várias versões: QQ, WeChat e servidor internacional ao mesmo tempo'):(language==='zh'?'数据包切号 单号时直接运行游戏':'Pacotes de dados · uma conta: abrir o jogo diretamente');}
-      el.textContent=localized(text);el.title=text;
+      el.textContent=localized(text);el.title=localized(text);
       if(!text&&!a.background&&!(Number(a.width)>0))el.style.display='none';
     }else if(tag==='Button'){
       el=document.createElement('button');el.type='button';el.className='ui-button';el.textContent=localized(a.title||'');
@@ -263,17 +185,17 @@
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='zh')el.textContent='送卡密';
       if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?'官网 xccoc.fun　热更新版本:1358':'Site xccoc.fun · Atualização: 1358';
       if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("assets/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
-      else el.title=a.title||a.id||'';
+      else el.title=localized(a.title||a.id||'');
       el.onclick=()=>{showControl(n);action(a.id||'',n,el);};
     }else if(tag==='EditText'){
       el=document.createElement('input');el.className='ui-input';el.type='text';if(a.inputtype==='1')el.inputMode='decimal';el.autocomplete='off';el.spellcheck=false;el.value=getVal(key,localized(a.text||''));el.setAttribute('aria-label',inputLabel(n,parent));el.title=inputLabel(n,parent)+(a.id?' · '+a.id:'');el.dataset.key=key;el.dataset.originalId=a.id||'';
       el.oninput=()=>{values[key]=el.value;save();};el.onfocus=()=>showControl({...n,a:{...a,title:inputLabel(n,parent)}});
     }else if(tag==='ComboBox'){
-      el=document.createElement('select');el.className='ui-select';el.setAttribute('aria-label',tr(a.id)||'Selecionar opção');n.children.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=localized(c.a.text);o.title=c.a.text;el.append(o);});const def=Number(a.select)||0;el.value=current==='界面设置'&&a.id==='功能选择开关'?mode:getVal(key,def);
+      el=document.createElement('select');el.className='ui-select';el.setAttribute('aria-label',tr(a.id)||'Selecionar opção');n.children.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=localized(c.a.text);o.title=localized(c.a.text);el.append(o);});const def=Number(a.select)||0;el.value=current==='界面设置'&&a.id==='功能选择开关'?mode:getVal(key,def);
       el.onchange=()=>{values[key]=Number(el.value);showControl({...n,a:{...a,title:n.children[Number(el.value)]?.a.text}});save();if(a.id==='功能选择开关'){mode=Number(el.value);render();}else if(a.id==='游戏版本'){if(Number(el.value)===2)go('通用切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);else render();}else if(a.id==='授权选择'&&Number(el.value)===2)go('QQ切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);};
     }else if(tag==='CheckBoxGroup'||tag==='RadioGroup'){
       el=document.createElement('div');el.className=tag==='RadioGroup'?'ui-radio-group':'ui-check-group';
-      n.children.forEach((c,i)=>{const label=document.createElement('label');label.className='ui-check';const input=document.createElement('input');input.type=tag==='RadioGroup'?'radio':'checkbox';input.name=key;const ck=key+'/'+i;input.checked=!!getVal(ck,(a.select||'').split(',').includes(String(i)));const text=document.createElement('span');text.textContent=localized(c.a.text||'');if(c.a.textcolor)label.style.color=color(c.a.textcolor);label.title=c.a.text||a.id||'';input.setAttribute('aria-label',tr(c.a.text)||tr(a.id)||'Selecionar item');label.append(input,text);el.append(label);
+      n.children.forEach((c,i)=>{const label=document.createElement('label');label.className='ui-check';const input=document.createElement('input');input.type=tag==='RadioGroup'?'radio':'checkbox';input.name=key;const ck=key+'/'+i;input.checked=!!getVal(ck,(a.select||'').split(',').includes(String(i)));const text=document.createElement('span');text.textContent=localized(c.a.text||'');if(c.a.textcolor)label.style.color=color(c.a.textcolor);label.title=localized(c.a.text||a.id||'');input.setAttribute('aria-label',tr(c.a.text)||tr(a.id)||'Selecionar item');label.append(input,text);el.append(label);
         input.onchange=()=>{if(tag==='RadioGroup')n.children.forEach((_,j)=>values[key+'/'+j]=j===i);else values[ck]=input.checked;save();showControl(n);if(input.checked&&routes[a.id])go(routes[a.id],0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));else if(current==='打鱼资源条件'&&a.id==='手动指定分配资源'&&input.checked){values[current+'/'+page+'/辅助自动分配资源/0']=false;go('进攻资源条件',0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));}else if(current==='打鱼资源条件'&&['辅助自动分配资源','强制进攻','不判断死鱼'].includes(a.id)){const sibling={'辅助自动分配资源':'手动指定分配资源','强制进攻':'不判断死鱼','不判断死鱼':'强制进攻'}[a.id];if(input.checked)values[current+'/'+page+'/'+sibling+'/0']=false;save();render(true);}else if(current==='界面设置'&&a.id==='发送邮件')render(true);};
       });
     }else if(tag==='WebView'){
@@ -304,8 +226,9 @@
     '下拉框说明':['Os 11 modos','1. Troca manual e extração de dados\n2. Criar contas\n3. Ataques à Capital\n4. Doar Ouro da Capital\n5. Verificar informações\n6. Vincular e-mail\n7. Farm contínuo\n8. Tarefas em ciclo\n9. Doação com uma conta\n10. Doação com várias contas\n11. Ganhar experiência']
   };
   function action(id,n,el){
+    if(['下载新','查询文件','上传指定文件','上传新'].includes(id)){info('Modo gratuito','Usuários gratuitos não podem enviar ou baixar configurações nem usar funções da nuvem.');return;}
     if(routes[id]){go(routes[id],0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
-    if(id==='停止运行'||id==='停止脚本'){toast('Simulação parada. Nenhuma ação foi executada no jogo.');return;}
+    if(id==='停止运行'||id==='停止脚本'){stopSimulation();return;}
     if(id.startsWith('关闭')||id==='取消反馈'){back();return;}
     if(id==='清空设置'||id==='清空造兵设置'){screenEl.querySelectorAll('input.ui-input').forEach(input=>{input.value='';values[input.dataset.key]='';});save();toast('Campos desta tela limpos no exercício.');return;}
     if(id==='取消建筑勾选'||id==='取消科技勾选'||id==='全选科技'){screenEl.querySelectorAll('input[type=checkbox]').forEach(input=>{input.checked=id==='全选科技';const group=input.closest('[data-original-id]');if(group)values[`${current}/${page}/${group.dataset.originalId}/0`]=input.checked;});save();toast(id==='全选科技'?'Pesquisas selecionadas no exercício.':'Seleções removidas no exercício.');return;}
@@ -334,12 +257,12 @@
     layer.append(sheet);screenEl.replaceChildren(background,footer,layer);
   }
   function render(keepScroll=false){
-    $('#phone > .versions-heading')?.remove();
+    $('#app-surface > .versions-heading')?.remove();
     const scroll=keepScroll?screenEl.scrollTop:0,tree=D.screens[current],pages=tree.children.filter(n=>n.tag==='Page');page=Math.min(page,pages.length-1);const tabbed=pages.length>1;tabs.hidden=!tabbed;tabs.replaceChildren();
     if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
-    if(current==='界面设置'&&page===0)tabs.hidden=true;
+    if(current==='界面设置')tabs.hidden=true;
     const content=create(pages[page]);screenEl.replaceChildren(content);screenEl.scrollTop=scroll;
-    const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#phone > .confirm-wrap').hidden=!!sheet;
+    const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#app-surface > .confirm-wrap').hidden=!!sheet;
     if(sheet)renderObservedDialog(content,sheet);
     if(livePopups[current]){
       const popupName=current,popupPage=page;current='界面设置';page=0;const background=create(D.screens['界面设置'].children[0]);current=popupName;page=popupPage;content.classList.add('runtime-page');background.classList.add('runtime-background');background.setAttribute('inert','');content.prepend(background);
@@ -347,43 +270,56 @@
     if(current==='星辰国际'){
       const head=document.createElement('div');head.className='native-heading initial-heading';const title=document.createElement('span');title.textContent=localized('星辰国际');const b=document.createElement('button');b.textContent=localized('设置');b.onclick=()=>go('应用设置',0,true,'Botão → '+b.textContent);head.append(title,b);screenEl.prepend(head);
     }
-    if(current==='通用切号'){const head=document.createElement('div');head.className='native-heading versions-heading';head.textContent=language==='zh'?'双端版本50开':'Várias versões — 50 contas';$('#phone').insertBefore(head,tabs);}
-    $('#screen-title').textContent=current==='界面设置'&&page===1?'Ativação de celular na nuvem':names[current];$('#screen-description').textContent=descriptions[current]||'Layout, ícones, opções e campos preservados das definições visuais do aplicativo original.';
-    const checked=D.review.screens.includes(current);$('#screen-verification').textContent=checked?'Conferida visualmente na 1358 · 16/10/2026':'Modelo do APK 1355 · acesso e aparência não conferidos na 1358';$('#screen-verification').classList.toggle('unverified',!checked);
-    if(current==='界面设置')$('#screen-description').textContent=page===1?'No bot, deslize a tela principal para a esquerda para abrir esta página. Campos e botões conferidos na 1358.':'Os 11 modos foram conferidos na 1358. No bot, deslize para a esquerda para abrir a ativação de aparelhos na nuvem.';
-    renderPath();$('#language').value=language;
-    $('#confirm').textContent=language==='zh'?'确定':'Confirmar';nav();
+    if(current==='通用切号'){const head=document.createElement('div');head.className='native-heading versions-heading';head.textContent=language==='zh'?'双端版本50开':'Várias versões — 50 contas';$('#app-surface').insertBefore(head,tabs);}
+    $('#language').value=language;$('#confirm').textContent=language==='zh'?'确定':'Confirmar';
     requestAnimationFrame(()=>{fitRows();if(keepScroll)screenEl.scrollTop=scroll;});
   }
   function fitRows(){
     // Portuguese often needs two lines where Chinese fits in one.
     screenEl.querySelectorAll('.ui-row').forEach(row=>{if(row.scrollWidth>row.clientWidth+3){row.querySelectorAll(':scope > .ui-text,:scope > .ui-check-group span,:scope > .ui-select,:scope > .ui-button:not(.icon)').forEach(el=>{el.style.fontSize=Math.min(parseFloat(getComputedStyle(el).fontSize),13)+'px';});}if(row.scrollWidth>row.clientWidth+10&&row.querySelector('.ui-text:not(:empty)')){row.style.flexWrap='wrap';row.style.rowGap='3px';}});
   }
-  $('#previous-screen').onclick=back;
-  const toolbarOptions=$('#toolbar-options');
-  toolbarOptions.addEventListener('click',e=>{if(e.target.closest('button'))toolbarOptions.open=false;});
-  document.addEventListener('click',e=>{if(!toolbarOptions.contains(e.target))toolbarOptions.open=false;});
-  toolbarOptions.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();toolbarOptions.open=false;toolbarOptions.querySelector('summary').focus();}});
+  $('#launch-bot').onclick=openApp;$('#floating-bot').onclick=openPanel;
+  let dismissKeyboard=false;
+  $('#android-back').addEventListener('pointerdown',()=>{dismissKeyboard=!!document.activeElement?.matches('input,textarea,select');});
+  $('#android-back').onclick=()=>{if(dismissKeyboard){dismissKeyboard=false;document.activeElement?.blur();return;}back();};
+  $('#android-home').onclick=()=>{systemView='home';syncSystem();};
+  $('#android-overview').onclick=overview;
+  $('#recent-app').onclick=()=>{systemView='app';syncSystem();};
+  $('#clear-recents').onclick=()=>{taskOpen=false;history=[];systemView='home';syncSystem();};
+  $('#launcher-search').oninput=e=>{const match='xingchen assistente bot'.includes(e.target.value.trim().toLowerCase());$('#launch-bot').hidden=!match;$('#launcher-empty').hidden=match;};
 
-  $('#home').onclick=()=>go('界面设置',0,true,'Botão Tela principal');$('#search').oninput=nav;
-  $('#review').onclick=()=>info('Revisão visual da versão 1358','Conferência direta no LDPlayer em 16/10/2026, na instância construtor muros 2. A execução do bot foi parada.\n\nForam observadas 32 telas e 41 páginas/abas, incluindo os 11 modos principais e as cinco abas das 50 contas. Foram ajustadas as regras de exibição por modo, as janelas sobrepostas e o título das 50 contas. As grades conferidas mantêm a mesma ordem de controles e ícones.\n\nAs outras 16 telas continuam identificadas como modelos do APK, sem conferência visual na 1358. Não se afirma que alterações internas de execução foram reproduzidas.\n\nVeja REVISAO_1358.md para os caminhos, diferenças e limites da comparação.');
   $('#language').onchange=e=>{language=e.target.value;save();render(true);};
-  $('#confirm').onclick=()=>{save();if(current==='界面设置'){toast('Exercício salvo. O bot real não foi iniciado.');}else if(history.length)back();else toast('Exercício salvo neste navegador.');};
-  $('#info-close').onclick=$('#info-confirm').onclick=()=>$('#info-dialog').close();
-  $('#info-dialog').addEventListener('click',e=>{if(e.target===$('#info-dialog'))$('#info-dialog').close();});
+  $('#confirm').onclick=()=>{
+    save();
+    if(current==='星辰国际'){
+      floatingAvailable=true;running=false;taskOpen=false;noticeShown=false;history=[];systemView='home';syncSystem();
+    }else if(current==='界面设置'&&page===0){
+      running=true;floatingAvailable=true;systemView='home';syncSystem();toast('Execução iniciada na simulação');
+    }else if(history.length)back();
+    else{systemView='home';syncSystem();}
+  };
+  $('#info-close').onclick=$('#info-confirm').onclick=()=>{$('#info-dialog').hidden=true;};
+  $('#info-dialog').addEventListener('click',e=>{if(e.target===$('#info-dialog'))$('#info-dialog').hidden=true;});
   $('#reset').onclick=()=>{values={};mode=6;save();render();toast('Campos restaurados ao modelo do APK.');};
   $('#export').onclick=()=>{const text=JSON.stringify({format:'xingchen-referencia-1',values,language},null,2);const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='meu-exercicio-xingchen.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
   $('#import').onclick=()=>$('#import-file').click();$('#import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.format!=='xingchen-referencia-1'||!data.values||typeof data.values!=='object'||Array.isArray(data.values))throw Error();for(const value of Object.values(data.values))if(!['string','number','boolean'].includes(typeof value))throw Error();values=data.values;language=['pt','zh'].includes(data.language)?data.language:'pt';mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;save();render();toast('Exercício aberto.');}catch{info('Arquivo inválido','Escolha um exercício JSON salvo por esta referência.');}e.target.value='';};
-  $('#about').onclick=()=>info('Sobre esta referência',`Reprodução local das 45 definições de tela contidas no APK original 1355. Foram traduzidos os 755 textos chineses visíveis dessas definições e preservados os recursos de imagem. A tela principal foi comparada com a atualização 1358 aberta no LDPlayer.\n\nA navegação e a exibição dos campos por modo foram recriadas para estudo. Não são uma cópia do funcionamento interno do bot. Janelas auxiliares e funções antigas também estão disponíveis no menu lateral.\n\nAlgumas mensagens de ajuda são geradas durante a execução e não constam das definições. Quando não foi possível verificar o texto, a referência informa essa limitação. Ícones de equipamentos recentes podem ter traduções descritivas.\n\nNenhuma chave, compra, envio de dados ou ação no jogo é executada. Os valores iniciais vêm dos modelos do APK; não são uma leitura da sua conta.`);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#info-dialog').open&&history.length)back();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();back();}});
+  let gesture=null;
+  screenEl.addEventListener('pointerdown',e=>{if(!e.target.closest('input,select,button,textarea'))gesture={x:e.clientX,y:e.clientY,id:e.pointerId};},true);
+  screenEl.addEventListener('pointercancel',()=>{gesture=null;});
+  screenEl.addEventListener('pointerup',e=>{
+    if(!gesture||e.pointerId!==gesture.id)return;
+    const dx=e.clientX-gesture.x,dy=e.clientY-gesture.y;gesture=null;
+    const count=D.screens[current].children.filter(n=>n.tag==='Page').length;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.7&&count>1){const next=page+(dx<0?1:-1);if(next>=0&&next<count)go(current,next,false,'Deslizar a tela');}
+  });
   mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;
   function resizePhone(){
-    const width=$('.current-screen').clientWidth;
-    $('#phone').style.zoom=String(Math.min(1,width/480));
-    const preview=$('#previous-preview'),mini=preview.querySelector('.preview-phone');
-    if(mini)mini.style.transform='scale('+preview.clientWidth/480+')';
+    const scale=Math.min(1,(window.innerWidth-12)/480,(window.innerHeight-60)/853.333);
+    $('#phone').style.zoom=String(Math.max(.25,scale));
+    $('#device-frame').style.width=480*scale+'px';$('#device-frame').style.height=853.333*scale+'px';
   }
-  new ResizeObserver(resizePhone).observe($('.current-screen'));
-  window.addEventListener('resize',resizePhone);render();
-  window.ReferenceApp={go,get current(){return current;},get page(){return page;},get mode(){return mode;},get values(){return {...values};},get screenNames(){return {...names};}};
+  function updateClock(){$('#android-clock').textContent=new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'}).format(new Date());}
+  window.addEventListener('resize',resizePhone);updateClock();setInterval(updateClock,30000);resizePhone();render();syncSystem();
+  window.ReferenceApp={go,get current(){return current;},get page(){return page;},get mode(){return mode;},get values(){return {...values};},get screenNames(){return {...names};},get system(){return {view:systemView,taskOpen,running,floatingAvailable};}};
 })();

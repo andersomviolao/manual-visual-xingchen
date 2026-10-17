@@ -30,6 +30,8 @@ foreach ($taskFileName in @('estilo.css','aplicativo.js','dados.js')) {
 Get-ChildItem -LiteralPath $taskAssetsSource -File | ForEach-Object {
     Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $taskAssetsTarget $_.Name) -Force
 }
+Copy-Item -LiteralPath (Join-Path $taskSourceDir 'system') -Destination $taskPublishDir -Recurse -Force
+
 if (Test-Path -LiteralPath $taskManualSource -PathType Leaf) {
     Copy-Item -LiteralPath $taskManualSource -Destination $taskManualTarget -Force
 }

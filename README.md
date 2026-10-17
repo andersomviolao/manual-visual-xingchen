@@ -1,59 +1,35 @@
-# Xingchen — referência visual em português
+# Xingchen — simulação Android em português
 
-Referência interativa das configurações do Xingchen, com menus, campos e ícones em português do Brasil. Abre no navegador, no computador ou no celular.
-
-São **48 telas**, distribuídas em **57 páginas e abas**: 45 modelos do APK oficial 1355, os ajustes nativos e dois avisos observados na atualização interna 1357. Os controles permitem praticar configurações e consultar os textos chineses. As ações são simuladas e não controlam o jogo nem o aplicativo Android.
-
-Bot atual: **1358**, confirmado no LDPlayer. Foram conferidas visualmente **32 telas e 41 páginas/abas**, incluindo os 11 modos. As outras 16 telas estão identificadas como modelos não conferidos na 1358. Consulte [a revisão visual da 1358](HTML/REVISAO_1358.md).
+Interface do Xingchen em português do Brasil, dentro de um dispositivo Android simulado. Abre no navegador, no computador ou no celular.
 
 ## Usar
 
-Abra `docs/index.html` no navegador. A pasta `docs` contém o site pronto e o manual em português. Não precisa instalar dependências para usar ou publicar.
+Abra `docs/index.html` ou o site publicado. Toque no ícone **Xingchen**, confirme a entrada e depois toque no ícone flutuante para abrir o painel. Navegue pelos controles do próprio aplicativo. A barra inferior oferece **Voltar**, **Início** e **Aplicativos recentes**.
 
-- Alterne entre português e chinês no topo.
-- Use o menu lateral e os botões para abrir as configurações.
-- Selecione um controle para consultar seu nome original.
-- As alterações ficam no navegador de cada visitante. Salvar exercício exporta uma cópia JSON; Abrir exercício recupera essa cópia.
-- O botão do manual abre o PDF incluído no próprio site.
+Não há menu lateral nem miniaturas de orientação. Os campos do exercício ficam no navegador. No rodapé, **Opções da simulação** reúne salvar/abrir exercícios, idioma de comparação, manual e relatório.
 
-## Publicar no GitHub Pages
+A simulação não executa o bot nem ações no jogo. O estado de execução, os ajustes nativos e os controles do Android funcionam apenas dentro desta página.
 
-Envie este repositório para sua conta e configure **Settings → Pages → Deploy from a branch → main → /docs**. O GitHub fornecerá o endereço público.
+## Alcance
 
-O passo a passo está em [PUBLICAR_NO_GITHUB.md](PUBLICAR_NO_GITHUB.md).
+A base contém 45 definições do APK 1355, mais ajustes nativos e dois avisos observados: **48 telas e 57 páginas/abas** nos dados. Na atualização interna **1358**, foram conferidas diretamente **32 telas, 41 páginas/abas e os 11 modos**. As outras 16 definições auxiliares não foram confirmadas nessa versão e não têm atalhos artificiais na interface pública.
 
-## Organização
+A apresentação Android e seu fluxo foram acrescentados em 17/10/2026. Não se afirma uma emulação completa do Android ou identidade visual e funcional integral com o bot. Consulte [o guia](HTML/LEIA-ME.md) e [a revisão visual](HTML/REVISAO_1358.md).
 
-| Pasta / arquivo | Finalidade |
-|---|---|
-| `docs/` | Site pronto para o GitHub Pages, com imagens e PDF |
-| `HTML/` | Fonte de edição da referência |
-| `HTML/dados/` | Modelos visuais e traduções |
-| `scripts/preparar-publicacao.ps1` | Atualiza a cópia de publicação em `docs/` |
-| `scripts/verificar-publicacao.cjs` | Confere o site servido em uma subpasta, como no GitHub Pages |
-| `.gitignore` | Mantém APK, temporários, exercícios preenchidos e documentos de origem fora do envio |
+## Atualizar o site
 
-Os arquivos Android e os documentos de origem podem continuar na pasta local. O site e o repositório não precisam deles para funcionar. O manual traduzido está incluído em `docs/manual/`.
-
-## Atualizar a referência
-
-Edite os arquivos em `HTML/`. Depois execute, a partir da raiz:
+Edite `HTML/` e execute, na raiz:
 
 ```powershell
 .\scripts\preparar-publicacao.ps1
 ```
 
-O script copia os arquivos do site para `docs/`, coloca o PDF no local correto e ajusta o link do manual. Quando o PDF já estiver em `docs/manual/`, também funciona em uma cópia clonada do repositório, sem o documento de origem da raiz.
+O script monta a publicação em `docs/`, com estilos, dados, 245 imagens, ícone do aplicativo e manual em PDF. Depois envie as alterações ao GitHub; o Pages publica a pasta `docs/` da branch `main`.
 
-Envie as alterações ao GitHub para atualizar o site.
+O procedimento está em [PUBLICAR_NO_GITHUB.md](PUBLICAR_NO_GITHUB.md). O APK, documentos de origem, temporários e exercícios locais não fazem parte da publicação.
 
-## Conferência automática (opcional)
+## Verificar
 
-O site pronto não precisa de Node.js. Para executar os testes de desenvolvimento, use Node.js, execute `npm install` e depois `npm test`. No Windows, o teste usa o Edge instalado. Em outros sistemas, instale o navegador de teste com `npx playwright install chromium`.
+O site pronto não precisa de Node.js. Para os testes de desenvolvimento, instale as dependências de `package.json` e execute `npm test`. No Windows, o teste usa o Edge instalado; em outros sistemas, é necessário instalar o Chromium do Playwright.
 
-O teste serve `docs/` em um endereço com nome de repositório e confere as telas, as imagens, o PDF, a troca de idioma e o salvamento dos exercícios. O resultado fica na pasta local `verificacao/`.
-
-## Alcance da referência
-
-A base dos modelos e das 245 imagens foi comparada com o APK oficial 1355. Os painéis e os 11 modos observados foram conferidos na atualização interna 1358. A revisão não confirma uma cópia integral de todas as mensagens geradas em execução ou de todas as alterações remotas do bot. Consulte [a revisão](HTML/REVISAO_1358.md) e [o guia completo](HTML/LEIA-ME.md).
-
+A verificação cobre as 48 definições e 57 páginas/abas, os 11 modos, diálogos, ícone, PDF, navegação Android, gestos, retomada de tarefas, armazenamento, exportação/importação e largura de celular. Os resultados ficam em `verificacao/`, fora da publicação.
