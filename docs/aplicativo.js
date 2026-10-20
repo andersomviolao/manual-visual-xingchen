@@ -1,6 +1,7 @@
 /* Referência visual local. Não carrega nem executa os scripts do aplicativo. */
 (() => {
   'use strict';
+  const BOT_VERSION='1362';
   const D=window.BOT_DATA, $=s=>document.querySelector(s);
   // Tela nativa adicional, conferida visualmente no LDPlayer em 15/10/2026.
   D.screens['应用设置']={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'NativeSettings',a:{},children:[]}]}]};
@@ -188,7 +189,7 @@
       el=document.createElement('button');el.type='button';el.className='ui-button';el.textContent=localized(a.title||'');
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='pt')el.textContent='Licença';
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='zh')el.textContent='送卡密';
-      if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?'官网 xccoc.fun　热更新版本:1358':'Site xccoc.fun · Atualização: 1358';
+      if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?`官网 xccoc.fun　热更新版本:${BOT_VERSION}`:`Site xccoc.fun · Atualização: ${BOT_VERSION}`;
       if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("assets/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
       else el.title=localized(a.title||a.id||'');
       el.onclick=()=>{showControl(n);action(a.id||'',n,el);};
