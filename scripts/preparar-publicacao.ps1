@@ -56,6 +56,7 @@ $taskReview = [regex]::Replace($taskReview, 'C:\\Users\\[^\r\n`]+\\星辰辅助1
 
 Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1358.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1358.md') -Force
 Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1362.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1362.md') -Force
+Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1363.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1363.md') -Force
 
 $taskFiles = @(Get-ChildItem -LiteralPath $taskPublishDir -Recurse -File)
 $taskSize = ($taskFiles | Measure-Object -Property Length -Sum).Sum

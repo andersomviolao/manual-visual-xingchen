@@ -1,0 +1,122 @@
+{
+  "version": "1363",
+  "date": "2026-10-21",
+  "method": "Conferência visual direta no LDPlayer, instância doar; sem extração dos arquivos internos da atualização.",
+  "screens": [
+    "界面设置",
+    "星辰国际",
+    "应用设置",
+    "免费模式说明",
+    "赠卡说明",
+    "通用任务",
+    "特殊功能",
+    "打鱼资源条件",
+    "进攻资源条件",
+    "打鱼造兵设置",
+    "升级建筑",
+    "升级科技",
+    "升级战宠",
+    "升级武器",
+    "多号独立设置",
+    "升级1",
+    "兑换物品活动",
+    "智能换阵",
+    "买卖药水",
+    "满资源设置",
+    "军队配置链接",
+    "部落战联赛",
+    "部落增援",
+    "竞赛",
+    "夜世界",
+    "宝石加速",
+    "多号捐兵设置",
+    "语言设置",
+    "使用药水",
+    "链接奖励",
+    "通用切号",
+    "QQ切号",
+    "文本框",
+    "浏览器",
+    "自助切号",
+    "放大",
+    "刷经验"
+  ],
+  "screenCount": 37,
+  "pageCount": 46,
+  "modes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "dialogs": {
+    "兑换物品活动": {
+      "width": 380,
+      "minHeight": 430,
+      "parent": "界面设置"
+    },
+    "部落战联赛": {
+      "width": 330,
+      "minHeight": 300,
+      "parent": "界面设置"
+    },
+    "宝石加速": {
+      "width": 340,
+      "minHeight": 260,
+      "parent": "界面设置"
+    },
+    "链接奖励": {
+      "width": 300,
+      "minHeight": 300,
+      "parent": "通用任务"
+    },
+    "使用药水": {
+      "width": 400,
+      "minHeight": 300,
+      "parent": "通用任务"
+    },
+    "军队配置链接": {
+      "width": 450,
+      "minHeight": 260,
+      "parent": "界面设置",
+      "noConfirm": true
+    }
+  },
+  "followup": {
+    "date": "2026-10-21",
+    "confirmed": [
+      "文本框",
+      "浏览器",
+      "自助切号",
+      "放大",
+      "刷经验"
+    ],
+    "limitedScope": {
+      "文本框": "Moldura e duas mensagens observadas; outras mensagens dinâmicas não verificadas.",
+      "浏览器": "Acesso, moldura e carregamento do Tencent Docs; conteúdo remoto integral não reproduzido."
+    },
+    "blocked": {
+      "文件列表": "Os dois botões de consulta mostram Permissão insuficiente na licença gratuita."
+    },
+    "unconfirmed": [
+      "交流群",
+      "使用说明",
+      "卡密说明",
+      "反馈",
+      "城墙",
+      "捐兵统计",
+      "捐兵造兵设置",
+      "文件列表",
+      "更新公告",
+      "网",
+      "自定义下兵"
+    ]
+  }
+}

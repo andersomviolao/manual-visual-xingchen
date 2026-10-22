@@ -1,7 +1,7 @@
 /* Referência visual local. Não carrega nem executa os scripts do aplicativo. */
 (() => {
   'use strict';
-  const BOT_VERSION='1362';
+  const BOT_VERSION='1363';
   const D=window.BOT_DATA, $=s=>document.querySelector(s);
   // Tela nativa adicional, conferida visualmente no LDPlayer em 15/10/2026.
   D.screens['应用设置']={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'NativeSettings',a:{},children:[]}]}]};
