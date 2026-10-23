@@ -313,7 +313,9 @@
     // Portuguese often needs two lines where Chinese fits in one.
     screenEl.querySelectorAll('.ui-row').forEach(row=>{if(row.scrollWidth>row.clientWidth+3){row.querySelectorAll(':scope > .ui-text,:scope > .ui-check-group span,:scope > .ui-select,:scope > .ui-button:not(.icon)').forEach(el=>{el.style.fontSize=Math.min(parseFloat(getComputedStyle(el).fontSize),13)+'px';});}if(row.scrollWidth>row.clientWidth+10&&row.querySelector('.ui-text:not(:empty)')){row.style.flexWrap='wrap';row.style.rowGap='3px';}});
   }
-  $('#launch-bot').onclick=openApp;$('#floating-bot').onclick=openPanel;
+  $('#launch-bot').addEventListener('click',openApp,{passive:true});
+  $('#launch-bot').addEventListener('pointerup',e=>{if(e.pointerType==='touch'){e.preventDefault();openApp();}},{passive:false});
+  $('#floating-bot').onclick=openPanel;
   let dismissKeyboard=false;
   $('#android-back').addEventListener('pointerdown',()=>{dismissKeyboard=!!document.activeElement?.matches('input,textarea,select');});
   $('#android-back').onclick=()=>{if(dismissKeyboard){dismissKeyboard=false;document.activeElement?.blur();return;}back();};
@@ -352,14 +354,15 @@
   });
   mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;
   function resizePhone(){
-    const scale=Math.min(1,(window.innerWidth-12)/480,(window.innerHeight-60)/853.333);
-    const fitted=Math.max(.25,scale);
-    // CSS zoom is ignored or applied to layout coordinates inconsistently by
-    // Safari/iOS. Transform keeps the phone centered and preserves hit testing.
+    const narrow=window.innerWidth<520;
+    const width=narrow?Math.max(280,window.innerWidth):480;
+    const height=narrow?Math.max(520,Math.min(853.333,window.innerHeight-74)):853.333;
+    // On mobile use the real CSS viewport dimensions. Avoid zoom/transform:
+    // Safari can otherwise offset pointer coordinates from the visible button.
     $('#phone').style.zoom='';
-    $('#phone').style.transform=`scale(${fitted})`;
-    $('#phone').style.transformOrigin='top center';
-    $('#device-frame').style.width=480*fitted+'px';$('#device-frame').style.height=853.333*fitted+'px';
+    $('#phone').style.transform='none';
+    $('#phone').style.width=width+'px';$('#phone').style.height=height+'px';
+    $('#device-frame').style.width=width+'px';$('#device-frame').style.height=height+'px';
   }
   function updateClock(){$('#android-clock').textContent=new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'}).format(new Date());}
   window.addEventListener('resize',resizePhone);updateClock();setInterval(updateClock,30000);resizePhone();render();syncSystem();
