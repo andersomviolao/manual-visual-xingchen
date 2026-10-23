@@ -282,8 +282,10 @@
   }
   function arrangeModeEightFeatures(content){
     if(current!=='界面设置'||mode!==7)return;
-    const competitionRow=content.querySelector('.ui-row:has(>[data-original-id="竞赛"])');
-    const newFeaturesRow=content.querySelector('.ui-row:has(>[data-original-id="超级充能"])');
+    const competitionNode=content.querySelector('[data-original-id="竞赛"]');
+    const newFeaturesNode=content.querySelector('[data-original-id="超级充能"]');
+    const competitionRow=competitionNode?.closest('.ui-row');
+    const newFeaturesRow=newFeaturesNode?.closest('.ui-row');
     if(!competitionRow||!newFeaturesRow)return;
     const panelParts=[
       newFeaturesRow.querySelector('[data-original-id="功能生效说明"]'),

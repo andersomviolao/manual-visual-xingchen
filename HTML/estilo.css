@@ -92,7 +92,7 @@ body.android-simulator{background:#e9edf0;color:#283844;min-height:100dvh}
 .dialog-heading button{position:absolute;right:2px;top:1px;background:#ef242c;color:white;font-size:22px;border:2px solid #9a161b;border-radius:5px;line-height:19px;padding:1px 5px}
 #info-body{display:flex;align-items:center;min-height:225px;padding:18px 12px;margin:0;line-height:1.45}
 #info-confirm{display:none}
-.ui-page[data-name='界面设置'] [data-original-id='超级充能'] .ui-check span::after{content:'⚡';display:inline-block;margin-left:4px;color:#2f9ed6;font-size:18px;line-height:1;vertical-align:-1px}
+.ui-page[data-name='界面设置'] [data-original-id='超级充能'] .ui-check span::after{content:'⚡';display:inline-block;margin-left:4px;color:#54a9ce;font-size:18px;line-height:1;vertical-align:-1px}
 .ui-page[data-name='界面设置'] [data-original-id='夜世界开荒'] .ui-check span::after{content:'🏯';display:inline-block;margin-left:4px;font-size:16px;line-height:1;vertical-align:-1px}
 .mode-eight-features{min-height:30px!important;align-items:center!important;gap:0}
 .mode-eight-features>.ui-button.icon{flex:0 0 18px!important;width:18px!important}
