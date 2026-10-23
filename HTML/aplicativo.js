@@ -281,7 +281,7 @@
     layer.append(sheet);screenEl.replaceChildren(background,footer,layer);
   }
   function arrangeModeEightFeatures(content){
-    if(current!=='界面设置'||mode!==7)return;
+    if(current!=='界面设置'||![6,7].includes(mode))return;
     const competitionNode=content.querySelector('[data-original-id="竞赛"]');
     const newFeaturesNode=content.querySelector('[data-original-id="超级充能"]');
     const competitionRow=competitionNode?.closest('.ui-row');
