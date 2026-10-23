@@ -94,3 +94,40 @@ body.android-simulator{background:#e9edf0;color:#283844;min-height:100dvh}
 #info-confirm{display:none}
 .ui-page[data-name='界面设置'] [data-original-id='超级充能'] .ui-check span::after{content:'⚡';display:inline-block;margin-left:4px;color:#2f9ed6;font-size:18px;line-height:1;vertical-align:-1px}
 .ui-page[data-name='界面设置'] [data-original-id='夜世界开荒'] .ui-check span::after{content:'🏯';display:inline-block;margin-left:4px;font-size:16px;line-height:1;vertical-align:-1px}
+
+/* A tela do APK usa colunas estáveis: o texto pode quebrar, mas a caixa de
+   seleção conserva a mesma posição em todas as linhas. */
+.ui-page[data-name='界面设置'] [data-original-id='加入部落'],
+.ui-page[data-name='界面设置'] [data-original-id='退出部落'],
+.ui-page[data-name='界面设置'] [data-original-id='多号升级'],
+.ui-page[data-name='界面设置'] [data-original-id='限时活动'],
+.ui-page[data-name='界面设置'] [data-original-id='升级建筑'],
+.ui-page[data-name='界面设置'] [data-original-id='升级科技'],
+.ui-page[data-name='界面设置'] [data-original-id='升级战宠'],
+.ui-page[data-name='界面设置'] [data-original-id='升级武器'],
+.ui-page[data-name='界面设置'] [data-original-id='都城偷袭'],
+.ui-page[data-name='界面设置'] [data-original-id='捐都城币'],
+.ui-page[data-name='界面设置'] [data-original-id='智能换阵'],
+.ui-page[data-name='界面设置'] [data-original-id='买卖药水'],
+.ui-page[data-name='界面设置'] [data-original-id='打排位'],
+.ui-page[data-name='界面设置'] [data-original-id='等援兵'],
+.ui-page[data-name='界面设置'] [data-original-id='国服签到'],
+.ui-page[data-name='界面设置'] [data-original-id='使用宝箱奖励'],
+.ui-page[data-name='界面设置'] [data-original-id='删援兵'],
+.ui-page[data-name='界面设置'] [data-original-id='求援'],
+.ui-page[data-name='界面设置'] [data-original-id='不下攻城'],
+.ui-page[data-name='界面设置'] [data-original-id='捐兵']{flex:1 1 0!important;min-width:0}
+.ui-page[data-name='界面设置'] .ui-row:has(> .ui-layout[data-original-id='私人定制'])> .ui-layout[data-original-id='私人定制']{flex:1 1 0!important;min-width:0}
+.ui-page[data-name='界面设置'] .ui-row:has(> .ui-layout[data-original-id='私人定制'])> .ui-layout[data-original-id='私人定制']>.ui-check-group{width:100%;flex:1 1 0!important;min-width:0}
+.ui-page[data-name='界面设置'] [data-original-id='竞赛'],
+.ui-page[data-name='界面设置'] [data-original-id='夜世界开荒'],
+.ui-page[data-name='界面设置'] [data-original-id='宝石加速']{flex:1 1 0!important;min-width:0}
+
+@media(max-width:520px){
+  .screen{overflow-x:hidden}
+  .ui-page[data-name='界面设置'] .ui-check{gap:3px;padding:2px 3px;align-items:flex-start}
+  .ui-page[data-name='界面设置'] .ui-check span{font-size:12px!important;line-height:1.06;display:block}
+  .ui-page[data-name='界面设置'] .ui-check input{width:24px;height:24px;margin-top:1px}
+  .ui-page[data-name='界面设置'] .ui-row:has(> .ui-check-group){align-items:stretch}
+  .ui-page[data-name='界面设置'] .ui-button:not(.icon){font-size:13px;line-height:1.08}
+}
