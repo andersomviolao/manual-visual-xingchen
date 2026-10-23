@@ -1,7 +1,19 @@
 /* Referência visual local. Não carrega nem executa os scripts do aplicativo. */
 (() => {
   'use strict';
-  const BOT_VERSION='1363';
+  const BOT_VERSION='1365';
+  // Novas funções destacadas na atualização 1365; mantêm-se visíveis na tela inicial para estudo.
+  const latestFeatureButtons=[
+    {id:'建筑工人学徒',title:'建筑工人学徒',pt:'Aprendiz do Construtor'},
+    {id:'实验助手',title:'实验助手',pt:'Assistente do Laboratório'},
+    {id:'超级充能',title:'超级充能',pt:'Supercarga'}
+  ];
+  const settingsRoot=D.screens['界面设置'];
+  const settingsPage=settingsRoot?.children?.find(n=>n.tag==='Page');
+  if(settingsPage){
+    const featureRow={tag:'LinearLayout',a:{orientation:'0',id:'atualizacao1365',width:'-1',height:'-2',margin:'4,4,4,4',background:'#fff4e5'},children:latestFeatureButtons.map(f=>({tag:'Button',a:{id:f.id,title:f.title,width:'-1',height:'-2'},children:[]}))};
+    settingsPage.children.push(featureRow);
+  }
   const D=window.BOT_DATA, $=s=>document.querySelector(s);
   // Tela nativa adicional, conferida visualmente no LDPlayer em 15/10/2026.
   D.screens['应用设置']={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'NativeSettings',a:{},children:[]}]}]};
@@ -23,6 +35,7 @@
     '界面设置':'Configurações principais','星辰国际':'Tela inicial e licença','打鱼造兵设置':'Tropas para farm','捐兵造兵设置':'Tropas para doação','打鱼资源条件':'Recursos de farm e muros','进攻资源条件':'Limites de recursos por CV','通用任务':'Tarefas gerais','特殊功能':'Funções especiais','升级建筑':'Melhorar construções','升级科技':'Melhorar pesquisa','升级战宠':'Melhorar mascotes','升级武器':'Melhorar equipamentos','升级1':'Configuração individual da conta','多号独立设置':'Melhorias por conta','多号捐兵设置':'Doação por conta','QQ切号':'Troca de contas QQ','通用切号':'Várias versões — 50 contas','夜世界':'Base do Construtor','宝石加速':'Aceleração com gemas','竞赛':'Jogos do Clã','部落增援':'Reforços para guerras','部落战联赛':'Guerras e ligas','语言设置':'Idiomas na busca de clãs','自定义下兵':'Lançamento personalizado','自助切号':'Troca manual e extração','智能换阵':'Obstáculos e layouts','买卖药水':'Comprar e vender poções','使用药水':'Uso de poções','兑换物品活动':'Trocas de eventos','军队配置链接':'Composição por link','捐兵统计':'Estatísticas de doação','城墙':'Limites para muros','满资源设置':'Pausa com recursos cheios','刷经验':'Ganho de experiência','链接奖励':'Recompensas por link','卡密说明':'Informações da licença','反馈':'Relatar um problema','文件列表':'Arquivos na nuvem','更新公告':'Aviso de atualização','使用说明':'Instruções de uso','文本框':'Janela de informações','浏览器':'Tutorial no navegador','网':'Loja de chaves','交流群':'Grupo de usuários','放大':'Expandir ou ocultar janela'
   };
   names['应用设置']='Ajustes gerais do aplicativo';
+  names['建筑工人学徒']='Aprendiz do Construtor';names['实验助手']='Assistente do Laboratório';names['超级充能']='Supercarga';
   names['免费模式说明']='Aviso do modo gratuito';names['赠卡说明']='Oferta de licença';
   const extra={
     '权限不够':'Permissão insuficiente',
