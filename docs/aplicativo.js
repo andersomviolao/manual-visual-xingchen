@@ -40,10 +40,12 @@
   };
   function tr(s=''){return extra[s]??D.translations[s]??names[s]??s;}
   let stored={};try{stored=JSON.parse(localStorage.getItem('xingchen-estudo-v1')||'{}');}catch{}
-  let values=stored.values||{},language=stored.language||'pt',current='星辰国际',page=0,mode=6,history=[],allMain=false;
+  const layoutRevision='mobile-bottom-1365';
+  if(stored.layoutRevision!==layoutRevision){stored.values={...(stored.values||{}),'界面设置/0/功能选择开关':7};stored.layoutRevision=layoutRevision;}
+  let values=stored.values||{},language=stored.language||'pt',current='星辰国际',page=0,mode=7,history=[],allMain=false;
   const screenEl=$('#screen'),tabs=$('#page-tabs');
   const localized=s=>language==='zh'?s:tr(s);
-  function save(){try{localStorage.setItem('xingchen-estudo-v1',JSON.stringify({values,language}));}catch{toast('O navegador não permitiu salvar automaticamente. Use Salvar exercício.');}}
+  function save(){try{localStorage.setItem('xingchen-estudo-v1',JSON.stringify({values,language,layoutRevision}));}catch{toast('O navegador não permitiu salvar automaticamente. Use Salvar exercício.');}}
   function toast(t){$('#toast').textContent=t;$('#toast').classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').classList.remove('visible'),3500);}
   function info(title,text){$('#info-title').textContent=title;$('#info-body').textContent=text;$('#info-dialog').hidden=false;}
   const assetName=bg=>tr((bg||'').replace(/\.(webp|png|jpe?g)$/i,''));
@@ -345,9 +347,9 @@
   };
   $('#info-close').onclick=$('#info-confirm').onclick=()=>{$('#info-dialog').hidden=true;};
   $('#info-dialog').addEventListener('click',e=>{if(e.target===$('#info-dialog'))$('#info-dialog').hidden=true;});
-  $('#reset').onclick=()=>{values={};mode=6;save();render();toast('Campos restaurados ao modelo do APK.');};
+  $('#reset').onclick=()=>{values={'界面设置/0/功能选择开关':7};mode=7;save();render();toast('Campos restaurados ao modelo do APK.');};
   $('#export').onclick=()=>{const text=JSON.stringify({format:'xingchen-referencia-1',values,language},null,2);const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='meu-exercicio-xingchen.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-  $('#import').onclick=()=>$('#import-file').click();$('#import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.format!=='xingchen-referencia-1'||!data.values||typeof data.values!=='object'||Array.isArray(data.values))throw Error();for(const value of Object.values(data.values))if(!['string','number','boolean'].includes(typeof value))throw Error();values=data.values;language=['pt','zh'].includes(data.language)?data.language:'pt';mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;save();render();toast('Exercício aberto.');}catch{info('Arquivo inválido','Escolha um exercício JSON salvo por esta referência.');}e.target.value='';};
+  $('#import').onclick=()=>$('#import-file').click();$('#import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.format!=='xingchen-referencia-1'||!data.values||typeof data.values!=='object'||Array.isArray(data.values))throw Error();for(const value of Object.values(data.values))if(!['string','number','boolean'].includes(typeof value))throw Error();values=data.values;language=['pt','zh'].includes(data.language)?data.language:'pt';mode=Number(getVal('界面设置/0/功能选择开关',7));if(mode<0||mode>10)mode=7;save();render();toast('Exercício aberto.');}catch{info('Arquivo inválido','Escolha um exercício JSON salvo por esta referência.');}e.target.value='';};
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();back();}});
   let gesture=null;
   screenEl.addEventListener('pointerdown',e=>{if(!e.target.closest('input,select,button,textarea'))gesture={x:e.clientX,y:e.clientY,id:e.pointerId};},true);
@@ -358,7 +360,7 @@
     const count=D.screens[current].children.filter(n=>n.tag==='Page').length;
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.7&&count>1){const next=page+(dx<0?1:-1);if(next>=0&&next<count)go(current,next,false,'Deslizar a tela');}
   });
-  mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;
+  mode=Number(getVal('界面设置/0/功能选择开关',7));if(mode<0||mode>10)mode=7;
   function resizePhone(){
     const narrow=window.innerWidth<520;
     const width=narrow?Math.max(280,window.innerWidth):480;
