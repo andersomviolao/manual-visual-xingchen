@@ -278,12 +278,27 @@
     const footer=document.createElement('div');footer.className='observed-background-confirm';footer.setAttribute('aria-hidden','true');footer.setAttribute('inert','');footer.textContent=language==='zh'?'确定':'Confirmar';
     layer.append(sheet);screenEl.replaceChildren(background,footer,layer);
   }
+  function arrangeModeEightFeatures(content){
+    if(current!=='界面设置'||mode!==7)return;
+    const competitionRow=content.querySelector('.ui-row:has(>[data-original-id="竞赛"])');
+    const newFeaturesRow=content.querySelector('.ui-row:has(>[data-original-id="超级充能"])');
+    if(!competitionRow||!newFeaturesRow)return;
+    const parts=[
+      newFeaturesRow.querySelector('[data-original-id="功能生效说明"]'),
+      newFeaturesRow.querySelector('[data-original-id="超级充能"]'),
+      competitionRow.querySelector('[data-original-id="竞赛"]'),
+      competitionRow.querySelector('[data-original-id="夜世界开荒"]')
+    ].filter(Boolean);
+    const row=document.createElement('div');row.className='ui-layout ui-row ui-card mode-eight-features';row.dataset.originalId='modo-oito-funcoes';
+    parts.forEach(part=>row.append(part));
+    competitionRow.replaceWith(row);newFeaturesRow.remove();
+  }
   function render(keepScroll=false){
     $('#app-surface > .versions-heading')?.remove();
     const scroll=keepScroll?screenEl.scrollTop:0,tree=D.screens[current],pages=tree.children.filter(n=>n.tag==='Page');page=Math.min(page,pages.length-1);const tabbed=pages.length>1;tabs.hidden=!tabbed;tabs.replaceChildren();
     if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
     if(current==='界面设置')tabs.hidden=true;
-    const content=create(pages[page]);screenEl.replaceChildren(content);screenEl.scrollTop=scroll;
+    const content=create(pages[page]);screenEl.replaceChildren(content);arrangeModeEightFeatures(content);screenEl.scrollTop=scroll;
     const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#app-surface > .confirm-wrap').hidden=!!sheet||tree.a.showconfirm==='false';
     const runtime=['自助切号','放大','刷经验'].includes(current);
     screenEl.classList.toggle('runtime-window-host',runtime);
