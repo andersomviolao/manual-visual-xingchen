@@ -2,6 +2,7 @@
 (() => {
   'use strict';
   const BOT_VERSION='1365';
+  const D=window.BOT_DATA, $=s=>document.querySelector(s);
   // Novas funções destacadas na atualização 1365; mantêm-se visíveis na tela inicial para estudo.
   const latestFeatureButtons=[
     {id:'建筑工人学徒',title:'建筑工人学徒',pt:'Aprendiz do Construtor'},
@@ -14,7 +15,6 @@
     const featureRow={tag:'LinearLayout',a:{orientation:'0',id:'atualizacao1365',width:'-1',height:'-2',margin:'4,4,4,4',background:'#fff4e5'},children:latestFeatureButtons.map(f=>({tag:'Button',a:{id:f.id,title:f.title,width:'-1',height:'-2'},children:[]}))};
     settingsPage.children.push(featureRow);
   }
-  const D=window.BOT_DATA, $=s=>document.querySelector(s);
   // Tela nativa adicional, conferida visualmente no LDPlayer em 15/10/2026.
   D.screens['应用设置']={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'NativeSettings',a:{},children:[]}]}]};
   const livePopups={
