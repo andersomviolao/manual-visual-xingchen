@@ -14,4 +14,6 @@ Conferência do histórico oficial em **22/10/2026**, horário de Brasília, em 
 
 O cabeçalho, os dados gerados e o material público agora identificam a versão 1365. A tela inicial de configurações reproduz os controles novos integrados ao painel, incluindo **Supercarga**, **Aprendizes**, **Equipar construções** e **Assistente do Laboratório**, com os ícones de informação posicionados junto às opções. Eles representam as funções anunciadas e não executam ações no jogo.
 
+Na conferência com rolagem até o fim da tela, também foram confirmados os blocos de ranqueadas, espera de reforços, check-in, recompensas de baú, refinaria, aprendizes, reforma e restrição por CV. Os marcadores visuais de Supercarga e Base do Construtor foram reproduzidos junto aos respectivos rótulos.
+
 A base visual do APK original continua identificada separadamente como APK 1355; 1365 é a atualização interna e o pacote atual informado pelo histórico. A referência permanece uma reprodução de estudo, sem alegar cópia pixel a pixel ou equivalência da lógica de execução.
