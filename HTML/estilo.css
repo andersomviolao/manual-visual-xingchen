@@ -97,6 +97,8 @@ body.android-simulator{background:#e9edf0;color:#283844;min-height:100dvh}
 .mode-eight-features{min-height:30px!important;align-items:center!important;gap:0}
 .mode-eight-features>.ui-button.icon{flex:0 0 18px!important;width:18px!important}
 .mode-eight-features>.ui-check-group{flex:1 1 0!important;min-width:0}
+.mode-eight-extra-features{min-height:30px!important;align-items:center!important;gap:0}
+.mode-eight-extra-features>.ui-check-group{flex:1 1 0!important;min-width:0}
 
 /* A tela do APK usa colunas estáveis: o texto pode quebrar, mas a caixa de
    seleção conserva a mesma posição em todas as linhas. */
@@ -129,6 +131,7 @@ body.android-simulator{background:#e9edf0;color:#283844;min-height:100dvh}
 @media(max-width:520px){
   .screen{overflow-x:hidden}
   .mode-eight-features>.ui-check-group .ui-check{padding-left:3px;padding-right:3px}
+  .mode-eight-extra-features>.ui-check-group .ui-check{padding-left:3px;padding-right:3px}
   .ui-page[data-name='界面设置'] .ui-check{gap:3px;padding:2px 3px;align-items:flex-start}
   .ui-page[data-name='界面设置'] .ui-check span{font-size:12px!important;line-height:1.06;display:block}
   .ui-page[data-name='界面设置'] .ui-check input{width:24px;height:24px;margin-top:1px}

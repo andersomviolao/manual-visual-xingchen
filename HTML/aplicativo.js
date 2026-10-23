@@ -40,7 +40,7 @@
   };
   function tr(s=''){return extra[s]??D.translations[s]??names[s]??s;}
   let stored={};try{stored=JSON.parse(localStorage.getItem('xingchen-estudo-v1')||'{}');}catch{}
-  const layoutRevision='mobile-bottom-1365';
+  const layoutRevision='mobile-bottom-1365d';
   if(stored.layoutRevision!==layoutRevision){stored.values={...(stored.values||{}),'界面设置/0/功能选择开关':7};stored.layoutRevision=layoutRevision;}
   let values=stored.values||{},language=stored.language||'pt',current='星辰国际',page=0,mode=7,history=[],allMain=false;
   const screenEl=$('#screen'),tabs=$('#page-tabs');
@@ -285,15 +285,18 @@
     const competitionRow=content.querySelector('.ui-row:has(>[data-original-id="竞赛"])');
     const newFeaturesRow=content.querySelector('.ui-row:has(>[data-original-id="超级充能"])');
     if(!competitionRow||!newFeaturesRow)return;
-    const parts=[
+    const panelParts=[
       newFeaturesRow.querySelector('[data-original-id="功能生效说明"]'),
       newFeaturesRow.querySelector('[data-original-id="超级充能"]'),
       competitionRow.querySelector('[data-original-id="竞赛"]'),
       competitionRow.querySelector('[data-original-id="夜世界开荒"]')
     ].filter(Boolean);
-    const row=document.createElement('div');row.className='ui-layout ui-row ui-card mode-eight-features';row.dataset.originalId='modo-oito-funcoes';
-    parts.forEach(part=>row.append(part));
-    competitionRow.replaceWith(row);newFeaturesRow.remove();
+    const panel=document.createElement('div');panel.className='ui-layout ui-row ui-card mode-eight-features';panel.dataset.originalId='modo-oito-funcoes';
+    panelParts.forEach(part=>panel.append(part));
+    const extraParts=['精制台升级','使用学徒','改装功能'].map(id=>newFeaturesRow.querySelector(`[data-original-id="${id}"]`)).filter(Boolean);
+    const extras=document.createElement('div');extras.className='ui-layout ui-row ui-card mode-eight-extra-features';extras.dataset.originalId='modo-oito-funcoes-extras';
+    extraParts.forEach(part=>extras.append(part));
+    competitionRow.replaceWith(panel);newFeaturesRow.replaceWith(extras);
   }
   function render(keepScroll=false){
     $('#app-surface > .versions-heading')?.remove();
