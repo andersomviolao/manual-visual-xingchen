@@ -3,18 +3,6 @@
   'use strict';
   const BOT_VERSION='1365';
   const D=window.BOT_DATA, $=s=>document.querySelector(s);
-  // Novas funções destacadas na atualização 1365; mantêm-se visíveis na tela inicial para estudo.
-  const latestFeatureButtons=[
-    {id:'建筑工人学徒',title:'建筑工人学徒',pt:'Aprendiz do Construtor'},
-    {id:'实验助手',title:'实验助手',pt:'Assistente do Laboratório'},
-    {id:'超级充能',title:'超级充能',pt:'Supercarga'}
-  ];
-  const settingsRoot=D.screens['界面设置'];
-  const settingsPage=settingsRoot?.children?.find(n=>n.tag==='Page');
-  if(settingsPage){
-    const featureRow={tag:'LinearLayout',a:{orientation:'0',id:'atualizacao1365',width:'-1',height:'-2',margin:'4,4,4,4',background:'#fff4e5'},children:latestFeatureButtons.map(f=>({tag:'Button',a:{id:f.id,title:f.title,width:'-1',height:'-2'},children:[]}))};
-    settingsPage.children.push(featureRow);
-  }
   // Tela nativa adicional, conferida visualmente no LDPlayer em 15/10/2026.
   D.screens['应用设置']={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'NativeSettings',a:{},children:[]}]}]};
   const livePopups={
@@ -156,7 +144,7 @@
   }
   function color(s){if(!s)return '';return /^#[\da-f]{8}$/i.test(s)?'#'+s.slice(3):s;}
   function style(el,n,parent){
-    const a=n.a,row=parent?.a.orientation==='0',unit=1.4;const width=Number(a.width),height=Number(a.height);let css=el.style;
+    const a=n.a,row=parent?.a.orientation==='0',unit=current==='界面设置'?1:1.4;const width=Number(a.width),height=Number(a.height);let css=el.style;
     if(a.width!==undefined){if(width>0){css.width=width*unit+'px';css.flex=row?'0 1 '+width*unit+'px':'0 0 auto';}else if(width===-1){css.flex=row?'1 1 0':'0 0 auto';if(!row){const m=(a.margin||'0,0,0,0').split(',').map(Number);css.width=`calc(100% - ${((m[0]||0)+(m[2]||0))*unit}px)`;}}else{css.flex='0 1 auto';}}
     if(height>0){css.minHeight=height*unit+'px';if(n.tag==='Button'||n.tag==='EditText'||n.tag==='ComboBox')css.height=height*unit+'px';}
     if(a.margin){const m=a.margin.split(',').map(Number);if(m.length===4)css.margin=`${m[1]*unit}px ${m[2]*unit}px ${m[3]*unit}px ${m[0]*unit}px`;}
