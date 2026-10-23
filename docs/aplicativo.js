@@ -353,8 +353,13 @@
   mode=Number(getVal('界面设置/0/功能选择开关',6));if(mode<0||mode>10)mode=6;
   function resizePhone(){
     const scale=Math.min(1,(window.innerWidth-12)/480,(window.innerHeight-60)/853.333);
-    $('#phone').style.zoom=String(Math.max(.25,scale));
-    $('#device-frame').style.width=480*scale+'px';$('#device-frame').style.height=853.333*scale+'px';
+    const fitted=Math.max(.25,scale);
+    // CSS zoom is ignored or applied to layout coordinates inconsistently by
+    // Safari/iOS. Transform keeps the phone centered and preserves hit testing.
+    $('#phone').style.zoom='';
+    $('#phone').style.transform=`scale(${fitted})`;
+    $('#phone').style.transformOrigin='top center';
+    $('#device-frame').style.width=480*fitted+'px';$('#device-frame').style.height=853.333*fitted+'px';
   }
   function updateClock(){$('#android-clock').textContent=new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'}).format(new Date());}
   window.addEventListener('resize',resizePhone);updateClock();setInterval(updateClock,30000);resizePhone();render();syncSystem();
