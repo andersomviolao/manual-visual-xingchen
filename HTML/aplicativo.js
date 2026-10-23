@@ -137,6 +137,9 @@
     if(has('打鱼时删兵重造'))return farm;
     if(has('定时下线'))return farm;
     if(has('自动审批'))return mode===6;
+    // O painel 8/11 mantém a faixa de funções novas (supercarga, refinaria,
+    // aprendiz e reforma) junto das tarefas cíclicas, como no APK observado.
+    if(a.id==='自动审批布局'&&has('功能生效说明'))return farm||mode===7;
     if(a.id==='自动审批布局')return farm;
     if(a.id==='其他')return farm||mode===7;
     if(a.id==='刷经验模式')return mode===10;
