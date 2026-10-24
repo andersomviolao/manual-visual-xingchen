@@ -37,7 +37,7 @@ if (Test-Path -LiteralPath $taskManualSource -PathType Leaf) {
 }
 
 $taskIndex = [IO.File]::ReadAllText((Join-Path $taskSourceDir 'index.html'))
-$taskOldLink = '../Manual_Xingchen_Portugues_BR.pdf'
+$taskOldLink = '../docs/manual/Manual_Xingchen_Portugues_BR.pdf'
 if (-not $taskIndex.Contains($taskOldLink)) { throw 'O link esperado para o manual não foi encontrado no HTML de origem.' }
 $taskIndex = $taskIndex.Replace($taskOldLink, 'manual/Manual_Xingchen_Portugues_BR.pdf')
 # Muda o endereço dos recursos quando seu conteúdo muda, evitando versões antigas no cache.

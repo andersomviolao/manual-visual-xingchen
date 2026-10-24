@@ -2,6 +2,8 @@
 
 Abra **index.html** no navegador. Não precisa instalar dependências, iniciar servidor nem conectar o bot real.
 
+A revisão de **24/10/2026** usa a interface 1365 observada em `construtor muros 1`. Foram conferidas 32 telas/estruturas, 41 páginas/abas e os onze modos. A navegação entre contas, o PDF, as ajudas e as diferenças das faixas inferiores foram corrigidos. A cobertura atual e os estados que não foram reexecutados estão em [REVISAO_1365.md](REVISAO_1365.md).
+
 ## Como navegar
 
 1. A página começa na tela inicial do Android. Toque no ícone **Xingchen** para abrir o aplicativo.

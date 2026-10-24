@@ -85,7 +85,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
    assert(!!await count('通用功能')===![0,1,10].includes(mode),'Funções comuns incorretas no modo '+mode);
    assert(!!await count('账号地址布局')===![0,1,8,10].includes(mode),'Pasta de conta incorreta no modo '+mode);
    assert(!!await count('偷袭账号选择布局')===[2,3].includes(mode),'Faixa da Capital incorreta no modo '+mode);
-   assert(!!await count('自动审批')===(mode===6),'Aprovação indevida no modo '+mode);
+   assert(!!await count('自动审批')===[6,8,9].includes(mode),'Aprovação incorreta no modo '+mode);
   }
   for(const [name,spec] of Object.entries(await page.evaluate(()=>BOT_DATA.review.dialogs))){
    await page.evaluate(name=>ReferenceApp.go(name),name);
@@ -120,6 +120,47 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.locator('#screen button[data-original-id="查看教程"]').click();
   assert(await page.locator('#screen iframe').count()===1,'Tutorial local não abriu.');
   assert(await page.locator('#app-surface > .confirm-wrap').isHidden(),'Tutorial exibiu confirmação externa.');
+  const tutorialPdf=await page.locator('#screen iframe').getAttribute('src');
+  assert(tutorialPdf.startsWith(base+'manual/'),'Tutorial aponta para PDF fora da publicação.');
+  assert((await context.request.get(tutorialPdf)).status()===200,'PDF do tutorial retornou erro.');
+  await page.evaluate(()=>ReferenceApp.go('多号独立设置'));
+  const accountIndex=page.locator('#screen input[data-original-id="多账号序号"]');
+  const initialIndex=Number(await accountIndex.inputValue());
+  await page.locator('#screen button[data-original-id="上一个"]').click();
+  assert(await page.evaluate(()=>ReferenceApp.current)==='多号独立设置','Anterior abriu outra tela.');
+  assert(Number(await accountIndex.inputValue())===initialIndex-1,'Anterior não diminuiu o número.');
+  await page.locator('#screen button[data-original-id="下一个"]').click();
+  assert(Number(await accountIndex.inputValue())===initialIndex,'Próximo não restaurou o número.');
+  await page.locator('#screen button[data-original-id="账号2设置"]').click();
+  assert((await page.locator('#page-tabs button').first().innerText())==='Conta 2','Aba abriu a conta errada.');
+  await page.locator('#screen input[data-original-id="控杯值"]').fill('2222');
+  await page.locator('#confirm').click();
+  await page.locator('#screen button[data-original-id="账号3设置"]').click();
+  assert(await page.locator('#screen input[data-original-id="控杯值"]').inputValue()!=='2222','Contas compartilham os campos do exercício.');
+  await page.locator('#confirm').click();
+  await page.locator('#screen button[data-original-id="账号2设置"]').click();
+  assert(await page.locator('#screen input[data-original-id="控杯值"]').inputValue()==='2222','Valor da conta 2 não foi preservado.');
+  await page.evaluate(()=>ReferenceApp.go('应用设置'));
+  assert((await page.locator('#screen').innerText()).includes('APK instalado: 1363'),'Versão do APK instalado incorreta.');
+  await page.evaluate(()=>ReferenceApp.go('界面设置'));
+  for(const mode of [6,7,8,9]){
+   await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption(String(mode));
+   const order=await page.locator('.mode-eight-features > [data-original-id]').evaluateAll(els=>els.map(el=>el.dataset.originalId));
+   assert(order.join(',')==='功能生效说明,超级充能,竞赛,夜世界开荒','Ordem da faixa inferior incorreta no modo '+(mode+1));
+   assert(await page.locator('.mode-eight-extra-features').count()===(mode===7?0:1),'Linha de refinaria/aprendizes incorreta no modo '+(mode+1));
+  }
+  await page.evaluate(()=>ReferenceApp.go('通用任务'));
+  await page.locator('#screen button[data-original-id="拜访说明"]').click();
+  assert((await page.locator('#info-body').innerText()).includes('uma tag por linha'),'Ajuda observada não foi reproduzida.');
+  await page.locator('#info-close').click();
+  await page.evaluate(()=>ReferenceApp.go('界面设置'));
+  await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('7');
+  const join=page.locator('#screen [data-original-id="加入部落"] input');
+  await join.check();
+  assert(await page.locator('#screen input[data-original-id="部落标签"]').count()===1,'Entrar no clã não revelou o campo.');
+  assert(await page.locator('#screen input[data-original-id="捐币部落标签"]').count()===0,'Campo duplicado de tag do clã.');
+  await join.uncheck();
+  assert(await page.locator('#screen input[data-original-id="部落标签"]').count()===0,'Desmarcar entrada não ocultou o campo.');
   const screens=await page.evaluate(()=>Object.entries(BOT_DATA.screens).map(([name,n])=>({name,pages:n.children.filter(c=>c.tag==='Page').length})));
   let rendered=0;
   for(const {name,pages} of screens)for(let i=0;i<pages;i++){
@@ -136,6 +177,11 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   const manual=await page.locator('a[href$=".pdf"]').evaluate(el=>el.href);assert(manual.startsWith(base+'manual/'),'Link do manual fora do site.');
   const r=await context.request.get(manual);assert(r.status()===200,'Manual ausente.');const bytes=await r.body();
   assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'manual','Manual_Xingchen_Portugues_BR.pdf'))),'PDF diferente.');
+  const sourceIndex=fs.readFileSync(path.join(root,'HTML','index.html'),'utf8');
+  const sourceHref=sourceIndex.match(/id="manual-link" href="([^"]+)"/)[1];
+  const localPdf=path.resolve(root,'HTML',sourceHref);
+  assert(fs.existsSync(localPdf),'Manual do HTML local ausente.');
+  assert(fs.readFileSync(localPdf).subarray(0,5).toString()==='%PDF-','Manual local inválido.');
   await page.locator('#screen button[data-original-id="打鱼造兵设置"]').click();assert(await page.evaluate(()=>ReferenceApp.current)==='打鱼造兵设置','Navegação falhou.');
 
   await page.locator('input[data-original-id="兵13"]').fill('10');

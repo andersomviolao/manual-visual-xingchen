@@ -118,5 +118,89 @@
       "网",
       "自定义下兵"
     ]
+  },
+  "audit20261024": {
+    "date": "2026-10-24",
+    "started": "2026-10-23",
+    "instance": "construtor muros 1",
+    "internalVersion": "1365",
+    "installedApk": "1363",
+    "android": "9",
+    "systemModel": "SM-A805N",
+    "method": "Navegação visual direta via Computer Use; todos os onze modos, partes inferiores, abas e configurações acessíveis sem iniciar tarefas no jogo.",
+    "screens": [
+      "界面设置",
+      "星辰国际",
+      "应用设置",
+      "免费模式说明",
+      "赠卡说明",
+      "通用任务",
+      "特殊功能",
+      "打鱼资源条件",
+      "进攻资源条件",
+      "打鱼造兵设置",
+      "升级建筑",
+      "升级科技",
+      "升级战宠",
+      "升级武器",
+      "多号独立设置",
+      "升级1",
+      "兑换物品活动",
+      "智能换阵",
+      "买卖药水",
+      "满资源设置",
+      "军队配置链接",
+      "部落战联赛",
+      "部落增援",
+      "竞赛",
+      "夜世界",
+      "多号捐兵设置",
+      "语言设置",
+      "使用药水",
+      "链接奖励",
+      "通用切号",
+      "QQ切号",
+      "浏览器"
+    ],
+    "screenCount": 32,
+    "pageCount": 41,
+    "modes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "observedHelp": [
+      "功能生效说明",
+      "拜访说明",
+      "资源转换说明",
+      "划动操作延时说明",
+      "点击坐标说明",
+      "点击文字说明",
+      "屏蔽活动说明"
+    ],
+    "notReexecuted": {
+      "自助切号": "Janela de execução; parâmetros antigos preservados.",
+      "放大": "Janela de execução; parâmetros antigos preservados.",
+      "刷经验": "Exige iniciar o modo de experiência; não executado.",
+      "宝石加速": "Sem acesso confirmado na interface atual.",
+      "文本框": "Modelo genérico; sete ajudas foram verificadas individualmente."
+    },
+    "blocked": {
+      "文件列表": "A licença atual informa que usuários gratuitos não podem enviar/baixar arquivos."
+    },
+    "mainFeatureModes": {
+      "6": "Farming: Supercarga/Jogos/Base; recompensas; Refinaria/Aprendizes/Equipar.",
+      "7": "Ciclo: Supercarga/Jogos/Base; recompensas; sem linha Refinaria/Aprendizes/Equipar.",
+      "8": "Doação de uma conta: mesma faixa de funções do farming.",
+      "9": "Doação de várias contas: mesma faixa de funções do farming."
+    }
   }
 }

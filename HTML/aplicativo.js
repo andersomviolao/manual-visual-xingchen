@@ -43,6 +43,16 @@
   const layoutRevision='mobile-bottom-1365d';
   if(stored.layoutRevision!==layoutRevision){stored.values={...(stored.values||{}),'界面设置/0/功能选择开关':7};stored.layoutRevision=layoutRevision;}
   let values=stored.values||{},language=stored.language||'pt',current='星辰国际',page=0,mode=7,history=[],allMain=false;
+  // Preserve older exercises in the first individual account.
+  for(const [key,value] of Object.entries(values))if(key.startsWith('升级1/')){
+    const migrated=key.replace('升级1/','升级1@1/');if(!Object.hasOwn(values,migrated))values[migrated]=value;
+  }
+  let accountNumber=1,troopAccount=0;
+  function screenScope(){
+    if(current==='升级1')return `升级1@${accountNumber}`;
+    if(current==='打鱼造兵设置'&&troopAccount)return `打鱼造兵设置@${troopAccount}`;
+    return current;
+  }
   const screenEl=$('#screen'),tabs=$('#page-tabs');
   const localized=s=>language==='zh'?s:tr(s);
   function save(){try{localStorage.setItem('xingchen-estudo-v1',JSON.stringify({values,language,layoutRevision}));}catch{toast('O navegador não permitiu salvar automaticamente. Use Salvar exercício.');}}
@@ -55,19 +65,23 @@
     '通用任务':'通用任务','特殊功能':'特殊功能','打鱼造兵设置':'打鱼造兵设置','多号打鱼造兵设置':'打鱼造兵设置','设置打鱼资源条件':'打鱼资源条件','多号捐兵兵种':'多号捐兵设置','搜索部落语言选择':'语言设置','卡密说明':'卡密说明','查看教程':'浏览器','升级建筑':'升级建筑','升级科技':'升级科技','升级战宠':'升级战宠','升级武器':'升级武器','多号升级':'多号独立设置','限时活动':'兑换物品活动','智能换阵':'智能换阵','买卖药水':'买卖药水','使用药水':'使用药水','链接兑换奖励':'链接奖励','宝石加速':'宝石加速','夜世界开荒':'夜世界','竞赛':'竞赛','捐部落战援兵':'部落增援','自动联赛':'部落战联赛','求援':'军队配置链接','满资源不进攻':'满资源设置','下载新':'文件列表','查询文件':'文件列表','上传指定文件':'文件列表','发起部落战':'部落战联赛'
   };
   routes['卡密说明']='赠卡说明';
-  function getVal(key,def){return Object.hasOwn(values,key)?values[key]:def;}
+  function getVal(key,def){
+    if(Object.hasOwn(values,key))return values[key];
+    const legacy=key.replace(/^升级1@1\//,'升级1/');
+    return legacy!==key&&Object.hasOwn(values,legacy)?values[legacy]:def;
+  }
   let arrival='Início da referência',androidNoticeDismissed=false;
   function go(name,newPage=0,push=true,source='Controle da tela'){
     if(!D.screens[name])return;
     const total=D.screens[name].children.filter(n=>n.tag==='Page').length;
     newPage=Math.max(0,Math.min(Number(newPage)||0,total-1));
     if(current===name&&page===newPage){systemView='app';taskOpen=true;syncSystem();return;}
-    if(push&&name!==current)history.push({name:current,page,scroll:screenEl.scrollTop,arrival});
+    if(push&&name!==current)history.push({name:current,page,scroll:screenEl.scrollTop,arrival,accountNumber,troopAccount});
     current=name;page=newPage;arrival=source;systemView='app';taskOpen=true;render();syncSystem();
   }
   function returnTo(index){
     const prev=history[index];if(!prev)return;
-    history=history.slice(0,index);current=prev.name;page=prev.page;arrival=prev.arrival;
+    history=history.slice(0,index);current=prev.name;page=prev.page;arrival=prev.arrival;accountNumber=prev.accountNumber||1;troopAccount=prev.troopAccount||0;
     render();screenEl.scrollTop=prev.scroll;syncSystem();
   }
   let systemView='home',taskOpen=false,floatingAvailable=false,running=false,noticeShown=false,previousSystemView='home';
@@ -128,6 +142,8 @@
     if(a.id==='账号地址布局')return ![0,1,8,10].includes(mode);
     if(a.id==='提取数据')return mode===0;
     if(a.id==='部落标签布局')return [2,3].includes(mode)||!!getVal('界面设置/0/加入部落/0',false);
+    if(a.id==='捐币部落标签')return mode===3;
+    if(a.id==='部落标签')return mode!==3;
     if(a.id==='检测信息布局')return mode===4;
     if(a.id==='捐献数量布局')return mode===3;
     if(a.id==='都城等级布局')return mode===2;
@@ -138,9 +154,9 @@
     if(a.id==='捐兵打鱼布局')return mode!==9;
     if(has('打鱼时删兵重造'))return farm;
     if(has('定时下线'))return farm;
-    if(has('自动审批'))return mode===6;
-    // O painel 8/11 mantém a faixa de funções novas (supercarga, refinaria,
-    // aprendiz e reforma) junto das tarefas cíclicas, como no APK observado.
+    if(has('自动审批'))return farm;
+    // A faixa de funções tem uma composição própria por modo; sua ordem
+    // e a remoção da linha de refinaria no ciclo são aplicadas no render.
     if(a.id==='自动审批布局'&&has('功能生效说明'))return farm||mode===7;
     if(a.id==='自动审批布局')return farm;
     if(a.id==='其他')return farm||mode===7;
@@ -149,7 +165,7 @@
   }
   function color(s){if(!s)return '';return /^#[\da-f]{8}$/i.test(s)?'#'+s.slice(3):s;}
   function style(el,n,parent){
-    const a=n.a,row=parent?.a.orientation==='0',unit=current==='界面设置'?1:1.4;const width=Number(a.width),height=Number(a.height);let css=el.style;
+    const a=n.a,row=parent?.a.orientation==='0',unit=$('#phone').clientWidth/360;const width=Number(a.width),height=Number(a.height);let css=el.style;
     if(a.width!==undefined){if(width>0){css.width=width*unit+'px';css.flex=row?'0 1 '+width*unit+'px':'0 0 auto';}else if(width===-1){css.flex=row?'1 1 0':'0 0 auto';if(!row){const m=(a.margin||'0,0,0,0').split(',').map(Number);css.width=`calc(100% - ${((m[0]||0)+(m[2]||0))*unit}px)`;}}else{css.flex='0 1 auto';}}
     if(height>0){css.minHeight=height*unit+'px';if(n.tag==='Button'||n.tag==='EditText'||n.tag==='ComboBox')css.height=height*unit+'px';}
     if(a.margin){const m=a.margin.split(',').map(Number);if(m.length===4)css.margin=`${m[1]*unit}px ${m[2]*unit}px ${m[3]*unit}px ${m[0]*unit}px`;}
@@ -163,7 +179,7 @@
     if(a.background==='背景框.png'){css.backgroundColor='#70b6d9';css.borderRadius='4px';}
     if(['上.png','上1.png','下.png','中上.png','中.png','中.webp','lbg.png','lbj.png','文本框.webp'].includes(a.background)){css.backgroundImage=`url("assets/${a.background}")`;css.backgroundSize='100% 100%';}
   }
-  function keyFor(n,path){const id=n.a.id;return `${current}/${page}/${id&&!['文本','占位符','idLabel1','idButton','私人定制','水平布局','idLayoutHor1'].includes(id)?id:path}`;}
+  function keyFor(n,path){const id=n.a.id;return `${screenScope()}/${page}/${id&&!['文本','占位符','idLabel1','idButton','私人定制','水平布局','idLayoutHor1'].includes(id)?id:path}`;}
   function create(n,parent=null,path='0'){
     if(!mainVisibility(n))return null;const a=n.a,tag=n.tag,key=keyFor(n,path);let el;
     if(tag==='Option')return null;
@@ -175,7 +191,7 @@
       for(const [id,def]of [['音量加(+)控制脚本开始/停止',true],['脚本停止或者结束的时候振动提醒',true],['开机自启动脚本',false],['开启或者关闭节点服务',true]]){
         const label=document.createElement('label');label.className='native-row native-toggle';const text=document.createElement('span');text.textContent=localized(id);const input=document.createElement('input');input.type='checkbox';input.setAttribute('role','switch');input.setAttribute('aria-label',tr(id));const k='native/'+id;input.checked=getVal(k,def);input.onchange=()=>{values[k]=input.checked;save();showControl({tag:'CheckBoxGroup',a:{id,title:tr(id)},children:[]});};label.title=localized(id);label.append(text,input);el.append(label);
       }
-      for(const [zh,pt]of [['当前系统型号: SM-G977N','Modelo do sistema: SM-G977N'],['当前系统版本: 9','Versão do Android: 9'],['当前分辨率: 720X1280:320(DPI)','Resolução: 720 × 1280 · 320 dpi'],['系统总共内存: 3945(M)','Memória total: 3945 MB'],['虚拟按键: 无','Botões virtuais: nenhum'],['当前apk版本号:1355','Versão do APK: 1355'],['当前引擎版本3.8.6','Versão do mecanismo: 3.8.6']]){const row=document.createElement('div');row.className='native-row';row.textContent=language==='zh'?zh:pt;row.title=zh;el.append(row);}
+      for(const [zh,pt]of [['当前系统型号: SM-A805N','Modelo do sistema: SM-A805N'],['当前系统版本: 9','Versão do Android: 9'],['当前分辨率: 720X1280:320(DPI)','Resolução: 720 × 1280 · 320 dpi'],['系统总共内存: 3945(M)','Memória total: 3945 MB'],['虚拟按键: 无','Botões virtuais: nenhum'],['当前apk版本号:1363','Versão do APK instalado: 1363'],['当前引擎版本3.8.6','Versão do mecanismo: 3.8.6']]){const row=document.createElement('div');row.className='native-row';row.textContent=language==='zh'?zh:pt;row.title=zh;el.append(row);}
       for(const [zh,pt]of [['打开日志','Abrir registros'],['连接远程电脑开发助手','Conectar ao auxiliar de desenvolvimento remoto']]){const row=document.createElement('div');row.className='native-row';const b=document.createElement('button');b.textContent=language==='zh'?zh:pt;b.className='native-green';b.onclick=()=>info(pt,'Controle reproduzido para consulta. Não abre registros nem inicia conexão remota.');row.append(b);el.append(row);}
       const address=document.createElement('div');address.className='native-row native-address';address.textContent='127.0.0.1:10082';el.append(address);
     }else if(tag==='Page'||tag==='LinearLayout'){
@@ -189,7 +205,9 @@
       if(a.id==='紧急通知说明')text='辅助仅支持在安卓12及以下系统运行。';
       if(a.id==='分辨率检测')text=language==='zh'?'系统:安卓9 CPU:4核 内存:2.68/4.04G 分辨率:720*1280 dpi320':'Sistema: Android 9 · CPU: 4 núcleos · 720 × 1280 · dpi 320';
       if(a.id==='简单说明'){const version=Number(getVal('界面设置/0/游戏版本',0));if(version===1)return null;text=version===2?(language==='zh'?'多版本 可以同时挂QQ 微信 国际服':'Várias versões: QQ, WeChat e servidor internacional ao mesmo tempo'):(language==='zh'?'数据包切号 单号时直接运行游戏':'Pacotes de dados · uma conta: abrir o jogo diretamente');}
-      el.textContent=localized(text);el.title=localized(text);
+      if(current==='打鱼造兵设置'&&troopAccount&&text==='打鱼造兵设置')text=language==='zh'?`账号${troopAccount}打鱼造兵设置`:`Tropas para farm — conta ${troopAccount}`;
+      if(language==='pt'&&current==='界面设置')text=({'万时打资源':'×10 mil: farm','万不打资源':'×10 mil: parar'}[text]||text);
+      el.textContent=localized(text);el.title=localized(a.text||text);
       if(!text&&!a.background&&!(Number(a.width)>0))el.style.display='none';
     }else if(tag==='Button'){
       el=document.createElement('button');el.type='button';el.className='ui-button';el.textContent=localized(a.title||'');
@@ -208,8 +226,8 @@
       el.onchange=()=>{values[key]=Number(el.value);showControl({...n,a:{...a,title:n.children[Number(el.value)]?.a.text}});save();if(a.id==='功能选择开关'){mode=Number(el.value);render();}else if(a.id==='游戏版本'){if(Number(el.value)===2)go('通用切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);else render();}else if(a.id==='授权选择'&&Number(el.value)===2)go('QQ切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);};
     }else if(tag==='CheckBoxGroup'||tag==='RadioGroup'){
       el=document.createElement('div');el.className=tag==='RadioGroup'?'ui-radio-group':'ui-check-group';
-      n.children.forEach((c,i)=>{const label=document.createElement('label');label.className='ui-check';const input=document.createElement('input');input.type=tag==='RadioGroup'?'radio':'checkbox';input.name=key;const ck=key+'/'+i;input.checked=!!getVal(ck,(a.select||'').split(',').includes(String(i)));const text=document.createElement('span');text.textContent=localized(c.a.text||'');if(c.a.textcolor)label.style.color=color(c.a.textcolor);label.title=localized(c.a.text||a.id||'');input.setAttribute('aria-label',tr(c.a.text)||tr(a.id)||'Selecionar item');label.append(input,text);el.append(label);
-        input.onchange=()=>{if(tag==='RadioGroup')n.children.forEach((_,j)=>values[key+'/'+j]=j===i);else values[ck]=input.checked;save();showControl(n);if(input.checked&&routes[a.id])go(routes[a.id],0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));else if(current==='打鱼资源条件'&&a.id==='手动指定分配资源'&&input.checked){values[current+'/'+page+'/辅助自动分配资源/0']=false;go('进攻资源条件',0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));}else if(current==='打鱼资源条件'&&['辅助自动分配资源','强制进攻','不判断死鱼'].includes(a.id)){const sibling={'辅助自动分配资源':'手动指定分配资源','强制进攻':'不判断死鱼','不判断死鱼':'强制进攻'}[a.id];if(input.checked)values[current+'/'+page+'/'+sibling+'/0']=false;save();render(true);}else if(current==='界面设置'&&a.id==='发送邮件')render(true);};
+      n.children.forEach((c,i)=>{const label=document.createElement('label');label.className='ui-check';const input=document.createElement('input');input.type=tag==='RadioGroup'?'radio':'checkbox';input.name=key;const ck=key+'/'+i;input.dataset.key=ck;input.checked=!!getVal(ck,(a.select||'').split(',').includes(String(i)));const text=document.createElement('span');text.textContent=language==='pt'?({'每次进攻':'Atacar','当资源小于':'Abaixo de','当资源大于':'Acima de'}[c.a.text]||localized(c.a.text||'')):localized(c.a.text||'');if(c.a.textcolor)label.style.color=color(c.a.textcolor);label.title=localized(c.a.text||a.id||'');input.setAttribute('aria-label',tr(c.a.text)||tr(a.id)||'Selecionar item');label.append(input,text);el.append(label);
+        input.onchange=()=>{if(tag==='RadioGroup')n.children.forEach((_,j)=>values[key+'/'+j]=j===i);else values[ck]=input.checked;save();showControl(n);if(input.checked&&routes[a.id])go(routes[a.id],0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));else if(current==='打鱼资源条件'&&a.id==='手动指定分配资源'&&input.checked){values[current+'/'+page+'/辅助自动分配资源/0']=false;go('进攻资源条件',0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));}else if(current==='打鱼资源条件'&&['辅助自动分配资源','强制进攻','不判断死鱼'].includes(a.id)){const sibling={'辅助自动分配资源':'手动指定分配资源','强制进攻':'不判断死鱼','不判断死鱼':'强制进攻'}[a.id];if(input.checked)values[current+'/'+page+'/'+sibling+'/0']=false;save();render(true);}else if(current==='界面设置'&&['发送邮件','加入部落'].includes(a.id))render(true);};
       });
     }else if(tag==='WebView'){
       el=document.createElement('div');el.className='ui-web';el.textContent=language==='zh'?'教程加载中 请等待……':'Área de conteúdo online do aplicativo. Nesta cópia, consulte o manual local em português.';
@@ -244,22 +262,40 @@
     '功能生效说明':['Funções adicionais','A tela contém supercarga, refinaria, aprendizes e equipar construções. As regras internas de execução não estão descritas nos arquivos visuais.'],
     '下拉框说明':['Seleção da função','① A lista contém 11 opções. Abra-a e deslize para cima ou para baixo para escolher a função.\n\n② O botão vermelho ■ à direita para o script imediatamente ao ser tocado.']
   };
+  // Transcrições conferidas na instância construtor muros 1 em 23/10/2026.
+  const observedHelp={
+    '功能生效说明':['Funções adicionais','① A melhoria de Supercarga e da Refinaria só funciona com “Melhorar construções” ativado. Ambas ocupam um construtor.','功能生效说明','①升级超级充能和精制台在勾选升级建筑后才能生效。升级超级充能和精制台都会耗费工人。'],
+    '拜访说明':['Visitar jogadores','① Informe uma ou várias tags. Ao colar várias, coloque uma tag por linha.\n② Disponível somente no modo 8 — Tarefas cíclicas.','拜访说明','①单个或多个标签 多个标签粘贴时确保每行一个的格式再粘贴。\n②目前仅 模式8循环任务模式生效。'],
+    '资源转换说明':['Conversão de recursos','① Se a conversão falhar, o bot tenta novamente após 2 horas.\n② Após uma conversão bem-sucedida, espera 24 horas.\n③ Ativar esta função também desbloqueia automaticamente o assistente de alquimia.','资源转换说明','①资源转换失败时间隔2小时再次执行。\n②资源转换成功后间隔24小时执行。\n③勾选此功能后会自动解锁炼金助手。'],
+    '划动操作延时说明':['Intervalo após gestos','① Espera após deslizar a tela para evitar cliques em coordenadas que ainda estão se movendo. Ajuste o intervalo para a tela terminar de parar.\nA unidade é milissegundo: 1 segundo = 1.000 ms. O aviso recomenda começar com 500 ms em aparelhos lentos.','划动操作延时说明','①划动操作后延时指定时间，一般用来规避误点击出错的问题，比如划动以后，界面还在移动，延时不够，此时识别点击就会导致坐标发生变化而造成错误。\n设置合理的延时，确保滑动后界面停止，这样就没有问题，单位是毫秒，1秒 = 1000毫秒，卡的设备一般建议500毫秒起。'],
+    '点击坐标说明':['Cliques por coordenadas','① Durante a verificação da interface, clica nas coordenadas configuradas. Em geral, serve para lidar com janelas de eventos.\n② O aviso indica “Localização do ponteiro”, nas opções de desenvolvedor do Android, como forma de obter as coordenadas.','点击坐标说明','①界面检测时点击设置的坐标，一般用来处理活动弹窗。\n②坐标可以通过开发者模式【指针位置获取】。'],
+    '点击文字说明':['Cliques por texto','① Durante a verificação da interface, clica no texto configurado para lidar com janelas de eventos.\n② O texto precisa ser reconhecido pelo serviço de nós.\n③ Pode reduzir a velocidade de reconhecimento, especialmente em aparelhos lentos. O aviso recomenda ativar somente quando necessário.','点击文字说明','①界面检测时点击设置的文字，一般用来处理活动弹窗。\n②这种文字仅支持节点能识别的。\n③此功能会影响识别速度，部分设备节点识别很慢，没有需求时请不要选择。'],
+    '屏蔽活动说明':['Bloquear eventos','① Quando marcado, aplica o bloqueio a cada início do script. Alguns aparelhos não são compatíveis; o aviso sugere o método por arquivo quando o bloqueio falha.\n② Para esse método, o autor indica um APK de bloqueio no site e um tutorial nos arquivos do grupo.','屏蔽活动说明','①勾选后每次运行脚本会屏蔽一次。不是所有设备都能屏蔽，如果遇到屏蔽失败请使用屏蔽文件方式。\n②如果使用屏蔽文件屏蔽，请到辅助官网下载屏蔽apk。教程到群文件查看。']
+  };
   function action(id,n,el){
+    if(observedHelp[id]){const h=observedHelp[id];info(h[language==='zh'?2:0],h[language==='zh'?3:1]);return;}
     if(current==='界面设置'&&id==='关闭紧急通知'){androidNoticeDismissed=true;render(true);return;}
     if(['下载新','查询文件','上传指定文件','上传新'].includes(id)){info(localized('权限不够'),localized('①免费用户不支持上传下载 请访问官网 http://xccoc.fun 购买卡密。'));return;}
     if(current==='自助切号'&&id==='缩小窗口'){go('放大');return;}
     if(current==='放大'&&id==='展开'){back();return;}
     if(current==='放大'&&id==='隐藏'){systemView='home';syncSystem();return;}
     if(current==='自助切号'&&['账号-','账号+'].includes(id)){const input=screenEl.querySelector('[data-original-id="账号数据"]');input.value=Math.max(1,(Number(input.value)||1)+(id==='账号+'?1:-1));input.dispatchEvent(new Event('input'));return;}
-    if(routes[id]){go(routes[id],0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
+    if(routes[id]){if(routes[id]==='打鱼造兵设置')troopAccount=current==='升级1'?accountNumber:0;go(routes[id],0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
     if(id==='停止运行'||id==='停止脚本'){stopSimulation();return;}
     if(id.startsWith('关闭')||id==='取消反馈'){back();return;}
     if(id==='清空设置'||id==='清空造兵设置'){screenEl.querySelectorAll('input.ui-input').forEach(input=>{input.value='';values[input.dataset.key]='';});save();toast('Campos desta tela limpos no exercício.');return;}
-    if(id==='取消建筑勾选'||id==='取消科技勾选'||id==='全选科技'){screenEl.querySelectorAll('input[type=checkbox]').forEach(input=>{input.checked=id==='全选科技';const group=input.closest('[data-original-id]');if(group)values[`${current}/${page}/${group.dataset.originalId}/0`]=input.checked;});save();toast(id==='全选科技'?'Pesquisas selecionadas no exercício.':'Seleções removidas no exercício.');return;}
+    if(id==='取消建筑勾选'||id==='取消科技勾选'||id==='全选科技'){screenEl.querySelectorAll('input[type=checkbox]').forEach(input=>{input.checked=id==='全选科技';if(input.dataset.key)values[input.dataset.key]=input.checked;});save();toast(id==='全选科技'?'Pesquisas selecionadas no exercício.':'Seleções removidas no exercício.');return;}
     if(helpTexts[id]){info(...helpTexts[id]);return;}
     if(id==='计算兵种数量'||id==='计算法术数量'){const prefix=id==='计算兵种数量'?'兵':'法';const fields=[...screenEl.querySelectorAll('.ui-input')].filter(i=>i.dataset.originalId.startsWith(prefix));const total=fields.reduce((s,i)=>s+(Number(i.value)||0),0);info('Contagem do exercício',`${total} unidades preenchidas.\n\nEsta referência soma quantidades. O botão do bot calcula espaço de alojamento; esse cálculo não é reproduzido aqui. Confira a capacidade total no jogo antes de atacar.`);return;}
-    if(/^账号\d+设置$/.test(id)||id==='跳转指定账号设置'||id==='上一个'||id==='下一个'){go('升级1',0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
-    if(/^账号\d+打鱼设置$/.test(id)){go('打鱼造兵设置',0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
+    if(current==='多号独立设置'&&['上一个','下一个'].includes(id)){
+      const input=screenEl.querySelector('input[data-original-id="多账号序号"]');
+      input.value=Math.max(1,(Number(input.value)||1)+(id==='上一个'?-1:1));input.dispatchEvent(new Event('input'));return;
+    }
+    if(/^账号\d+设置$/.test(id)||id==='跳转指定账号设置'){
+      accountNumber=id==='跳转指定账号设置'?Math.max(1,Math.floor(Number(screenEl.querySelector('input[data-original-id="多账号序号"]').value)||1)):Number(id.match(/\d+/)[0]);
+      go('升级1',0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;
+    }
+    if(/^账号\d+打鱼设置$/.test(id)){troopAccount=Number(id.match(/\d+/)[0]);go('打鱼造兵设置',0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
     if(id.endsWith('说明')){info(controlLabel(n),`Este é o botão de informações do controle “${id}”.\n\nO conteúdo dessa ajuda é preenchido pelo aplicativo e não está presente nos arquivos visuais. Consulte o manual em português ou a janela correspondente no bot para obter a regra exata.`);return;}
     if(n.a.background&&!['bt.webp','tt.webp','说明.webp','背景框.png'].includes(n.a.background)){showControl(n);return;}
     if(id==='打鱼同步按钮'||id==='捐兵同步按钮'||id==='同步按钮'||id==='同步复制按钮'){toast('Botão Copiar do modelo visual. Não altera configurações do bot.');return;}
@@ -281,7 +317,7 @@
     layer.append(sheet);screenEl.replaceChildren(background,footer,layer);
   }
   function arrangeModeEightFeatures(content){
-    if(current!=='界面设置'||![6,7].includes(mode))return;
+    if(current!=='界面设置'||![6,7,8,9].includes(mode))return;
     const competitionNode=content.querySelector('[data-original-id="竞赛"]');
     const newFeaturesNode=content.querySelector('[data-original-id="超级充能"]');
     const competitionRow=competitionNode?.closest('.ui-row');
@@ -298,12 +334,15 @@
     const extraParts=['精制台升级','使用学徒','改装功能'].map(id=>newFeaturesRow.querySelector(`[data-original-id="${id}"]`)).filter(Boolean);
     const extras=document.createElement('div');extras.className='ui-layout ui-row ui-card mode-eight-extra-features';extras.dataset.originalId='modo-oito-funcoes-extras';
     extraParts.forEach(part=>extras.append(part));
-    competitionRow.replaceWith(panel);newFeaturesRow.replaceWith(extras);
+    competitionRow.replaceWith(panel);
+    // O modo 8/11 mantém Supercarga/Jogos/Construtor, mas não exibe a linha
+    // Refinaria/Aprendizes/Equipar construções observada no farming e doação.
+    if(mode===7)newFeaturesRow.remove();else newFeaturesRow.replaceWith(extras);
   }
   function render(keepScroll=false){
     $('#app-surface > .versions-heading')?.remove();
     const scroll=keepScroll?screenEl.scrollTop:0,tree=D.screens[current],pages=tree.children.filter(n=>n.tag==='Page');page=Math.min(page,pages.length-1);const tabbed=pages.length>1;tabs.hidden=!tabbed;tabs.replaceChildren();
-    if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
+    if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=current==='升级1'&&i===0?(language==='zh'?`账号${accountNumber}`:`Conta ${accountNumber}`):localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
     if(current==='界面设置')tabs.hidden=true;
     const content=create(pages[page]);screenEl.replaceChildren(content);arrangeModeEightFeatures(content);screenEl.scrollTop=scroll;
     const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#app-surface > .confirm-wrap').hidden=!!sheet||tree.a.showconfirm==='false';
@@ -323,8 +362,17 @@
     requestAnimationFrame(()=>{fitRows();if(keepScroll)screenEl.scrollTop=scroll;});
   }
   function fitRows(){
-    // Portuguese often needs two lines where Chinese fits in one.
-    screenEl.querySelectorAll('.ui-row').forEach(row=>{if(row.scrollWidth>row.clientWidth+3){row.querySelectorAll(':scope > .ui-text,:scope > .ui-check-group span,:scope > .ui-select,:scope > .ui-button:not(.icon)').forEach(el=>{el.style.fontSize=Math.min(parseFloat(getComputedStyle(el).fontSize),13)+'px';});}if(row.scrollWidth>row.clientWidth+10&&row.querySelector('.ui-text:not(:empty)')){row.style.flexWrap='wrap';row.style.rowGap='3px';}});
+    screenEl.querySelectorAll('.ui-row').forEach(row=>{
+      if(row.scrollWidth>row.clientWidth+3)row.querySelectorAll(':scope > .ui-text,:scope > .ui-select,:scope > .ui-button:not(.icon)').forEach(el=>{el.style.fontSize=Math.min(parseFloat(getComputedStyle(el).fontSize),13)+'px';});
+      if(row.scrollWidth>row.clientWidth+10&&row.querySelector('.ui-text:not(:empty)')){row.style.flexWrap='wrap';row.style.rowGap='3px';}
+    });
+    // Keep checkbox columns fixed. Fit each translation inside its own label,
+    // instead of letting a long word overlap the next checkbox.
+    screenEl.querySelectorAll('.ui-check span').forEach(span=>{
+      let size=parseFloat(getComputedStyle(span).fontSize);
+      while(span.scrollWidth>span.clientWidth+1&&size>9.5){size-=.5;span.style.setProperty('font-size',size+'px','important');}
+      if(span.scrollWidth>span.clientWidth+1)span.style.overflowWrap='anywhere';
+    });
   }
   $('#launch-bot').addEventListener('click',openApp,{passive:true});
   $('#launch-bot').addEventListener('pointerup',e=>{if(e.pointerType==='touch'){e.preventDefault();openApp();}},{passive:false});
@@ -378,6 +426,6 @@
     $('#device-frame').style.width=width+'px';$('#device-frame').style.height=height+'px';
   }
   function updateClock(){$('#android-clock').textContent=new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'}).format(new Date());}
-  window.addEventListener('resize',resizePhone);updateClock();setInterval(updateClock,30000);resizePhone();render();syncSystem();
-  window.ReferenceApp={go,get current(){return current;},get page(){return page;},get mode(){return mode;},get values(){return {...values};},get screenNames(){return {...names};},get system(){return {view:systemView,taskOpen,running,floatingAvailable};}};
+  window.addEventListener('resize',()=>{resizePhone();render(true);});updateClock();setInterval(updateClock,30000);resizePhone();render();syncSystem();
+  window.ReferenceApp={go,get current(){return current;},get page(){return page;},get mode(){return mode;},get accountNumber(){return accountNumber;},get values(){return {...values};},get screenNames(){return {...names};},get system(){return {view:systemView,taskOpen,running,floatingAvailable};}};
 })();

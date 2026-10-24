@@ -2,6 +2,8 @@
 
 Interface do Xingchen em português do Brasil, dentro de um dispositivo Android simulado. Abre no navegador, no computador ou no celular.
 
+**Revisão atual: 24/10/2026, atualização interna 1365.** A conferência na instância `construtor muros 1` cobriu 32 telas/estruturas, 41 páginas/abas e os onze modos de configuração. Corrigidos o manual publicado, a navegação e os campos individuais por conta, ajudas, layout móvel e diferenças entre os modos de farming, ciclo e doação. O APK instalado observado é 1363; a base visual original permanece 1355. Veja [o relatório atual](HTML/REVISAO_1365.md) para a cobertura e as limitações.
+
 ## Usar
 
 Abra `docs/index.html` ou o site publicado. Toque no ícone **Xingchen**, confirme a entrada e depois toque no ícone flutuante para abrir o painel. Navegue pelos controles do próprio aplicativo. A barra inferior oferece **Voltar**, **Início** e **Aplicativos recentes**.
