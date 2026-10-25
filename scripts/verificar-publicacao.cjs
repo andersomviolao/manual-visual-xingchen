@@ -143,11 +143,13 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.evaluate(()=>ReferenceApp.go('应用设置'));
   assert((await page.locator('#screen').innerText()).includes('APK instalado: 1363'),'Versão do APK instalado incorreta.');
   await page.evaluate(()=>ReferenceApp.go('界面设置'));
+  await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('6');
+  assert(await page.locator('#screen [data-original-id="通用任务"]').innerText()==='Tarefas gerais','Novo botão de tarefas não foi traduzido.');
   for(const mode of [6,7,8,9]){
    await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption(String(mode));
    const order=await page.locator('.mode-eight-features > [data-original-id]').evaluateAll(els=>els.map(el=>el.dataset.originalId));
-   assert(order.join(',')==='功能生效说明,超级充能,竞赛,夜世界开荒','Ordem da faixa inferior incorreta no modo '+(mode+1));
-   assert(await page.locator('.mode-eight-extra-features').count()===(mode===7?0:1),'Linha de refinaria/aprendizes incorreta no modo '+(mode+1));
+   assert(order.join(',')==='功能生效说明,超级充能,充能logo,竞赛,竞赛logo,夜世界开荒,夜世界logo','Ordem da faixa inferior incorreta no modo '+(mode+1));
+   assert(await page.locator('.mode-eight-extra-features').count()===(mode===7?0:1),'Linha de defesas/aprendizes incorreta no modo '+(mode+1));
   }
   await page.evaluate(()=>ReferenceApp.go('通用任务'));
   await page.locator('#screen button[data-original-id="拜访说明"]').click();
@@ -215,7 +217,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.locator('#android-back').click();
   assert(!errors.length,'Erros JavaScript: '+errors);assert(!missing.length,'Recursos ausentes: '+missing);
   assert(requests.every(u=>u.startsWith(base)||u.startsWith('blob:')),'Solicitação a um serviço externo.');assert(fs.existsSync(path.join(publish,'.nojekyll')),'.nojekyll ausente.');
-  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','48 telas e 57 páginas/abas','245 imagens com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','launcher, entrada e ícone flutuante','iniciar e parar estado de execução simulado','Voltar, Início e Aplicativos recentes','retomada de tarefa e limpeza de recentes','gestos entre páginas','Voltar dispensa edição e fecha janelas','Início preserva janela aberta','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas','exibição de campos nos 11 modos conferidos','seis diálogos sobre o painel e confirmação' ]};
+  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','48 telas e 57 páginas/abas','Recursos visuais com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','launcher, entrada e ícone flutuante','iniciar e parar estado de execução simulado','Voltar, Início e Aplicativos recentes','retomada de tarefa e limpeza de recentes','gestos entre páginas','Voltar dispensa edição e fecha janelas','Início preserva janela aberta','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas','exibição de campos nos 11 modos conferidos','seis diálogos sobre o painel e confirmação' ]};
   const out=path.join(root,'verificacao');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'publicacao.json'),JSON.stringify(result,null,2));await page.screenshot({path:path.join(out,'publicacao-celular.png'),fullPage:true});console.log(JSON.stringify(result,null,2));
  }finally{if(browser)await browser.close();await new Promise(ok=>server.close(ok));}
 })().catch(e=>{console.error(e);process.exitCode=1;});

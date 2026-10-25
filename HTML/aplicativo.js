@@ -1,7 +1,7 @@
 /* Referência visual local. Não carrega nem executa os scripts do aplicativo. */
 (() => {
   'use strict';
-  const BOT_VERSION='1365';
+  const BOT_VERSION='1366';
   const D=window.BOT_DATA, $=s=>document.querySelector(s);
   // Tela nativa adicional, conferida visualmente no LDPlayer em 15/10/2026.
   D.screens['应用设置']={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'NativeSettings',a:{},children:[]}]}]};
@@ -33,14 +33,14 @@
     '辅助仅支持在安卓12及以下系统运行。':'O assistente funciona apenas no Android 12 ou anterior.',
     '××':'Conteúdo preenchido pelo aplicativo durante a execução.',
     '雷电飞龙':'Dragão Elétrico','气球兵':'Balão','狂暴法术':'Feitiço de Fúria','愤怒法术':'Feitiço de Fúria','冰冻法术':'Feitiço de Congelamento','攻城气球':'Lança-Pedras','攻城战车':'Quebra-Muros','攻城飞艇':'Dirigível Bélico','攻城训练营':'Quartel de Cerco','攻城滚木车':'Lançador de Troncos','攻城烈焰车':'Lança-Chamas','攻城钻机':'Broca de Batalha','攻城器':'Máquina de Cerco','空中战车':'Máquina aérea de cerco','天使':'Curadora','疗伤法术':'Feitiço de Cura','雷电法术':'Feitiço de Relâmpago','弹跳法术':'Feitiço de Salto','镜像法术':'Feitiço de Clone','隐形法术':'Feitiço de Invisibilidade','复苏法术':'Feitiço de Revocação','疯狂蔓生法术':'Feitiço de Crescimento Excessivo','毒药法术':'Feitiço de Veneno','地震法术':'Feitiço de Terremoto','急速法术':'Feitiço de Aceleração','骷髅法术':'Feitiço de Esqueleto','蝙蝠法术':'Feitiço de Morcego','冰障法术':'Feitiço de Gelo','回溯法术':'Feitiço de Retorno','图腾法术':'Feitiço de Totem',
-    '兵营':'Acampamento','法术工厂':'Fábrica de Feitiços','暗黑法术工厂':'Fábrica de Feitiços Sombrios','暗黑训练营':'Quartel Negro','暗黑重油罐':'Depósito de Elixir Negro','暗黑重油钻井':'Broca de Elixir Negro','圣水收集器':'Coletor de Elixir','部落城堡':'Castelo do Clã','英雄殿堂':'Salão dos Heróis','战宠小屋':'Casa dos Mascotes','宠物小屋':'Casa dos Mascotes','铁匠铺':'Ferreiro','攻城机器工坊':'Oficina','建筑工人小屋':'Cabana do Construtor','精制台':'Refinaria','防空火箭':'Defesa Aérea','空气炮':'Dispersor Aéreo','法师塔':'Torre do Mago','地狱之塔':'Torre Inferno','投石炮':'Catapulta','天鹰火炮':'Artilharia Águia','特斯拉电磁塔':'Tesla Oculta','法术塔':'Torre de Feitiços','巨型炸弹':'Bomba Gigante','搜空地雷':'Mina Aérea Guiada','隐形炸弹':'Bomba','骷髅陷阱':'Armadilha de Esqueleto','飓风陷阱':'Armadilha de Tornado','炸弹塔':'Torre de Bombas','跳弹加农炮':'Canhão Ricochete','多人箭塔':'Torre Multi-Arqueira','超级法师塔':'Torre do Supermago','火焰喷射器':'Cospe-Fogo','复合机械塔':'Torre Mecânica Composta','反击之塔':'Torre de Contra-Ataque','部队发射器':'Lançador de Tropas','擎天巨柱':'Monólito',
+    '兵营':'Acampamento','法术工厂':'Fábrica de Feitiços','暗黑法术工厂':'Fábrica de Feitiços Sombrios','暗黑训练营':'Quartel Negro','暗黑重油罐':'Depósito de Elixir Negro','暗黑重油钻井':'Broca de Elixir Negro','圣水收集器':'Coletor de Elixir','部落城堡':'Castelo do Clã','英雄殿堂':'Salão dos Heróis','战宠小屋':'Casa dos Mascotes','宠物小屋':'Casa dos Mascotes','铁匠铺':'Ferreiro','攻城机器工坊':'Oficina','建筑工人小屋':'Cabana do Construtor','精制台':'Estação de Produção','防空火箭':'Defesa Aérea','空气炮':'Dispersor Aéreo','法师塔':'Torre do Mago','地狱之塔':'Torre Inferno','投石炮':'Catapulta','天鹰火炮':'Artilharia Águia','特斯拉电磁塔':'Tesla Oculta','法术塔':'Torre de Feitiços','巨型炸弹':'Bomba Gigante','搜空地雷':'Mina Aérea Guiada','隐形炸弹':'Bomba','骷髅陷阱':'Armadilha de Esqueleto','飓风陷阱':'Armadilha de Tornado','炸弹塔':'Torre de Bombas','跳弹加农炮':'Canhão Ricochete','多人箭塔':'Torre Multi-Arqueira','超级法师塔':'Torre do Supermago','火焰喷射器':'Cospe-Fogo','复合机械塔':'Torre Mecânica Composta','反击之塔':'Torre de Contra-Ataque','部队发射器':'Lançador de Tropas','擎天巨柱':'Monólito',
     '蛮王':'Rei Bárbaro','女皇':'Rainha Arqueira','永王':'Grande Guardião','闰土':'Campeã Real','王子':'Príncipe Servo','阿啾':'L.A.S.S.I','闪枭':'Coruja Elétrica','大牦':'Iaque Poderoso','独角':'Unicórnio','猛蜥':'Diggy','凤凰':'Fênix','地兽':'Lagarto Venenoso','冰牙':'Morsa Glacial','灵狐':'Raposa Espiritual','水母':'Geleia Furiosa','莱希':'Sneezy','渡鸦':'Corvo',
     '野蛮人木偶':'Boneco de Bárbaro','狂暴药水瓶':'Frasco de Fúria','巨型手套':'Manopla Gigante','地震金靴':'Botas de Terremoto','尖刺足球':'Bola Espinhosa','铁甲短裤':'Calção de Ferro','弓箭手木偶':'Boneca de Arqueira','隐形药水瓶':'Frasco de Invisibilidade','巨型箭矢':'Flecha Gigante','天使木偶':'Boneca de Curadora','冰封箭矢':'Flecha Congelada','克隆魔镜':'Espelho Mágico','生命宝石':'Gema da Vida','永恒书卷':'Tomo Eterno','狂暴宝石':'Gema de Fúria','治疗书卷':'Tomo de Cura','巨大火球':'Bola de Fogo','火箭飞矛':'Lança-Foguetes','皇家宝石':'Gema Real','寻踪飞盾':'Escudo Buscador','野猪骑士木偶':'Boneco de Corredor','急速药水瓶':'Frasco de Aceleração','雷电战靴':'Botas Elétricas','暗黑魔球':'Orbe Sombrio','护卫玩偶':'Boneco de Guarda','动作人偶':'Boneco de Ação','贵族哑铃':'Halteres Nobres','熔岩气球玩偶':'Boneco de Balão de Lava','英雄火炬':'Tocha Heroica','灵蛇手镯':'Bracelete da Serpente','陨石法杖':'Cajado Meteórico','暗黑皇冠':'Coroa Sombria','英雄技能':'Habilidade de herói',
     '超级大雪怪':'Superyeti','战吼狂人':'Guerreiro de Grito','收债哥布林':'Goblin Cobrador','废墟女巫':'Bruxa das Ruínas','皮卡凯恩':'P.E.K.K.A Kaine','铁壁终结者':'Destruidor Blindado','陨石戈仑':'Golem Meteórico','霸天巨人':'Gigante Titânico','飞龙公爵':'Duque Dragão','超级兵':'Supertropa','法术':'Feitiço','说明':'Informações','停止运行':'Parar execução','编辑':'Editar'
   };
   function tr(s=''){return extra[s]??D.translations[s]??names[s]??s;}
   let stored={};try{stored=JSON.parse(localStorage.getItem('xingchen-estudo-v1')||'{}');}catch{}
-  const layoutRevision='mobile-bottom-1365d';
+  const layoutRevision='mobile-bottom-1366a';
   if(stored.layoutRevision!==layoutRevision){stored.values={...(stored.values||{}),'界面设置/0/功能选择开关':7};stored.layoutRevision=layoutRevision;}
   let values=stored.values||{},language=stored.language||'pt',current='星辰国际',page=0,mode=7,history=[],allMain=false;
   // Preserve older exercises in the first individual account.
@@ -156,7 +156,7 @@
     if(has('定时下线'))return farm;
     if(has('自动审批'))return farm;
     // A faixa de funções tem uma composição própria por modo; sua ordem
-    // e a remoção da linha de refinaria no ciclo são aplicadas no render.
+    // e a remoção da linha de defesas temporárias no ciclo são aplicadas no render.
     if(a.id==='自动审批布局'&&has('功能生效说明'))return farm||mode===7;
     if(a.id==='自动审批布局')return farm;
     if(a.id==='其他')return farm||mode===7;
@@ -210,11 +210,12 @@
       el.textContent=localized(text);el.title=localized(a.text||text);
       if(!text&&!a.background&&!(Number(a.width)>0))el.style.display='none';
     }else if(tag==='Button'){
-      el=document.createElement('button');el.type='button';el.className='ui-button';el.textContent=localized(a.title||'');
+      el=document.createElement('button');el.type='button';el.className='ui-button';el.textContent=localized((a.title||'').trim());
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='pt')el.textContent='Licença';
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='zh')el.textContent='送卡密';
       if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?`官网 xccoc.fun　热更新版本:${BOT_VERSION}`:`Site xccoc.fun · Atualização: ${BOT_VERSION}`;
-      if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("assets/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
+      if(['战斗2.webp','资源.webp','多选.webp'].includes(a.background)){el.classList.add('skinned-button');el.style.backgroundImage=`url("assets/${a.background}")`;}
+      else if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("assets/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
       else el.title=localized(a.title||a.id||'');
       el.onclick=()=>{showControl(n);action(a.id||'',n,el);};
     }else if(tag==='EditText'){
@@ -226,7 +227,7 @@
       el.onchange=()=>{values[key]=Number(el.value);showControl({...n,a:{...a,title:n.children[Number(el.value)]?.a.text}});save();if(a.id==='功能选择开关'){mode=Number(el.value);render();}else if(a.id==='游戏版本'){if(Number(el.value)===2)go('通用切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);else render();}else if(a.id==='授权选择'&&Number(el.value)===2)go('QQ切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);};
     }else if(tag==='CheckBoxGroup'||tag==='RadioGroup'){
       el=document.createElement('div');el.className=tag==='RadioGroup'?'ui-radio-group':'ui-check-group';
-      n.children.forEach((c,i)=>{const label=document.createElement('label');label.className='ui-check';const input=document.createElement('input');input.type=tag==='RadioGroup'?'radio':'checkbox';input.name=key;const ck=key+'/'+i;input.dataset.key=ck;input.checked=!!getVal(ck,(a.select||'').split(',').includes(String(i)));const text=document.createElement('span');text.textContent=language==='pt'?({'每次进攻':'Atacar','当资源小于':'Abaixo de','当资源大于':'Acima de'}[c.a.text]||localized(c.a.text||'')):localized(c.a.text||'');if(c.a.textcolor)label.style.color=color(c.a.textcolor);label.title=localized(c.a.text||a.id||'');input.setAttribute('aria-label',tr(c.a.text)||tr(a.id)||'Selecionar item');label.append(input,text);el.append(label);
+      n.children.forEach((c,i)=>{const label=document.createElement('label');label.className='ui-check';const input=document.createElement('input');input.type=tag==='RadioGroup'?'radio':'checkbox';input.name=key;const ck=key+'/'+i;input.dataset.key=ck;input.checked=!!getVal(ck,(a.select||'').split(',').includes(String(i)));const text=document.createElement('span');text.textContent=language==='pt'?({'每次进攻':'Atacar','当资源小于':'Abaixo de','当资源大于':'Acima de'}[c.a.text]||localized(c.a.text||'')):localized(c.a.text||'');if(c.a.textcolor)label.style.color=color(c.a.textcolor);label.title=language==='pt'&&a.id==='发起偷袭'?'Iniciar o raide da Capital. Controle separado dos ataques do modo 3; execução no jogo não verificada.':language==='pt'&&a.id==='精制台升级'?'Melhorar as defesas diferenciadas (temporárias) da Estação de Produção. Requer Melhorar construções.':localized(c.a.text||a.id||'');input.setAttribute('aria-label',tr(c.a.text)||tr(a.id)||'Selecionar item');label.append(input,text);el.append(label);
         input.onchange=()=>{if(tag==='RadioGroup')n.children.forEach((_,j)=>values[key+'/'+j]=j===i);else values[ck]=input.checked;save();showControl(n);if(input.checked&&routes[a.id])go(routes[a.id],0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));else if(current==='打鱼资源条件'&&a.id==='手动指定分配资源'&&input.checked){values[current+'/'+page+'/辅助自动分配资源/0']=false;go('进攻资源条件',0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));}else if(current==='打鱼资源条件'&&['辅助自动分配资源','强制进攻','不判断死鱼'].includes(a.id)){const sibling={'辅助自动分配资源':'手动指定分配资源','强制进攻':'不判断死鱼','不判断死鱼':'强制进攻'}[a.id];if(input.checked)values[current+'/'+page+'/'+sibling+'/0']=false;save();render(true);}else if(current==='界面设置'&&['发送邮件','加入部落'].includes(a.id))render(true);};
       });
     }else if(tag==='WebView'){
@@ -259,12 +260,12 @@
     '序号说明':['Contas e números','Os números inicial e final definem a faixa de contas a executar. Os pacotes precisam corresponder às contas. Em uma conta direta, a tela observada permite executar o jogo sem alternar pacotes.'],
     '账号地址说明':['Pasta dos dados','Informe a pasta dos pacotes de conta. O manual usa /sdcard/星辰国际. Os caminhos originais são mantidos em chinês para não alterar o endereço.'],
     '打鱼时捐兵说明':['Doação durante o farm','Esta opção controla a doação executada durante o farm. O aviso do bot orienta a não confundi-la com os modos de doação.'],
-    '功能生效说明':['Funções adicionais','A tela contém supercarga, refinaria, aprendizes e equipar construções. As regras internas de execução não estão descritas nos arquivos visuais.'],
+    '功能生效说明':['Funções adicionais','A tela contém supercarga, defesas temporárias, aprendizes e equipar construções. As regras internas de execução não estão descritas nos arquivos visuais.'],
     '下拉框说明':['Seleção da função','① A lista contém 11 opções. Abra-a e deslize para cima ou para baixo para escolher a função.\n\n② O botão vermelho ■ à direita para o script imediatamente ao ser tocado.']
   };
   // Transcrições conferidas na instância construtor muros 1 em 23/10/2026.
   const observedHelp={
-    '功能生效说明':['Funções adicionais','① A melhoria de Supercarga e da Refinaria só funciona com “Melhorar construções” ativado. Ambas ocupam um construtor.','功能生效说明','①升级超级充能和精制台在勾选升级建筑后才能生效。升级超级充能和精制台都会耗费工人。'],
+    '功能生效说明':['Funções adicionais','① A melhoria de Supercarga e das defesas diferenciadas (temporárias), na Estação de Produção só funciona com “Melhorar construções” ativado. Ambas ocupam um construtor.','功能生效说明','①升级超级充能和精制台在勾选升级建筑后才能生效。升级超级充能和精制台都会耗费工人。'],
     '拜访说明':['Visitar jogadores','① Informe uma ou várias tags. Ao colar várias, coloque uma tag por linha.\n② Disponível somente no modo 8 — Tarefas cíclicas.','拜访说明','①单个或多个标签 多个标签粘贴时确保每行一个的格式再粘贴。\n②目前仅 模式8循环任务模式生效。'],
     '资源转换说明':['Conversão de recursos','① Se a conversão falhar, o bot tenta novamente após 2 horas.\n② Após uma conversão bem-sucedida, espera 24 horas.\n③ Ativar esta função também desbloqueia automaticamente o assistente de alquimia.','资源转换说明','①资源转换失败时间隔2小时再次执行。\n②资源转换成功后间隔24小时执行。\n③勾选此功能后会自动解锁炼金助手。'],
     '划动操作延时说明':['Intervalo após gestos','① Espera após deslizar a tela para evitar cliques em coordenadas que ainda estão se movendo. Ajuste o intervalo para a tela terminar de parar.\nA unidade é milissegundo: 1 segundo = 1.000 ms. O aviso recomenda começar com 500 ms em aparelhos lentos.','划动操作延时说明','①划动操作后延时指定时间，一般用来规避误点击出错的问题，比如划动以后，界面还在移动，延时不够，此时识别点击就会导致坐标发生变化而造成错误。\n设置合理的延时，确保滑动后界面停止，这样就没有问题，单位是毫秒，1秒 = 1000毫秒，卡的设备一般建议500毫秒起。'],
@@ -318,27 +319,12 @@
   }
   function arrangeModeEightFeatures(content){
     if(current!=='界面设置'||![6,7,8,9].includes(mode))return;
-    const competitionNode=content.querySelector('[data-original-id="竞赛"]');
-    const newFeaturesNode=content.querySelector('[data-original-id="超级充能"]');
-    const competitionRow=competitionNode?.closest('.ui-row');
-    const newFeaturesRow=newFeaturesNode?.closest('.ui-row');
-    if(!competitionRow||!newFeaturesRow)return;
-    const panelParts=[
-      newFeaturesRow.querySelector('[data-original-id="功能生效说明"]'),
-      newFeaturesRow.querySelector('[data-original-id="超级充能"]'),
-      competitionRow.querySelector('[data-original-id="竞赛"]'),
-      competitionRow.querySelector('[data-original-id="夜世界开荒"]')
-    ].filter(Boolean);
-    const panel=document.createElement('div');panel.className='ui-layout ui-row ui-card mode-eight-features';panel.dataset.originalId='modo-oito-funcoes';
-    panelParts.forEach(part=>panel.append(part));
-    const extraParts=['精制台升级','使用学徒','改装功能'].map(id=>newFeaturesRow.querySelector(`[data-original-id="${id}"]`)).filter(Boolean);
-    const extras=document.createElement('div');extras.className='ui-layout ui-row ui-card mode-eight-extra-features';extras.dataset.originalId='modo-oito-funcoes-extras';
-    extraParts.forEach(part=>extras.append(part));
-    competitionRow.replaceWith(panel);
-    // O modo 8/11 mantém Supercarga/Jogos/Construtor, mas não exibe a linha
-    // Refinaria/Aprendizes/Equipar construções observada no farming e doação.
-    if(mode===7)newFeaturesRow.remove();else newFeaturesRow.replaceWith(extras);
+    const row=content.querySelector('[data-original-id="超级充能"]')?.closest('.ui-row');
+    if(row){row.classList.add('mode-eight-features');row.dataset.originalId='modo-oito-funcoes';}
+    const extras=content.querySelector('[data-original-id="精制台升级"]')?.closest('.ui-row');
+    if(extras){extras.classList.add('mode-eight-extra-features');extras.dataset.originalId='modo-oito-funcoes-extras';if(mode===7)extras.remove();}
   }
+
   function render(keepScroll=false){
     $('#app-surface > .versions-heading')?.remove();
     const scroll=keepScroll?screenEl.scrollTop:0,tree=D.screens[current],pages=tree.children.filter(n=>n.tag==='Page');page=Math.min(page,pages.length-1);const tabbed=pages.length>1;tabs.hidden=!tabbed;tabs.replaceChildren();

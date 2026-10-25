@@ -2,7 +2,7 @@
 
 Interface do Xingchen em português do Brasil, dentro de um dispositivo Android simulado. Abre no navegador, no computador ou no celular.
 
-**Revisão atual: 24/10/2026, atualização interna 1365.** A conferência na instância `construtor muros 1` cobriu 32 telas/estruturas, 41 páginas/abas e os onze modos de configuração. Corrigidos o manual publicado, a navegação e os campos individuais por conta, ajudas, layout móvel e diferenças entre os modos de farming, ciclo e doação. O APK instalado observado é 1363; a base visual original permanece 1355. Veja [o relatório atual](HTML/REVISAO_1365.md) para a cobertura e as limitações.
+**Revisão atual: 24/10/2026, versão 1366.** Base atualizada com os 45 arquivos de interface do APK oficial, recursos originais e conferência do painel na instância `upar 3`. Corrigidos os termos de defesas temporárias e raides da Capital. O PDF recebeu uma nota de revisão e correções de tradução. Veja [o relatório atual](HTML/REVISAO_1366.md) para cobertura e limitações.
 
 ## Usar
 
@@ -26,7 +26,7 @@ Edite `HTML/` e execute, na raiz:
 .\scripts\preparar-publicacao.ps1
 ```
 
-O script monta a publicação em `docs/`, com estilos, dados, 245 imagens, ícone do aplicativo e manual em PDF. Depois envie as alterações ao GitHub; o Pages publica a pasta `docs/` da branch `main`.
+O script monta a publicação em `docs/`, com estilos, dados, recursos visuais originais, ícone do aplicativo e manual em PDF. Depois envie as alterações ao GitHub; o Pages publica a pasta `docs/` da branch `main`.
 
 O procedimento está em [PUBLICAR_NO_GITHUB.md](PUBLICAR_NO_GITHUB.md). O APK, documentos de origem, temporários e exercícios locais não fazem parte da publicação.
 

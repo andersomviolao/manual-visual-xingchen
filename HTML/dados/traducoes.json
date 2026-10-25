@@ -433,7 +433,7 @@
   "国服签到": "Check-in no servidor chinês",
   "使用宝箱奖励": "Usar recompensas dos baús",
   "超级充能": "Supercarga",
-  "精制台升级": "Melhorar refinaria",
+  "精制台升级": "Defesas temporárias",
   "使用学徒": "Usar aprendizes",
   "改装": "Equipar construções",
   "国际服不运行大于等于": "No internacional, ignorar contas a partir do CV",
@@ -541,7 +541,7 @@
   "使用药水": "Usar poções",
   "雇哥布林研究": "Contratar goblin pesquisador",
   "铸造都城币": "Forjar Ouro da Capital",
-  "发起偷袭": "Iniciar ataque furtivo",
+  "发起偷袭": "Iniciar raide da Capital",
   "雇哥布林研究只升级小于等于6天的科技。": "O goblin pesquisador só melhora pesquisas de até 6 dias.",
   "升级建筑后使用宝石立即完成升级：": "Usar gemas para concluir imediatamente após melhorar construção:",
   "拜访玩家标签：": "Visitar jogador pela tag:",
@@ -753,5 +753,9 @@
   "账号47": "Conta 47",
   "账号48": "Conta 48",
   "账号49": "Conta 49",
-  "账号50": "Conta 50"
+  "账号50": "Conta 50",
+  "精制台": "Estação de Produção",
+  "军队设置": "Configurar exército",
+  "进攻设置": "Configurar ataques",
+  "捐兵设置": "Configurar doação"
 }
