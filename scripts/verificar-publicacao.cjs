@@ -151,6 +151,16 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
    assert(order.join(',')==='功能生效说明,超级充能,充能logo,竞赛,竞赛logo,夜世界开荒,夜世界logo','Ordem da faixa inferior incorreta no modo '+(mode+1));
    assert(await page.locator('.mode-eight-extra-features').count()===(mode===7?0:1),'Linha de defesas/aprendizes incorreta no modo '+(mode+1));
   }
+  await page.locator('#screen button[data-original-id="上传指定文件"]').click();
+  assert(!(await page.locator('#info-dialog').isHidden()),'Aviso de licença no envio não apareceu.');
+  await page.locator('#info-close').click();
+  await page.evaluate(()=>ReferenceApp.go('上传文件'));
+  assert(await page.evaluate(()=>ReferenceApp.current)==='上传文件','Nova tela de envio não abriu.');
+  assert(await page.locator('#screen input[data-original-id="压缩密码"]').getAttribute('type')==='password','Senha ZIP não está mascarada.');
+  assert(!(await page.locator('#screen').innerText()).match(/[\u3400-\u9fff]/),'Nova tela contém texto sem tradução.');
+  await page.locator('#screen button[data-original-id="关闭设置"]').click();
+  assert(await page.evaluate(()=>ReferenceApp.current)==='界面设置','Fechar envio não retornou ao painel.');
+  assert(await page.locator('#screen input[data-original-id="解压密码"]').getAttribute('type')==='password','Senha de descompactação não está mascarada.');
   await page.evaluate(()=>ReferenceApp.go('通用任务'));
   await page.locator('#screen button[data-original-id="拜访说明"]').click();
   assert((await page.locator('#info-body').innerText()).includes('uma tag por linha'),'Ajuda observada não foi reproduzida.');
@@ -217,7 +227,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.locator('#android-back').click();
   assert(!errors.length,'Erros JavaScript: '+errors);assert(!missing.length,'Recursos ausentes: '+missing);
   assert(requests.every(u=>u.startsWith(base)||u.startsWith('blob:')),'Solicitação a um serviço externo.');assert(fs.existsSync(path.join(publish,'.nojekyll')),'.nojekyll ausente.');
-  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','48 telas e 57 páginas/abas','Recursos visuais com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','launcher, entrada e ícone flutuante','iniciar e parar estado de execução simulado','Voltar, Início e Aplicativos recentes','retomada de tarefa e limpeza de recentes','gestos entre páginas','Voltar dispensa edição e fecha janelas','Início preserva janela aberta','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas','exibição de campos nos 11 modos conferidos','seis diálogos sobre o painel e confirmação' ]};
+  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','49 telas e 58 páginas/abas','Recursos visuais com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','launcher, entrada e ícone flutuante','iniciar e parar estado de execução simulado','Voltar, Início e Aplicativos recentes','retomada de tarefa e limpeza de recentes','gestos entre páginas','Voltar dispensa edição e fecha janelas','Início preserva janela aberta','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas','exibição de campos nos 11 modos conferidos','seis diálogos sobre o painel e confirmação' ]};
   const out=path.join(root,'verificacao');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'publicacao.json'),JSON.stringify(result,null,2));await page.screenshot({path:path.join(out,'publicacao-celular.png'),fullPage:true});console.log(JSON.stringify(result,null,2));
  }finally{if(browser)await browser.close();await new Promise(ok=>server.close(ok));}
 })().catch(e=>{console.error(e);process.exitCode=1;});

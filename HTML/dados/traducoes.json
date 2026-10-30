@@ -757,5 +757,17 @@
   "精制台": "Estação de Produção",
   "军队设置": "Configurar exército",
   "进攻设置": "Configurar ataques",
-  "捐兵设置": "Configurar doação"
+  "捐兵设置": "Configurar doação",
+  "上传文件": "Enviar arquivos",
+  "压缩文件或目录": "Compactar arquivo ou pasta",
+  "压缩密码": "Senha do arquivo ZIP",
+  "文件或目录": "Arquivo ou pasta",
+  "查看或下载": "Consultar ou baixar",
+  "勾选压缩时，上传前则会自动压缩": "Com compactação ativada, compacta antes de enviar.",
+  "勾选压缩时，路径只需填写到目录": "Ao compactar, informe o caminho da pasta.",
+  "解压密码": "Senha do ZIP",
+  "路径说明": "Caminho do arquivo ou pasta",
+  "设置密码": "Proteger com senha",
+  "压缩文件": "Compactar",
+  "上传": "Enviar"
 }

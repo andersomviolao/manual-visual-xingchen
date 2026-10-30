@@ -61,6 +61,8 @@ Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1365.md') -Destination
 
 Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1366.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1366.md') -Force
 
+Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1368.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1368.md') -Force
+
 $taskFiles = @(Get-ChildItem -LiteralPath $taskPublishDir -Recurse -File)
 $taskSize = ($taskFiles | Measure-Object -Property Length -Sum).Sum
 Write-Output ("Publicação preparada: docs/ — {0} arquivos, {1:N2} MB." -f $taskFiles.Count, ($taskSize / 1MB))

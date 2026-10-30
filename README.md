@@ -2,7 +2,7 @@
 
 Interface do Xingchen em português do Brasil, dentro de um dispositivo Android simulado. Abre no navegador, no computador ou no celular.
 
-**Revisão atual: 24/10/2026, versão 1366.** Base atualizada com os 45 arquivos de interface do APK oficial, recursos originais e conferência do painel na instância `upar 3`. Corrigidos os termos de defesas temporárias e raides da Capital. O PDF recebeu uma nota de revisão e correções de tradução. Veja [o relatório atual](HTML/REVISAO_1366.md) para cobertura e limitações.
+**Revisão atual: 29/10/2026, base visual 1368.** Atualização integral das definições do pacote oficial e conferência na instância `upar 1`. Nova tela de envio e compactação, senha de ZIP e ajustes do painel principal. Veja [o relatório atual](HTML/REVISAO_1368.md).
 
 ## Usar
 

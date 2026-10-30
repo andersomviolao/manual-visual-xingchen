@@ -1,7 +1,7 @@
 /* Referência visual local. Não carrega nem executa os scripts do aplicativo. */
 (() => {
   'use strict';
-  const BOT_VERSION='1366';
+  const BOT_VERSION='1368';
   const D=window.BOT_DATA, $=s=>document.querySelector(s);
   // Tela nativa adicional, conferida visualmente no LDPlayer em 15/10/2026.
   D.screens['应用设置']={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'NativeSettings',a:{},children:[]}]}]};
@@ -20,7 +20,7 @@
   };
   for(const name of Object.keys(livePopups))D.screens[name]={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'RuntimePopup',a:{},children:[]}]}]};
   const names={
-    '界面设置':'Configurações principais','星辰国际':'Tela inicial e licença','打鱼造兵设置':'Tropas para farm','捐兵造兵设置':'Tropas para doação','打鱼资源条件':'Recursos de farm e muros','进攻资源条件':'Limites de recursos por CV','通用任务':'Tarefas gerais','特殊功能':'Funções especiais','升级建筑':'Melhorar construções','升级科技':'Melhorar pesquisa','升级战宠':'Melhorar mascotes','升级武器':'Melhorar equipamentos','升级1':'Configuração individual da conta','多号独立设置':'Melhorias por conta','多号捐兵设置':'Doação por conta','QQ切号':'Troca de contas QQ','通用切号':'Várias versões — 50 contas','夜世界':'Base do Construtor','宝石加速':'Aceleração com gemas','竞赛':'Jogos do Clã','部落增援':'Reforços para guerras','部落战联赛':'Guerras e ligas','语言设置':'Idiomas na busca de clãs','自定义下兵':'Lançamento personalizado','自助切号':'Troca manual e extração','智能换阵':'Obstáculos e layouts','买卖药水':'Comprar e vender poções','使用药水':'Uso de poções','兑换物品活动':'Trocas de eventos','军队配置链接':'Composição por link','捐兵统计':'Estatísticas de doação','城墙':'Limites para muros','满资源设置':'Pausa com recursos cheios','刷经验':'Ganho de experiência','链接奖励':'Recompensas por link','卡密说明':'Informações da licença','反馈':'Relatar um problema','文件列表':'Arquivos na nuvem','更新公告':'Aviso de atualização','使用说明':'Instruções de uso','文本框':'Janela de informações','浏览器':'Tutorial no navegador','网':'Loja de chaves','交流群':'Grupo de usuários','放大':'Expandir ou ocultar janela'
+    '界面设置':'Configurações principais','星辰国际':'Tela inicial e licença','打鱼造兵设置':'Tropas para farm','捐兵造兵设置':'Tropas para doação','打鱼资源条件':'Recursos de farm e muros','进攻资源条件':'Limites de recursos por CV','通用任务':'Tarefas gerais','特殊功能':'Funções especiais','升级建筑':'Melhorar construções','升级科技':'Melhorar pesquisa','升级战宠':'Melhorar mascotes','升级武器':'Melhorar equipamentos','升级1':'Configuração individual da conta','多号独立设置':'Melhorias por conta','多号捐兵设置':'Doação por conta','QQ切号':'Troca de contas QQ','通用切号':'Várias versões — 50 contas','夜世界':'Base do Construtor','宝石加速':'Aceleração com gemas','竞赛':'Jogos do Clã','部落增援':'Reforços para guerras','部落战联赛':'Guerras e ligas','语言设置':'Idiomas na busca de clãs','自定义下兵':'Lançamento personalizado','自助切号':'Troca manual e extração','智能换阵':'Obstáculos e layouts','买卖药水':'Comprar e vender poções','使用药水':'Uso de poções','兑换物品活动':'Trocas de eventos','军队配置链接':'Composição por link','捐兵统计':'Estatísticas de doação','城墙':'Limites para muros','满资源设置':'Pausa com recursos cheios','刷经验':'Ganho de experiência','链接奖励':'Recompensas por link','卡密说明':'Informações da licença','反馈':'Relatar um problema','上传文件':'Enviar arquivos','文件列表':'Arquivos na nuvem','更新公告':'Aviso de atualização','使用说明':'Instruções de uso','文本框':'Janela de informações','浏览器':'Tutorial no navegador','网':'Loja de chaves','交流群':'Grupo de usuários','放大':'Expandir ou ocultar janela'
   };
   names['应用设置']='Ajustes gerais do aplicativo';
   names['建筑工人学徒']='Aprendiz do Construtor';names['实验助手']='Assistente do Laboratório';names['超级充能']='Supercarga';
@@ -40,7 +40,7 @@
   };
   function tr(s=''){return extra[s]??D.translations[s]??names[s]??s;}
   let stored={};try{stored=JSON.parse(localStorage.getItem('xingchen-estudo-v1')||'{}');}catch{}
-  const layoutRevision='mobile-bottom-1366a';
+  const layoutRevision='mobile-bottom-1368a';
   if(stored.layoutRevision!==layoutRevision){stored.values={...(stored.values||{}),'界面设置/0/功能选择开关':7};stored.layoutRevision=layoutRevision;}
   let values=stored.values||{},language=stored.language||'pt',current='星辰国际',page=0,mode=7,history=[],allMain=false;
   // Preserve older exercises in the first individual account.
@@ -213,13 +213,14 @@
       el=document.createElement('button');el.type='button';el.className='ui-button';el.textContent=localized((a.title||'').trim());
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='pt')el.textContent='Licença';
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='zh')el.textContent='送卡密';
-      if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?`官网 xccoc.fun　热更新版本:${BOT_VERSION}`:`Site xccoc.fun · Atualização: ${BOT_VERSION}`;
+      if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?'星辰国际':'Xingchen International';
       if(['战斗2.webp','资源.webp','多选.webp'].includes(a.background)){el.classList.add('skinned-button');el.style.backgroundImage=`url("assets/${a.background}")`;}
       else if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("assets/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
       else el.title=localized(a.title||a.id||'');
       el.onclick=()=>{showControl(n);action(a.id||'',n,el);};
     }else if(tag==='EditText'){
       el=document.createElement('input');el.className='ui-input';el.type='text';if(a.inputtype==='1')el.inputMode='decimal';el.autocomplete='off';el.spellcheck=false;el.value=getVal(key,localized(a.text||''));el.setAttribute('aria-label',inputLabel(n,parent));el.title=inputLabel(n,parent)+(a.id?' · '+a.id:'');el.dataset.key=key;el.dataset.originalId=a.id||'';
+      if(['解压密码','压缩密码'].includes(a.id)){el.type='password';el.autocomplete='new-password';}
       if(a.id==='数据路径')el.value=getVal(key,a.text||'');
       el.oninput=()=>{values[key]=el.value;save();};el.onfocus=()=>showControl({...n,a:{...a,title:inputLabel(n,parent)}});
     }else if(tag==='ComboBox'){
@@ -276,7 +277,8 @@
   function action(id,n,el){
     if(observedHelp[id]){const h=observedHelp[id];info(h[language==='zh'?2:0],h[language==='zh'?3:1]);return;}
     if(current==='界面设置'&&id==='关闭紧急通知'){androidNoticeDismissed=true;render(true);return;}
-    if(['下载新','查询文件','上传指定文件','上传新'].includes(id)){info(localized('权限不够'),localized('①免费用户不支持上传下载 请访问官网 http://xccoc.fun 购买卡密。'));return;}
+    if(['上传','查询文件2'].includes(id)){info(language==='zh'?'本地模拟':'Simulação local',language==='zh'?'不会上传或下载任何文件。':'Esta referência não envia, compacta, criptografa nem baixa arquivos.');return;}
+    if(['下载新','查询文件','上传新','上传指定文件'].includes(id)){info(localized('权限不够'),localized('①免费用户不支持上传下载 请访问官网 http://xccoc.fun 购买卡密。'));return;}
     if(current==='自助切号'&&id==='缩小窗口'){go('放大');return;}
     if(current==='放大'&&id==='展开'){back();return;}
     if(current==='放大'&&id==='隐藏'){systemView='home';syncSystem();return;}
