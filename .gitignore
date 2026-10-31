@@ -21,3 +21,7 @@ meu-exercicio*.json
 *.key
 credentials*.json
 
+
+# Materiais e registros locais preservados.
+/materiais/
+/instaladores/

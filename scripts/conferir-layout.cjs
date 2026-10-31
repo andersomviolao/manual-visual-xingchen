@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require('playwright');
 (async()=>{
- const root=path.resolve(__dirname,'..'),out=path.join(root,'verificacao','revisao-1365');
+ const root=path.resolve(__dirname,'..'),out=path.join(root,'verificacao','layout-atual');
  fs.mkdirSync(out,{recursive:true});
  const browser=await chromium.launch({headless:true,...(process.platform==='win32'?{channel:'msedge'}:{})});
  try{

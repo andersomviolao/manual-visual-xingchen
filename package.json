@@ -5,7 +5,9 @@
   "description": "Referência visual das configurações do Xingchen em português.",
   "scripts": {
     "test": "node scripts/verificar-publicacao.cjs",
-    "test:referencia": "node HTML/dados/verificar.cjs"
+    "test:referencia": "node scripts/conferir-layout.cjs"
   },
-  "devDependencies": { "playwright": "1.62.1" }
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
 }

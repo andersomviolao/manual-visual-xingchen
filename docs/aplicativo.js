@@ -1,7 +1,6 @@
 /* Referência visual local. Não carrega nem executa os scripts do aplicativo. */
 (() => {
   'use strict';
-  const BOT_VERSION='1368';
   const D=window.BOT_DATA, $=s=>document.querySelector(s);
   // Tela nativa adicional, conferida visualmente no LDPlayer em 15/10/2026.
   D.screens['应用设置']={tag:'Window',a:{},children:[{tag:'Page',a:{},children:[{tag:'NativeSettings',a:{},children:[]}]}]};
@@ -319,7 +318,7 @@
     const footer=document.createElement('div');footer.className='observed-background-confirm';footer.setAttribute('aria-hidden','true');footer.setAttribute('inert','');footer.textContent=language==='zh'?'确定':'Confirmar';
     layer.append(sheet);screenEl.replaceChildren(background,footer,layer);
   }
-  function arrangeModeEightFeatures(content){
+  function arrangeModeFeatures(content){
     if(current!=='界面设置'||![6,7,8,9].includes(mode))return;
     const row=content.querySelector('[data-original-id="超级充能"]')?.closest('.ui-row');
     if(row){row.classList.add('mode-eight-features');row.dataset.originalId='modo-oito-funcoes';}
@@ -332,7 +331,7 @@
     const scroll=keepScroll?screenEl.scrollTop:0,tree=D.screens[current],pages=tree.children.filter(n=>n.tag==='Page');page=Math.min(page,pages.length-1);const tabbed=pages.length>1;tabs.hidden=!tabbed;tabs.replaceChildren();
     if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=current==='升级1'&&i===0?(language==='zh'?`账号${accountNumber}`:`Conta ${accountNumber}`):localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
     if(current==='界面设置')tabs.hidden=true;
-    const content=create(pages[page]);screenEl.replaceChildren(content);arrangeModeEightFeatures(content);screenEl.scrollTop=scroll;
+    const content=create(pages[page]);screenEl.replaceChildren(content);arrangeModeFeatures(content);screenEl.scrollTop=scroll;
     const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#app-surface > .confirm-wrap').hidden=!!sheet||tree.a.showconfirm==='false';
     const runtime=['自助切号','放大','刷经验'].includes(current);
     screenEl.classList.toggle('runtime-window-host',runtime);

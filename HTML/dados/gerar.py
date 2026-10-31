@@ -6,7 +6,7 @@ tr=json.loads((base/'traducoes.json').read_text(encoding='utf8'))
 def convert(e):
     return {'tag':e.tag,'a':dict(e.attrib),'children':[convert(c) for c in e]}
 trees={name:convert(E.fromstring(s)) for name,s in uis.items()}
-review=json.loads((base/'conferencia-1368.json').read_text(encoding='utf8'))
-data={'review':review,'screens':trees,'translations':tr,'assets':[p.name for p in (base.parent/'assets').iterdir()],'source':{'apk':'星辰辅助1368.apk','version':'1368','observed':'1368','screens':len(trees),'texts':len(tr)}}
+review=json.loads((base/'conferencia-1370.json').read_text(encoding='utf8'))
+data={'review':review,'screens':trees,'translations':tr,'assets':[p.name for p in (base.parent/'assets').iterdir()],'source':{'apk':'instaladores/Xingchen-1370.apk','version':'1370','observed':'1370','screens':len(trees),'texts':len(tr)}}
 (base.parent/'dados.js').write_text('/* Definições visuais do APK original; não contém os scripts do bot. */\nwindow.BOT_DATA='+json.dumps(data,ensure_ascii=False,separators=(',',':'))+';\n',encoding='utf8')
 print('dados.js gerado:',len(trees),'telas,',len(tr),'traduções')

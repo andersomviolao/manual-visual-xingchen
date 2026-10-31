@@ -189,6 +189,8 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   const manual=await page.locator('a[href$=".pdf"]').evaluate(el=>el.href);assert(manual.startsWith(base+'manual/'),'Link do manual fora do site.');
   const r=await context.request.get(manual);assert(r.status()===200,'Manual ausente.');const bytes=await r.body();
   assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'manual','Manual_Xingchen_Portugues_BR.pdf'))),'PDF diferente.');
+  const reportHref=await page.locator('#review').getAttribute('href');
+  assert((await context.request.get(new URL(reportHref,base).href)).status()===200,'Relatório de revisão ausente após reorganização.');
   const sourceIndex=fs.readFileSync(path.join(root,'HTML','index.html'),'utf8');
   const sourceHref=sourceIndex.match(/id="manual-link" href="([^"]+)"/)[1];
   const localPdf=path.resolve(root,'HTML',sourceHref);

@@ -8,11 +8,11 @@ $taskAssetsSource = Join-Path $taskSourceDir 'assets'
 $taskAssetsTarget = Join-Path $taskPublishDir 'assets'
 $taskManualTargetDir = Join-Path $taskPublishDir 'manual'
 $taskManualName = 'Manual_Xingchen_Portugues_BR.pdf'
-$taskManualSource = Join-Path $taskProjectRoot $taskManualName
+$taskManualSource = Join-Path $taskProjectRoot ('materiais/manuais/' + $taskManualName)
 $taskManualTarget = Join-Path $taskManualTargetDir $taskManualName
 $taskUtf8 = [System.Text.UTF8Encoding]::new($false)
 
-foreach ($taskFileName in @('index.html','estilo.css','aplicativo.js','dados.js','REVISAO_1357.md','REVISAO_1366.md')) {
+foreach ($taskFileName in @('index.html','estilo.css','aplicativo.js','dados.js')) {
     if (-not (Test-Path -LiteralPath (Join-Path $taskSourceDir $taskFileName) -PathType Leaf)) {
         throw "Arquivo de origem ausente: $taskFileName"
     }
@@ -49,19 +49,14 @@ foreach ($taskResource in @('estilo.css','dados.js','aplicativo.js')) {
 [IO.File]::WriteAllText((Join-Path $taskPublishDir 'index.html'), $taskIndex, $taskUtf8)
 [IO.File]::WriteAllText((Join-Path $taskPublishDir '.nojekyll'), '', $taskUtf8)
 
-# O relatório público usa caminhos relativos ao projeto.
-$taskReview = [IO.File]::ReadAllText((Join-Path $taskSourceDir 'REVISAO_1357.md'))
-$taskReview = [regex]::Replace($taskReview, 'C:\\Users\\[^\r\n`]+\\星辰辅助1355\.apk', '星辰辅助1355.apk')
-[IO.File]::WriteAllText((Join-Path $taskPublishDir 'REVISAO_1357.md'), $taskReview, $taskUtf8)
-
-Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1358.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1358.md') -Force
-Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1362.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1362.md') -Force
-Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1363.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1363.md') -Force
-Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1365.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1365.md') -Force
-
-Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1366.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1366.md') -Force
-
-Copy-Item -LiteralPath (Join-Path $taskSourceDir 'REVISAO_1368.md') -Destination (Join-Path $taskPublishDir 'REVISAO_1368.md') -Force
+# Relatórios são mantidos juntos, sem uma linha de cópia por versão.
+$taskReviewsSource = Join-Path $taskSourceDir 'revisoes'
+$taskReviewsTarget = Join-Path $taskPublishDir 'revisoes'
+New-Item -ItemType Directory -Force -Path $taskReviewsTarget | Out-Null
+Get-ChildItem -LiteralPath $taskReviewsSource -Filter '*.md' -File | ForEach-Object {
+    Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $taskReviewsTarget $_.Name) -Force
+}
+Copy-Item -LiteralPath (Join-Path $taskSourceDir 'LEIA-ME.md') -Destination (Join-Path $taskPublishDir 'LEIA-ME.md') -Force
 
 $taskFiles = @(Get-ChildItem -LiteralPath $taskPublishDir -Recurse -File)
 $taskSize = ($taskFiles | Measure-Object -Property Length -Sum).Sum

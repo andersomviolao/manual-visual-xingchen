@@ -2,7 +2,7 @@
 
 Abra **index.html** no navegador. Não precisa instalar dependências, iniciar servidor nem conectar o bot real.
 
-A revisão de **24/10/2026** usa a interface 1365 observada em `construtor muros 1`. Foram conferidas 32 telas/estruturas, 41 páginas/abas e os onze modos. A navegação entre contas, o PDF, as ajudas e as diferenças das faixas inferiores foram corrigidos. A cobertura atual e os estados que não foram reexecutados estão em [REVISAO_1365.md](REVISAO_1365.md).
+A revisão de **31/10/2026** compara as 46 definições visuais do pacote oficial 1370. Elas permanecem iguais às da base 1368. Veja [a revisão atual](revisoes/REVISAO_1370.md) para a cobertura e os limites.
 
 ## Como navegar
 
@@ -29,13 +29,11 @@ Os campos continuam salvos no navegador. O formato dos exercícios anteriores fo
 
 ## Fidelidade e limites
 
-A estrutura vem das 45 definições visuais do APK 1355 e de telas adicionais observadas. O painel do bot real foi conferido na atualização interna **1358**. As conferências diretas de 16 e 17/10/2026 cobriram **37 telas/estruturas, 46 páginas/abas e os 11 modos**. Consulte [REVISAO_1358.md](REVISAO_1358.md).
-
-A mudança para simulação Android foi implementada em **17/10/2026**. A navegação de Voltar, Início, Recentes e os estados do aplicativo foram implementados no HTML; não são uma emulação completa do Android, nem uma reprodução comprovada de todos os comportamentos internos do bot. As outras 16 definições auxiliares continuam nos dados para referência de desenvolvimento, sem menu de acesso artificial na interface pública.
+A base contém 46 definições do APK e três estruturas adicionais: 49 telas e 58 páginas/abas. As conferências de versões anteriores estão em `revisoes/`. A navegação Android é simulada para estudo.
 
 A tradução pode exigir quebras de linha e rolagem diferentes do chinês. Conteúdos remotos, contas, licença, compras, arquivos na nuvem, instalação e ações no jogo não são executados. Não se afirma igualdade visual pixel a pixel ou equivalência funcional integral.
 
-O ícone em `system/bot-icon.png` foi extraído do APK local, preservando a arte original. Os demais 245 recursos de imagem continuam em `assets/`.
+O ícone em `system/bot-icon.png` foi extraído do APK local, preservando a arte original. Os demais 264 recursos de imagem continuam em `assets/`.
 
 ## Onde editar e verificar
 
