@@ -11,12 +11,12 @@ Abra [o HTML pronto](docs/index.html) ou [o site publicado](https://andersomviol
 | `docs/` | Site publicado pelo GitHub Pages; inclui o PDF traduzido |
 | `instaladores/` | Apenas o APK oficial mais recente, fora do Git |
 | `materiais/manuais/` | Manual chinês original, fora da publicação |
-| `materiais/registros/` | Registros locais de ajustes das instâncias |
-| `materiais/temporarios-anteriores/` | Capturas e extrações antigas preservadas fora da área de trabalho |
 | `scripts/` | Publicação e verificações |
-| `verificacao/` | Resultados temporários dos testes, recriados quando necessário |
+| `verificacao/` | Resultados opcionais dos testes, gerados somente quando solicitados |
 
 Revisão atual: **31/10/2026, pacote 1370**. As 46 definições de tela e os recursos visuais correspondem à base 1368. O conjunto renderiza 49 telas e 58 páginas/abas. Consulte [o relatório](HTML/revisoes/REVISAO_1370.md) e [o guia de uso](HTML/LEIA-ME.md).
+
+As correções de salvamento e validação do simulador estão descritas na [revisão do código](HTML/revisoes/REVISAO_CODIGO_20261031.md). Os registros e temporários antigos foram excluídos por solicitação do usuário; `materiais/` conserva apenas os manuais.
 
 ## Alterar e publicar
 
@@ -26,6 +26,8 @@ O PDF traduzido tem sua cópia principal em `docs/manual/`. Se fornecer uma revi
 
 ## Verificar
 
-Instale as dependências de `package.json` e rode `npm test`. No Windows, os testes usam o Edge instalado. `node scripts/conferir-layout.cjs` confere também as larguras móveis. Os resultados ficam em `verificacao/`.
+Instale as dependências de `package.json` e rode `npm test`. No Windows, os testes usam o Edge instalado. `npm run test:referencia` confere também as larguras móveis. Os dois comandos mostram o resultado no terminal e não acumulam arquivos no projeto.
+
+Para guardar relatórios e capturas em `verificacao/`, use `npm test -- --artefatos` ou `npm run test:referencia -- --artefatos`. A variável opcional `BOT_TEST_OUTPUT` permite escolher outro diretório de saída.
 
 APKs, registros pessoais, exercícios e materiais locais não devem ser enviados ao site.

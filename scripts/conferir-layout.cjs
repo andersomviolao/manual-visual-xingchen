@@ -3,8 +3,10 @@ const fs=require('node:fs'),path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require('playwright');
 (async()=>{
- const root=path.resolve(__dirname,'..'),out=path.join(root,'verificacao','layout-atual');
- fs.mkdirSync(out,{recursive:true});
+ const root=path.resolve(__dirname,'..');
+ const writeArtifacts=process.argv.includes('--artefatos')||Boolean(process.env.BOT_TEST_OUTPUT);
+ const out=process.env.BOT_TEST_OUTPUT?path.resolve(process.env.BOT_TEST_OUTPUT):path.join(root,'verificacao','layout-atual');
+ if(writeArtifacts)fs.mkdirSync(out,{recursive:true});
  const browser=await chromium.launch({headless:true,...(process.platform==='win32'?{channel:'msedge'}:{})});
  try{
   const page=await browser.newPage({viewport:{width:1000,height:1000}}),report=[];
@@ -19,7 +21,7 @@ const {chromium}=require('playwright');
     await page.waitForTimeout(80);
     const rows=await page.locator('#screen .ui-row').evaluateAll(els=>els.filter(el=>el.scrollWidth>el.clientWidth+8).map(el=>({id:el.dataset.originalId,text:el.textContent.slice(0,100),width:el.clientWidth,overflow:el.scrollWidth-el.clientWidth})));
     report.push({width,name,tab,rows});
-    if(tab===0&&screenshots.includes(name))await page.locator('#phone').screenshot({path:path.join(out,`${width}-${name}.png`)});
+    if(writeArtifacts&&tab===0&&screenshots.includes(name))await page.locator('#phone').screenshot({path:path.join(out,`${width}-${name}.png`)});
    }
    await page.evaluate(()=>ReferenceApp.go('界面设置'));
    for(let mode=0;mode<11;mode++){
@@ -27,10 +29,12 @@ const {chromium}=require('playwright');
     await page.waitForTimeout(50);
     const rows=await page.locator('#screen .ui-row').evaluateAll(els=>els.filter(el=>el.scrollWidth>el.clientWidth+8).map(el=>({id:el.dataset.originalId,text:el.textContent.slice(0,100),width:el.clientWidth,overflow:el.scrollWidth-el.clientWidth})));
     report.push({width,name:'界面设置',mode,rows});
-    if(width!==320)await page.locator('#phone').screenshot({path:path.join(out,`${width}-modo-${mode+1}.png`)});
+    if(writeArtifacts&&width!==320)await page.locator('#phone').screenshot({path:path.join(out,`${width}-modo-${mode+1}.png`)});
    }
   }
-  fs.writeFileSync(path.join(out,'layout.json'),JSON.stringify(report,null,2));
-  console.log(JSON.stringify(report.filter(r=>r.rows.length),null,2));
+  if(writeArtifacts)fs.writeFileSync(path.join(out,'layout.json'),JSON.stringify(report,null,2));
+  const overflows=report.filter(r=>r.rows.length);
+  console.log(JSON.stringify(overflows,null,2));
+  if(overflows.length)throw Error('Há linhas com estouro horizontal.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -19,7 +19,7 @@ foreach ($taskFileName in @('index.html','estilo.css','aplicativo.js','dados.js'
 }
 if (-not (Test-Path -LiteralPath $taskAssetsSource -PathType Container)) { throw 'Pasta de imagens ausente.' }
 if (-not (Test-Path -LiteralPath $taskManualSource -PathType Leaf) -and -not (Test-Path -LiteralPath $taskManualTarget -PathType Leaf)) {
-    throw 'O PDF em português não foi encontrado na raiz nem na pasta de publicação.'
+    throw 'O PDF em português não foi encontrado em materiais/manuais/ nem em docs/manual/.'
 }
 
 New-Item -ItemType Directory -Force -Path $taskPublishDir,$taskAssetsTarget,$taskManualTargetDir | Out-Null

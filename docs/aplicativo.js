@@ -38,13 +38,64 @@
     '超级大雪怪':'Superyeti','战吼狂人':'Guerreiro de Grito','收债哥布林':'Goblin Cobrador','废墟女巫':'Bruxa das Ruínas','皮卡凯恩':'P.E.K.K.A Kaine','铁壁终结者':'Destruidor Blindado','陨石戈仑':'Golem Meteórico','霸天巨人':'Gigante Titânico','飞龙公爵':'Duque Dragão','超级兵':'Supertropa','法术':'Feitiço','说明':'Informações','停止运行':'Parar execução','编辑':'Editar'
   };
   function tr(s=''){return extra[s]??D.translations[s]??names[s]??s;}
-  let stored={};try{stored=JSON.parse(localStorage.getItem('xingchen-estudo-v1')||'{}');}catch{}
-  const layoutRevision='mobile-bottom-1368a';
-  if(stored.layoutRevision!==layoutRevision){stored.values={...(stored.values||{}),'界面设置/0/功能选择开关':7};stored.layoutRevision=layoutRevision;}
-  let values=stored.values||{},language=stored.language||'pt',current='星辰国际',page=0,mode=7,history=[],allMain=false;
-  // Preserve older exercises in the first individual account.
-  for(const [key,value] of Object.entries(values))if(key.startsWith('升级1/')){
-    const migrated=key.replace('升级1/','升级1@1/');if(!Object.hasOwn(values,migrated))values[migrated]=value;
+  const storageKey='xingchen-estudo-v1',exerciseFormat='xingchen-referencia-1';
+  const modeKey='界面设置/0/功能选择开关',defaultMode=7;
+  const resourceAlternatives={
+    '手动指定分配资源':'辅助自动分配资源','辅助自动分配资源':'手动指定分配资源',
+    '强制进攻':'不判断死鱼','不判断死鱼':'强制进攻'
+  };
+  const isRecord=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
+  const isFieldValue=value=>['string','boolean'].includes(typeof value)||(typeof value==='number'&&Number.isFinite(value));
+  function parseMode(value){
+    if(typeof value==='string'&&/^(?:[0-9]|10)$/.test(value))return Number(value);
+    return Number.isInteger(value)&&value>=0&&value<=10?value:null;
+  }
+  function normalizeValues(candidate,strict=false){
+    if(!isRecord(candidate)){
+      if(strict)throw Error('Campos inválidos');
+      candidate={};
+    }
+    const entries=Object.entries(candidate);
+    if(strict&&entries.some(([,value])=>!isFieldValue(value)))throw Error('Valor inválido');
+    const next=Object.fromEntries(entries.filter(([,value])=>isFieldValue(value)));
+    const selectedMode=Object.hasOwn(next,modeKey)?parseMode(next[modeKey]):defaultMode;
+    if(strict&&selectedMode===null)throw Error('Modo inválido');
+    next[modeKey]=selectedMode??defaultMode;
+    // Exercícios antigos da conta individual continuam na primeira conta.
+    for(const [key,value] of Object.entries(next))if(key.startsWith('升级1/')){
+      const migrated=key.replace('升级1/','升级1@1/');
+      if(!Object.hasOwn(next,migrated))next[migrated]=value;
+    }
+    // Recupera seleções conflitantes gravadas pelas versões anteriores.
+    for(const preferred of ['手动指定分配资源','不判断死鱼']){
+      if(next[`打鱼资源条件/0/${preferred}/0`]===true){
+        next[`打鱼资源条件/0/${resourceAlternatives[preferred]}/0`]=false;
+      }
+    }
+    return next;
+  }
+  let stored={};
+  try{
+    const parsed=JSON.parse(localStorage.getItem(storageKey)||'{}');
+    if(isRecord(parsed))stored=parsed;
+  }catch{}
+  let values=normalizeValues(stored.values);
+  let language=['pt','zh'].includes(stored.language)?stored.language:'pt';
+  let current='星辰国际',page=0,mode=values[modeKey],history=[];
+  // Mantém a chave antiga da primeira ocorrência e separa IDs repetidos no XML.
+  const repeatedControlKeys=new WeakMap();
+  for(const tree of Object.values(D.screens)){
+    for(const screenPage of tree.children.filter(n=>n.tag==='Page')){
+      const seen=new Set();
+      function visit(n,path){
+        if(n.a.id&&['EditText','ComboBox','CheckBoxGroup','RadioGroup'].includes(n.tag)){
+          if(seen.has(n.a.id))repeatedControlKeys.set(n,`${n.a.id}@${path}`);
+          seen.add(n.a.id);
+        }
+        n.children.forEach((child,index)=>visit(child,`${path}.${index}`));
+      }
+      visit(screenPage,'0');
+    }
   }
   let accountNumber=1,troopAccount=0;
   function screenScope(){
@@ -54,33 +105,31 @@
   }
   const screenEl=$('#screen'),tabs=$('#page-tabs');
   const localized=s=>language==='zh'?s:tr(s);
-  function save(){try{localStorage.setItem('xingchen-estudo-v1',JSON.stringify({values,language,layoutRevision}));}catch{toast('O navegador não permitiu salvar automaticamente. Use Salvar exercício.');}}
+  function save(){try{localStorage.setItem(storageKey,JSON.stringify({values,language}));}catch{toast('O navegador não permitiu salvar automaticamente. Use Salvar exercício.');}}
   function toast(t){$('#toast').textContent=t;$('#toast').classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').classList.remove('visible'),3500);}
   function info(title,text){$('#info-title').textContent=title;$('#info-body').textContent=text;$('#info-dialog').hidden=false;}
   const assetName=bg=>tr((bg||'').replace(/\.(webp|png|jpe?g)$/i,''));
   function controlLabel(n){const a=n.a,o=n.children.find(c=>c.tag==='Option');return tr(a.title||a.text||o?.a.text||((a.background&&!a.background.startsWith('#'))?assetName(a.background):''))||'Campo de configuração';}
-  function showControl(){}
   const routes={
-    '通用任务':'通用任务','特殊功能':'特殊功能','打鱼造兵设置':'打鱼造兵设置','多号打鱼造兵设置':'打鱼造兵设置','设置打鱼资源条件':'打鱼资源条件','多号捐兵兵种':'多号捐兵设置','搜索部落语言选择':'语言设置','卡密说明':'卡密说明','查看教程':'浏览器','升级建筑':'升级建筑','升级科技':'升级科技','升级战宠':'升级战宠','升级武器':'升级武器','多号升级':'多号独立设置','限时活动':'兑换物品活动','智能换阵':'智能换阵','买卖药水':'买卖药水','使用药水':'使用药水','链接兑换奖励':'链接奖励','宝石加速':'宝石加速','夜世界开荒':'夜世界','竞赛':'竞赛','捐部落战援兵':'部落增援','自动联赛':'部落战联赛','求援':'军队配置链接','满资源不进攻':'满资源设置','下载新':'文件列表','查询文件':'文件列表','上传指定文件':'文件列表','发起部落战':'部落战联赛'
+    '通用任务':'通用任务','特殊功能':'特殊功能','打鱼造兵设置':'打鱼造兵设置','多号打鱼造兵设置':'打鱼造兵设置','设置打鱼资源条件':'打鱼资源条件','多号捐兵兵种':'多号捐兵设置','搜索部落语言选择':'语言设置','卡密说明':'赠卡说明','查看教程':'浏览器','升级建筑':'升级建筑','升级科技':'升级科技','升级战宠':'升级战宠','升级武器':'升级武器','多号升级':'多号独立设置','限时活动':'兑换物品活动','智能换阵':'智能换阵','买卖药水':'买卖药水','使用药水':'使用药水','链接兑换奖励':'链接奖励','宝石加速':'宝石加速','夜世界开荒':'夜世界','竞赛':'竞赛','捐部落战援兵':'部落增援','自动联赛':'部落战联赛','求援':'军队配置链接','满资源不进攻':'满资源设置','发起部落战':'部落战联赛'
   };
-  routes['卡密说明']='赠卡说明';
   function getVal(key,def){
     if(Object.hasOwn(values,key))return values[key];
     const legacy=key.replace(/^升级1@1\//,'升级1/');
     return legacy!==key&&Object.hasOwn(values,legacy)?values[legacy]:def;
   }
-  let arrival='Início da referência',androidNoticeDismissed=false;
-  function go(name,newPage=0,push=true,source='Controle da tela'){
+  let androidNoticeDismissed=false;
+  function go(name,newPage=0,push=true){
     if(!D.screens[name])return;
     const total=D.screens[name].children.filter(n=>n.tag==='Page').length;
     newPage=Math.max(0,Math.min(Number(newPage)||0,total-1));
     if(current===name&&page===newPage){systemView='app';taskOpen=true;syncSystem();return;}
-    if(push&&name!==current)history.push({name:current,page,scroll:screenEl.scrollTop,arrival,accountNumber,troopAccount});
-    current=name;page=newPage;arrival=source;systemView='app';taskOpen=true;render();syncSystem();
+    if(push&&name!==current)history.push({name:current,page,scroll:screenEl.scrollTop,accountNumber,troopAccount});
+    current=name;page=newPage;systemView='app';taskOpen=true;render();syncSystem();
   }
   function returnTo(index){
     const prev=history[index];if(!prev)return;
-    history=history.slice(0,index);current=prev.name;page=prev.page;arrival=prev.arrival;accountNumber=prev.accountNumber||1;troopAccount=prev.troopAccount||0;
+    history=history.slice(0,index);current=prev.name;page=prev.page;accountNumber=prev.accountNumber||1;troopAccount=prev.troopAccount||0;
     render();screenEl.scrollTop=prev.scroll;syncSystem();
   }
   let systemView='home',taskOpen=false,floatingAvailable=false,running=false,noticeShown=false,previousSystemView='home';
@@ -127,7 +176,7 @@
     systemView='recents';syncSystem();
   }
   function mainVisibility(n){
-    if(current!=='界面设置'||page!==0||allMain)return true;
+    if(current!=='界面设置'||page!==0)return true;
     const a=n.a,ids=n.children.map(c=>c.a.id||'');const has=id=>ids.includes(id);const farm=[6,8,9].includes(mode),donation=[8,9].includes(mode);
     if(a.id==='紧急通知布局')return !androidNoticeDismissed;
     if(a.id==='循环任务布局')return mode===7;
@@ -178,7 +227,16 @@
     if(a.background==='背景框.png'){css.backgroundColor='#70b6d9';css.borderRadius='4px';}
     if(['上.png','上1.png','下.png','中上.png','中.png','中.webp','lbg.png','lbj.png','文本框.webp'].includes(a.background)){css.backgroundImage=`url("assets/${a.background}")`;css.backgroundSize='100% 100%';}
   }
-  function keyFor(n,path){const id=n.a.id;return `${screenScope()}/${page}/${id&&!['文本','占位符','idLabel1','idButton','私人定制','水平布局','idLayoutHor1'].includes(id)?id:path}`;}
+  function keyFor(n,path){const id=n.a.id;return `${screenScope()}/${page}/${repeatedControlKeys.get(n)||(id&&!['文本','占位符','idLabel1','idButton','私人定制','水平布局','idLayoutHor1'].includes(id)?id:path)}`;}
+  function saveCheckedValue(n,key,index,checked){
+    if(n.tag==='RadioGroup')n.children.forEach((_,i)=>values[`${key}/${i}`]=i===index);
+    else values[`${key}/${index}`]=checked;
+    const alternative=resourceAlternatives[n.a.id];
+    if(current==='打鱼资源条件'&&checked&&alternative){
+      values[`${screenScope()}/${page}/${alternative}/0`]=false;
+    }
+    save();
+  }
   function create(n,parent=null,path='0'){
     if(!mainVisibility(n))return null;const a=n.a,tag=n.tag,key=keyFor(n,path);let el;
     if(tag==='Option')return null;
@@ -188,7 +246,7 @@
       el=document.createElement('div');el.className='native-settings';
       const head=document.createElement('div');head.className='native-heading';head.textContent=localized('设置');el.append(head);
       for(const [id,def]of [['音量加(+)控制脚本开始/停止',true],['脚本停止或者结束的时候振动提醒',true],['开机自启动脚本',false],['开启或者关闭节点服务',true]]){
-        const label=document.createElement('label');label.className='native-row native-toggle';const text=document.createElement('span');text.textContent=localized(id);const input=document.createElement('input');input.type='checkbox';input.setAttribute('role','switch');input.setAttribute('aria-label',tr(id));const k='native/'+id;input.checked=getVal(k,def);input.onchange=()=>{values[k]=input.checked;save();showControl({tag:'CheckBoxGroup',a:{id,title:tr(id)},children:[]});};label.title=localized(id);label.append(text,input);el.append(label);
+        const label=document.createElement('label');label.className='native-row native-toggle';const text=document.createElement('span');text.textContent=localized(id);const input=document.createElement('input');input.type='checkbox';input.setAttribute('role','switch');input.setAttribute('aria-label',tr(id));const k='native/'+id;input.checked=getVal(k,def);input.onchange=()=>{values[k]=input.checked;save();};label.title=localized(id);label.append(text,input);el.append(label);
       }
       for(const [zh,pt]of [['当前系统型号: SM-A805N','Modelo do sistema: SM-A805N'],['当前系统版本: 9','Versão do Android: 9'],['当前分辨率: 720X1280:320(DPI)','Resolução: 720 × 1280 · 320 dpi'],['系统总共内存: 3945(M)','Memória total: 3945 MB'],['虚拟按键: 无','Botões virtuais: nenhum'],['当前apk版本号:1363','Versão do APK instalado: 1363'],['当前引擎版本3.8.6','Versão do mecanismo: 3.8.6']]){const row=document.createElement('div');row.className='native-row';row.textContent=language==='zh'?zh:pt;row.title=zh;el.append(row);}
       for(const [zh,pt]of [['打开日志','Abrir registros'],['连接远程电脑开发助手','Conectar ao auxiliar de desenvolvimento remoto']]){const row=document.createElement('div');row.className='native-row';const b=document.createElement('button');b.textContent=language==='zh'?zh:pt;b.className='native-green';b.onclick=()=>info(pt,'Controle reproduzido para consulta. Não abre registros nem inicia conexão remota.');row.append(b);el.append(row);}
@@ -216,19 +274,33 @@
       if(['战斗2.webp','资源.webp','多选.webp'].includes(a.background)){el.classList.add('skinned-button');el.style.backgroundImage=`url("assets/${a.background}")`;}
       else if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("assets/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
       else el.title=localized(a.title||a.id||'');
-      el.onclick=()=>{showControl(n);action(a.id||'',n,el);};
+      el.onclick=()=>action(a.id||'',n);
     }else if(tag==='EditText'){
       el=document.createElement('input');el.className='ui-input';el.type='text';if(a.inputtype==='1')el.inputMode='decimal';el.autocomplete='off';el.spellcheck=false;el.value=getVal(key,localized(a.text||''));el.setAttribute('aria-label',inputLabel(n,parent));el.title=inputLabel(n,parent)+(a.id?' · '+a.id:'');el.dataset.key=key;el.dataset.originalId=a.id||'';
       if(['解压密码','压缩密码'].includes(a.id)){el.type='password';el.autocomplete='new-password';}
       if(a.id==='数据路径')el.value=getVal(key,a.text||'');
-      el.oninput=()=>{values[key]=el.value;save();};el.onfocus=()=>showControl({...n,a:{...a,title:inputLabel(n,parent)}});
+      el.oninput=()=>{values[key]=el.value;save();};
     }else if(tag==='ComboBox'){
       el=document.createElement('select');el.className='ui-select';el.setAttribute('aria-label',tr(a.id)||'Selecionar opção');n.children.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=localized(c.a.text);o.title=localized(c.a.text);el.append(o);});const def=Number(a.select)||0;el.value=current==='界面设置'&&a.id==='功能选择开关'?mode:getVal(key,def);
-      el.onchange=()=>{values[key]=Number(el.value);showControl({...n,a:{...a,title:n.children[Number(el.value)]?.a.text}});save();if(a.id==='功能选择开关'){mode=Number(el.value);render();}else if(a.id==='游戏版本'){if(Number(el.value)===2)go('通用切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);else render();}else if(a.id==='授权选择'&&Number(el.value)===2)go('QQ切号',0,true,'Lista → '+tr(a.id)+' → '+el.selectedOptions[0].textContent);};
+      el.onchange=()=>{
+        values[key]=Number(el.value);
+        save();
+        if(a.id==='功能选择开关'){
+          mode=values[key];render();
+        }else if(a.id==='游戏版本'){
+          if(values[key]===2)go('通用切号');else render();
+        }else if(a.id==='授权选择'&&values[key]===2)go('QQ切号');
+      };
     }else if(tag==='CheckBoxGroup'||tag==='RadioGroup'){
       el=document.createElement('div');el.className=tag==='RadioGroup'?'ui-radio-group':'ui-check-group';
       n.children.forEach((c,i)=>{const label=document.createElement('label');label.className='ui-check';const input=document.createElement('input');input.type=tag==='RadioGroup'?'radio':'checkbox';input.name=key;const ck=key+'/'+i;input.dataset.key=ck;input.checked=!!getVal(ck,(a.select||'').split(',').includes(String(i)));const text=document.createElement('span');text.textContent=language==='pt'?({'每次进攻':'Atacar','当资源小于':'Abaixo de','当资源大于':'Acima de'}[c.a.text]||localized(c.a.text||'')):localized(c.a.text||'');if(c.a.textcolor)label.style.color=color(c.a.textcolor);label.title=language==='pt'&&a.id==='发起偷袭'?'Iniciar o raide da Capital. Controle separado dos ataques do modo 3; execução no jogo não verificada.':language==='pt'&&a.id==='精制台升级'?'Melhorar as defesas diferenciadas (temporárias) da Estação de Produção. Requer Melhorar construções.':localized(c.a.text||a.id||'');input.setAttribute('aria-label',tr(c.a.text)||tr(a.id)||'Selecionar item');label.append(input,text);el.append(label);
-        input.onchange=()=>{if(tag==='RadioGroup')n.children.forEach((_,j)=>values[key+'/'+j]=j===i);else values[ck]=input.checked;save();showControl(n);if(input.checked&&routes[a.id])go(routes[a.id],0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));else if(current==='打鱼资源条件'&&a.id==='手动指定分配资源'&&input.checked){values[current+'/'+page+'/辅助自动分配资源/0']=false;go('进攻资源条件',0,true,'Caixa → '+(localized(c.a.text)||controlLabel(n)));}else if(current==='打鱼资源条件'&&['辅助自动分配资源','强制进攻','不判断死鱼'].includes(a.id)){const sibling={'辅助自动分配资源':'手动指定分配资源','强制进攻':'不判断死鱼','不判断死鱼':'强制进攻'}[a.id];if(input.checked)values[current+'/'+page+'/'+sibling+'/0']=false;save();render(true);}else if(current==='界面设置'&&['发送邮件','加入部落'].includes(a.id))render(true);};
+        input.onchange=()=>{
+          saveCheckedValue(n,key,i,input.checked);
+          if(input.checked&&routes[a.id])go(routes[a.id]);
+          else if(current==='打鱼资源条件'&&a.id==='手动指定分配资源'&&input.checked)go('进攻资源条件');
+          else if(current==='打鱼资源条件'&&resourceAlternatives[a.id])render(true);
+          else if(current==='界面设置'&&['发送邮件','加入部落'].includes(a.id))render(true);
+        };
       });
     }else if(tag==='WebView'){
       el=document.createElement('div');el.className='ui-web';el.textContent=language==='zh'?'教程加载中 请等待……':'Área de conteúdo online do aplicativo. Nesta cópia, consulte o manual local em português.';
@@ -244,7 +316,6 @@
       }
     }else{el=document.createElement('div');n.children.forEach((c,i)=>{const v=create(c,n,path+'.'+i);if(v)el.append(v);});}
     el.dataset.originalId=a.id||'';el.dataset.kind=tag;style(el,n,parent);
-    if(!['Page','LinearLayout','Window'].includes(tag)){el.addEventListener('pointerdown',e=>{e.stopPropagation();showControl(n);});}
     return el;
   }
   function inputLabel(n,parent){const siblings=parent?.children||[],idx=siblings.indexOf(n);const before=siblings[idx-1];if(before?.tag==='Button'&&before.a.background)return assetName(before.a.background)+' — quantidade';if(before?.tag==='TextView'&&before.a.text)return tr(before.a.text);return tr(n.a.id)||'Campo';}
@@ -260,7 +331,6 @@
     '序号说明':['Contas e números','Os números inicial e final definem a faixa de contas a executar. Os pacotes precisam corresponder às contas. Em uma conta direta, a tela observada permite executar o jogo sem alternar pacotes.'],
     '账号地址说明':['Pasta dos dados','Informe a pasta dos pacotes de conta. O manual usa /sdcard/星辰国际. Os caminhos originais são mantidos em chinês para não alterar o endereço.'],
     '打鱼时捐兵说明':['Doação durante o farm','Esta opção controla a doação executada durante o farm. O aviso do bot orienta a não confundi-la com os modos de doação.'],
-    '功能生效说明':['Funções adicionais','A tela contém supercarga, defesas temporárias, aprendizes e equipar construções. As regras internas de execução não estão descritas nos arquivos visuais.'],
     '下拉框说明':['Seleção da função','① A lista contém 11 opções. Abra-a e deslize para cima ou para baixo para escolher a função.\n\n② O botão vermelho ■ à direita para o script imediatamente ao ser tocado.']
   };
   // Transcrições conferidas na instância construtor muros 1 em 23/10/2026.
@@ -273,7 +343,7 @@
     '点击文字说明':['Cliques por texto','① Durante a verificação da interface, clica no texto configurado para lidar com janelas de eventos.\n② O texto precisa ser reconhecido pelo serviço de nós.\n③ Pode reduzir a velocidade de reconhecimento, especialmente em aparelhos lentos. O aviso recomenda ativar somente quando necessário.','点击文字说明','①界面检测时点击设置的文字，一般用来处理活动弹窗。\n②这种文字仅支持节点能识别的。\n③此功能会影响识别速度，部分设备节点识别很慢，没有需求时请不要选择。'],
     '屏蔽活动说明':['Bloquear eventos','① Quando marcado, aplica o bloqueio a cada início do script. Alguns aparelhos não são compatíveis; o aviso sugere o método por arquivo quando o bloqueio falha.\n② Para esse método, o autor indica um APK de bloqueio no site e um tutorial nos arquivos do grupo.','屏蔽活动说明','①勾选后每次运行脚本会屏蔽一次。不是所有设备都能屏蔽，如果遇到屏蔽失败请使用屏蔽文件方式。\n②如果使用屏蔽文件屏蔽，请到辅助官网下载屏蔽apk。教程到群文件查看。']
   };
-  function action(id,n,el){
+  function action(id,n){
     if(observedHelp[id]){const h=observedHelp[id];info(h[language==='zh'?2:0],h[language==='zh'?3:1]);return;}
     if(current==='界面设置'&&id==='关闭紧急通知'){androidNoticeDismissed=true;render(true);return;}
     if(['上传','查询文件2'].includes(id)){info(language==='zh'?'本地模拟':'Simulação local',language==='zh'?'不会上传或下载任何文件。':'Esta referência não envia, compacta, criptografa nem baixa arquivos.');return;}
@@ -282,7 +352,7 @@
     if(current==='放大'&&id==='展开'){back();return;}
     if(current==='放大'&&id==='隐藏'){systemView='home';syncSystem();return;}
     if(current==='自助切号'&&['账号-','账号+'].includes(id)){const input=screenEl.querySelector('[data-original-id="账号数据"]');input.value=Math.max(1,(Number(input.value)||1)+(id==='账号+'?1:-1));input.dispatchEvent(new Event('input'));return;}
-    if(routes[id]){if(routes[id]==='打鱼造兵设置')troopAccount=current==='升级1'?accountNumber:0;go(routes[id],0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
+    if(routes[id]){if(routes[id]==='打鱼造兵设置')troopAccount=current==='升级1'?accountNumber:0;go(routes[id]);return;}
     if(id==='停止运行'||id==='停止脚本'){stopSimulation();return;}
     if(id.startsWith('关闭')||id==='取消反馈'){back();return;}
     if(id==='清空设置'||id==='清空造兵设置'){screenEl.querySelectorAll('input.ui-input').forEach(input=>{input.value='';values[input.dataset.key]='';});save();toast('Campos desta tela limpos no exercício.');return;}
@@ -295,11 +365,11 @@
     }
     if(/^账号\d+设置$/.test(id)||id==='跳转指定账号设置'){
       accountNumber=id==='跳转指定账号设置'?Math.max(1,Math.floor(Number(screenEl.querySelector('input[data-original-id="多账号序号"]').value)||1)):Number(id.match(/\d+/)[0]);
-      go('升级1',0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;
+      go('升级1');return;
     }
-    if(/^账号\d+打鱼设置$/.test(id)){troopAccount=Number(id.match(/\d+/)[0]);go('打鱼造兵设置',0,true,'Botão → '+(el.textContent.trim()||controlLabel(n)));return;}
+    if(/^账号\d+打鱼设置$/.test(id)){troopAccount=Number(id.match(/\d+/)[0]);go('打鱼造兵设置');return;}
     if(id.endsWith('说明')){info(controlLabel(n),`Este é o botão de informações do controle “${id}”.\n\nO conteúdo dessa ajuda é preenchido pelo aplicativo e não está presente nos arquivos visuais. Consulte o manual em português ou a janela correspondente no bot para obter a regra exata.`);return;}
-    if(n.a.background&&!['bt.webp','tt.webp','说明.webp','背景框.png'].includes(n.a.background)){showControl(n);return;}
+    if(n.a.background&&!['bt.webp','tt.webp','说明.webp','背景框.png'].includes(n.a.background))return;
     if(id==='打鱼同步按钮'||id==='捐兵同步按钮'||id==='同步按钮'||id==='同步复制按钮'){toast('Botão Copiar do modelo visual. Não altera configurações do bot.');return;}
     info(controlLabel(n)||'Ação de demonstração','Este botão está reproduzido para consulta. Ações de execução, compra, upload, download, exclusão, atualização e instalação são apenas demonstradas neste HTML.');
   }
@@ -329,7 +399,7 @@
   function render(keepScroll=false){
     $('#app-surface > .versions-heading')?.remove();
     const scroll=keepScroll?screenEl.scrollTop:0,tree=D.screens[current],pages=tree.children.filter(n=>n.tag==='Page');page=Math.min(page,pages.length-1);const tabbed=pages.length>1;tabs.hidden=!tabbed;tabs.replaceChildren();
-    if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=current==='升级1'&&i===0?(language==='zh'?`账号${accountNumber}`:`Conta ${accountNumber}`):localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i,true,'Aba → '+b.textContent);tabs.append(b);});
+    if(tabbed)pages.forEach((p,i)=>{const b=document.createElement('button');b.role='tab';b.setAttribute('aria-selected',String(i===page));b.className=i===page?'active':'';b.textContent=current==='升级1'&&i===0?(language==='zh'?`账号${accountNumber}`:`Conta ${accountNumber}`):localized(p.a.title||(i===0?'设置':'激活云手机【游】'));b.onclick=()=>go(current,i);tabs.append(b);});
     if(current==='界面设置')tabs.hidden=true;
     const content=create(pages[page]);screenEl.replaceChildren(content);arrangeModeFeatures(content);screenEl.scrollTop=scroll;
     const sheet=D.review?.dialogs[current];screenEl.classList.toggle('has-observed-dialog',!!sheet);$('#app-surface > .confirm-wrap').hidden=!!sheet||tree.a.showconfirm==='false';
@@ -342,7 +412,7 @@
       const popupName=current,popupPage=page;current='界面设置';page=0;const background=create(D.screens['界面设置'].children[0]);current=popupName;page=popupPage;content.classList.add('runtime-page');background.classList.add('runtime-background');background.setAttribute('inert','');content.prepend(background);
     }
     if(current==='星辰国际'){
-      const head=document.createElement('div');head.className='native-heading initial-heading';const title=document.createElement('span');title.textContent=localized('星辰国际');const b=document.createElement('button');b.textContent=localized('设置');b.onclick=()=>go('应用设置',0,true,'Botão → '+b.textContent);head.append(title,b);screenEl.prepend(head);
+      const head=document.createElement('div');head.className='native-heading initial-heading';const title=document.createElement('span');title.textContent=localized('星辰国际');const b=document.createElement('button');b.textContent=localized('设置');b.onclick=()=>go('应用设置');head.append(title,b);screenEl.prepend(head);
     }
     if(current==='通用切号'){const head=document.createElement('div');head.className='native-heading versions-heading';head.textContent=language==='zh'?'双端版本50开':'Várias versões — 50 contas';$('#app-surface').insertBefore(head,tabs);}
     $('#language').value=language;$('#confirm').textContent=language==='zh'?'确定':'Confirmar';
@@ -387,9 +457,27 @@
   };
   $('#info-close').onclick=$('#info-confirm').onclick=()=>{$('#info-dialog').hidden=true;};
   $('#info-dialog').addEventListener('click',e=>{if(e.target===$('#info-dialog'))$('#info-dialog').hidden=true;});
-  $('#reset').onclick=()=>{values={'界面设置/0/功能选择开关':7};mode=7;save();render();toast('Campos restaurados ao modelo do APK.');};
-  $('#export').onclick=()=>{const text=JSON.stringify({format:'xingchen-referencia-1',values,language},null,2);const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='meu-exercicio-xingchen.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-  $('#import').onclick=()=>$('#import-file').click();$('#import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.format!=='xingchen-referencia-1'||!data.values||typeof data.values!=='object'||Array.isArray(data.values))throw Error();for(const value of Object.values(data.values))if(!['string','number','boolean'].includes(typeof value))throw Error();values=data.values;language=['pt','zh'].includes(data.language)?data.language:'pt';mode=Number(getVal('界面设置/0/功能选择开关',7));if(mode<0||mode>10)mode=7;save();render();toast('Exercício aberto.');}catch{info('Arquivo inválido','Escolha um exercício JSON salvo por esta referência.');}e.target.value='';};
+  $('#reset').onclick=()=>{values=normalizeValues({});mode=values[modeKey];save();render();toast('Campos restaurados ao modelo do APK.');};
+  $('#export').onclick=()=>{const text=JSON.stringify({format:exerciseFormat,values,language},null,2);const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='meu-exercicio-xingchen.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+  $('#import').onclick=()=>$('#import-file').click();
+  $('#import-file').onchange=async e=>{
+    const file=e.target.files[0];
+    if(!file)return;
+    try{
+      const data=JSON.parse(await file.text());
+      if(!isRecord(data)||data.format!==exerciseFormat)throw Error('Formato inválido');
+      const importedValues=normalizeValues(data.values,true);
+      if(data.language!==undefined&&!['pt','zh'].includes(data.language))throw Error('Idioma inválido');
+      // Só substitui o exercício atual depois de validar todos os campos.
+      values=importedValues;
+      language=data.language??'pt';
+      mode=values[modeKey];
+      save();render();toast('Exercício aberto.');
+    }catch{
+      info('Arquivo inválido','Escolha um exercício JSON salvo por esta referência.');
+    }
+    e.target.value='';
+  };
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();back();}});
   let gesture=null;
   screenEl.addEventListener('pointerdown',e=>{if(!e.target.closest('input,select,button,textarea'))gesture={x:e.clientX,y:e.clientY,id:e.pointerId};},true);
@@ -398,9 +486,8 @@
     if(!gesture||e.pointerId!==gesture.id)return;
     const dx=e.clientX-gesture.x,dy=e.clientY-gesture.y;gesture=null;
     const count=D.screens[current].children.filter(n=>n.tag==='Page').length;
-    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.7&&count>1){const next=page+(dx<0?1:-1);if(next>=0&&next<count)go(current,next,false,'Deslizar a tela');}
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.7&&count>1){const next=page+(dx<0?1:-1);if(next>=0&&next<count)go(current,next,false);}
   });
-  mode=Number(getVal('界面设置/0/功能选择开关',7));if(mode<0||mode>10)mode=7;
   function resizePhone(){
     const narrow=window.innerWidth<520;
     const width=narrow?Math.max(280,window.innerWidth):480;

@@ -14,3 +14,5 @@ Site: https://andersomviolao.github.io/manual-visual-xingchen/
 O Pages publica `docs/`. O script copia os recursos e relatórios de `HTML/revisoes/`, mantém o PDF em `docs/manual/` e atualiza os endereços de cache. Links antigos de revisões são preservados por compatibilidade.
 
 `instaladores/`, `materiais/` e `verificacao/` são locais e ignorados pelo Git. Não envie APKs, registros das instâncias, credenciais ou exercícios preenchidos para o site.
+
+Os testes não gravam arquivos por padrão. Acrescente `-- --artefatos` ao comando npm apenas quando precisar guardar os relatórios e as capturas.

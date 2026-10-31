@@ -45,3 +45,5 @@ O ícone em `system/bot-icon.png` foi extraído do APK local, preservando a arte
 - `system/`: ícone original do aplicativo.
 
 Após editar, execute `scripts/preparar-publicacao.ps1`, na raiz. O script atualiza `docs/`, incluindo o manual e os arquivos do simulador. O teste `scripts/verificar-publicacao.cjs` verifica o site sob uma subpasta, o fluxo de entrada, navegação Android, gestos, campos por modo, janelas, imagens, manual e exercícios.
+
+Os testes também conferem as opções mutuamente exclusivas, a independência dos campos de muros, a importação de exercícios antigos e a recuperação de dados locais inválidos. Os comandos `npm test` e `npm run test:referencia` apenas exibem resultados; acrescente `-- --artefatos` se precisar guardar relatórios e capturas.

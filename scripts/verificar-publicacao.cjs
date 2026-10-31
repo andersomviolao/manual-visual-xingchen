@@ -2,6 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),publish=path.join(root,'docs'),prefix='/referencia-bot/';
+const writeArtifacts=process.argv.includes('--artefatos')||Boolean(process.env.BOT_TEST_OUTPUT);
 const assert=(ok,message)=>{if(!ok)throw new Error(message);};
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.md':'text/plain; charset=utf-8','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.pdf':'application/pdf'};
 (async()=>{
@@ -230,6 +231,13 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   assert(!errors.length,'Erros JavaScript: '+errors);assert(!missing.length,'Recursos ausentes: '+missing);
   assert(requests.every(u=>u.startsWith(base)||u.startsWith('blob:')),'Solicitação a um serviço externo.');assert(fs.existsSync(path.join(publish,'.nojekyll')),'.nojekyll ausente.');
   const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','49 telas e 58 páginas/abas','Recursos visuais com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','launcher, entrada e ícone flutuante','iniciar e parar estado de execução simulado','Voltar, Início e Aplicativos recentes','retomada de tarefa e limpeza de recentes','gestos entre páginas','Voltar dispensa edição e fecha janelas','Início preserva janela aberta','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas','exibição de campos nos 11 modos conferidos','seis diálogos sobre o painel e confirmação' ]};
-  const out=path.join(root,'verificacao');fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'publicacao.json'),JSON.stringify(result,null,2));await page.screenshot({path:path.join(out,'publicacao-celular.png'),fullPage:true});console.log(JSON.stringify(result,null,2));
+  result.verificacoes.push(...await require('./verificar-estado.cjs')(browser,base));
+  if(writeArtifacts){
+   const out=process.env.BOT_TEST_OUTPUT?path.resolve(process.env.BOT_TEST_OUTPUT):path.join(root,'verificacao');
+   fs.mkdirSync(out,{recursive:true});
+   fs.writeFileSync(path.join(out,'publicacao.json'),JSON.stringify(result,null,2));
+   await page.screenshot({path:path.join(out,'publicacao-celular.png'),fullPage:true});
+  }
+  console.log(JSON.stringify(result,null,2));
  }finally{if(browser)await browser.close();await new Promise(ok=>server.close(ok));}
 })().catch(e=>{console.error(e);process.exitCode=1;});

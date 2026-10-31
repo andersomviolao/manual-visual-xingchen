@@ -25,3 +25,5 @@ Fontes consultadas: [site](http://xccoc.fun/), [histórico](http://xccoc.fun/msg
 Validação: 49 telas, 58 páginas/abas, 264 recursos, manual e navegação aprovados. Layout em 320, 390 e 480 px sem estouro horizontal. Temporários antigos foram arquivados em `materiais/temporarios-anteriores/`, preservando dados e evidências locais.
 
 Ferramentas antigas de geração inicial e o teste substituído foram preservados em `materiais/fontes-historicas/`. O teste de referência agora executa o diagnóstico de layout atual. Relatórios antigos na raiz de `docs/` são mantidos como compatibilidade com links já divulgados.
+
+Após essa organização, o usuário solicitou a exclusão de registros, fontes históricas e temporários. Essas pastas já não fazem parte do projeto local. A revisão posterior do simulador corrigiu salvamento e validação sem mudar a versão do bot: [revisão do código](REVISAO_CODIGO_20261031.md).
