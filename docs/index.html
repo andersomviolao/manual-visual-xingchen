@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#272d37">
   <title>Xingchen — Simulador Android em português</title>
-  <link rel="stylesheet" href="estilo.css?v=63caca1eb03a">
+  <link rel="stylesheet" href="estilo.css?v=1266f9f7dec4">
 </head>
 <body class="android-simulator">
   <main class="device-stage" aria-label="Simulador Android">
@@ -14,9 +14,19 @@
         <div class="statusbar"><time id="android-clock">21:00</time><span class="status-dot" aria-hidden="true"></span><span class="status-right" aria-hidden="true"><span class="wifi-symbol"></span><span class="battery-symbol"></span></span></div>
         <div class="android-display" id="android-display">
           <section id="android-launcher" class="android-launcher" aria-label="Tela inicial do Android">
-            <div class="launcher-search"><span aria-hidden="true">⌕</span><input id="launcher-search" aria-label="Pesquisar aplicativos" placeholder="Pesquisar aplicativos" autocomplete="off"></div>
-            <div class="launcher-apps"><button id="launch-bot" class="launcher-app" aria-label="Abrir Xingchen"><img src="system/bot-icon.png" alt=""><span>Xingchen</span></button></div>
-            <p id="launcher-empty" class="launcher-empty" hidden>Nenhum aplicativo encontrado</p>
+            <div class="launcher-search"><span aria-hidden="true">⌕</span><input id="launcher-search" aria-label="Pesquisar atalhos" placeholder="Pesquisar atalhos" autocomplete="off"></div>
+            <div class="launcher-apps">
+              <button id="launch-bot" class="launcher-app" aria-label="Abrir Xingchen" data-search-terms="xingchen assistente bot executar abrir"><img src="system/bot-icon.png" alt=""><span>Xingchen</span></button>
+              <a id="launch-manual" class="launcher-app" href="manual/Manual_Xingchen_Portugues_BR.pdf" target="_blank" rel="noopener" aria-label="Abrir manual em português (PDF, nova aba)" data-search-terms="manual português pdf guia instruções">
+                <svg class="launcher-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="3" y="3" width="58" height="58" rx="14" fill="#327ec5"/><path d="M14 17h14c4 0 6 2 6 5v27c-2-3-4-4-8-4H14z" fill="#fff"/><path d="M50 17H38c-3 0-4 2-4 5v27c2-3 4-4 8-4h8z" fill="#d3eaff"/><path d="M34 22v27M19 25h8m-8 7h8m13-7h5m-5 7h5" fill="none" stroke="#327ec5" stroke-width="2" stroke-linecap="round"/></svg>
+                <span>Manual em português</span>
+              </a>
+              <a id="launch-download" class="launcher-app" href="https://921015.xyz/fz" target="_blank" rel="noopener noreferrer" aria-label="Baixar versão mais recente do bot (APK)" title="Download oficial: versão mais recente disponibilizada pelo site do bot" data-search-terms="baixar download apk bot atualização versão mais recente">
+                <svg class="launcher-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="3" y="3" width="58" height="58" rx="14" fill="#21876a"/><path d="M32 15v25m-10-9 10 10 10-10M17 43v6h30v-6" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Baixar bot</span>
+              </a>
+            </div>
+            <p id="launcher-empty" class="launcher-empty" hidden>Nenhum atalho encontrado</p>
             <span class="launcher-page-dot" aria-hidden="true"></span>
           </section>
           <section id="app-surface" class="app-surface" aria-label="Aplicativo Xingchen" hidden>
@@ -55,6 +65,6 @@
     </div></details>
   </footer>
   <script src="dados.js?v=5660a8ab7d39"></script>
-  <script src="aplicativo.js?v=5a473bfb2cd4"></script>
+  <script src="aplicativo.js?v=b8b8bf43896f"></script>
 </body>
 </html>

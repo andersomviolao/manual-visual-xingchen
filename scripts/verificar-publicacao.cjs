@@ -28,6 +28,19 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
    assert(resource===name+'?v='+hash,'Versão de cache não corresponde ao conteúdo: '+name);
   }
   assert(await page.locator('#android-launcher').isVisible(),'Android não iniciou na tela inicial.');
+  assert(await page.locator('.launcher-app').count()===3,'Atalhos da tela inicial incompletos.');
+  const launcherManual=await page.locator('#launch-manual').evaluate(link=>link.href);
+  assert(launcherManual===await page.locator('#manual-link').evaluate(link=>link.href),'Atalho do manual aponta para outro PDF.');
+  assert((await context.request.get(launcherManual)).status()===200,'Atalho do manual retornou erro.');
+  assert(await page.locator('#launch-download').getAttribute('href')==='https://921015.xyz/fz','Download não usa o endereço oficial contínuo.');
+  assert(await page.locator('#launch-download').getAttribute('target')==='_blank','Download não preserva a página do simulador.');
+  await page.locator('#launcher-search').fill('manual portugues');
+  assert(await page.locator('#launch-manual').isVisible()&&await page.locator('#launch-bot').isHidden()&&await page.locator('#launch-download').isHidden(),'Busca do manual sem acentos falhou.');
+  await page.locator('#launcher-search').fill('baixar');
+  assert(await page.locator('#launch-download').isVisible()&&await page.locator('#launch-manual').isHidden(),'Busca de download falhou.');
+  await page.locator('#launcher-search').fill('atalho inexistente');
+  assert(await page.locator('#launcher-empty').isVisible(),'Busca vazia não foi sinalizada.');
+  await page.locator('#launcher-search').fill('');
   assert(await page.locator('.navigation,#previous-screen,.inspector').count()===0,'Interface antiga ainda presente.');
   await page.locator('#launch-bot').click();
   assert(await page.evaluate(()=>ReferenceApp.current)==='星辰国际','Ícone não abriu a entrada.');
@@ -187,7 +200,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   }));
   await page.evaluate(()=>ReferenceApp.go('界面设置'));
   await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('6');
-  const manual=await page.locator('a[href$=".pdf"]').evaluate(el=>el.href);assert(manual.startsWith(base+'manual/'),'Link do manual fora do site.');
+  const manual=await page.locator('#manual-link').evaluate(el=>el.href);assert(manual.startsWith(base+'manual/'),'Link do manual fora do site.');
   const r=await context.request.get(manual);assert(r.status()===200,'Manual ausente.');const bytes=await r.body();
   assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'manual','Manual_Xingchen_Portugues_BR.pdf'))),'PDF diferente.');
   const reportHref=await page.locator('#review').getAttribute('href');

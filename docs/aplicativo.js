@@ -306,7 +306,7 @@
       el=document.createElement('div');el.className='ui-web';el.textContent=language==='zh'?'教程加载中 请等待……':'Área de conteúdo online do aplicativo. Nesta cópia, consulte o manual local em português.';
       if(current==='浏览器'){
         el.replaceChildren();const note=document.createElement('p');note.className='tutorial-substitution';note.textContent='Manual local em português. O bot abre um documento online do Tencent Docs; o conteúdo remoto não é reproduzido aqui.';
-        const frame=document.createElement('iframe');frame.title='Manual do Xingchen em português';frame.src=document.querySelector('a[href$=".pdf"]').href;
+        const frame=document.createElement('iframe');frame.title='Manual do Xingchen em português';frame.src=$('#manual-link').href;
         const link=document.createElement('a');link.href=frame.src;link.target='_blank';link.rel='noopener';link.textContent=' Abrir manual em outra aba';note.append(link);
         el.append(note,frame);
       }
@@ -441,7 +441,17 @@
   $('#android-overview').onclick=overview;
   $('#recent-app').onclick=()=>{systemView='app';syncSystem();};
   $('#clear-recents').onclick=()=>{taskOpen=false;history=[];systemView='home';syncSystem();};
-  $('#launcher-search').oninput=e=>{const match='xingchen assistente bot'.includes(e.target.value.trim().toLowerCase());$('#launch-bot').hidden=!match;$('#launcher-empty').hidden=match;};
+  $('#launcher-search').oninput=e=>{
+    const normalize=text=>text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const words=normalize(e.target.value.trim()).split(/\s+/);
+    let matches=0;
+    document.querySelectorAll('.launcher-app').forEach(item=>{
+      const terms=normalize(item.dataset.searchTerms||item.textContent);
+      item.hidden=!words.every(word=>terms.includes(word));
+      if(!item.hidden)matches++;
+    });
+    $('#launcher-empty').hidden=matches>0;
+  };
 
   $('#language').onchange=e=>{language=e.target.value;save();render(true);};
   $('#confirm').onclick=()=>{

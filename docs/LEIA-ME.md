@@ -13,6 +13,8 @@ A revisão de **31/10/2026** compara as 46 definições visuais do pacote oficia
 5. Navegue pelos botões, caixas, listas e abas da interface traduzida. Não há barra lateral, miniaturas ou atalhos para telas antigas.
 6. No painel principal, deslize para a esquerda para abrir a ativação de aparelhos na nuvem; deslize para a direita para voltar. Nas janelas com abas, também é possível trocar de página por gesto.
 
+A tela inicial também tem os atalhos **Manual em português**, que abre o PDF em outra aba, e **Baixar bot**, que usa o endereço contínuo de download indicado pelo site oficial. Esse endereço entrega a versão disponibilizada pelo autor, sem fixar um número de APK no HTML. A busca da tela inicial filtra os três atalhos.
+
 ## Barra de navegação Android
 
 - **Voltar**: dispensa a edição em andamento, fecha a janela informativa ou retorna à janela anterior. Na raiz, retorna à tela inicial do Android. No computador, Escape faz a mesma navegação.
