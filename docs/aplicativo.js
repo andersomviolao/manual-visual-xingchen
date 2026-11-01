@@ -392,7 +392,7 @@
     if(current!=='界面设置'||![6,7,8,9].includes(mode))return;
     const row=content.querySelector('[data-original-id="超级充能"]')?.closest('.ui-row');
     if(row){row.classList.add('mode-eight-features');row.dataset.originalId='modo-oito-funcoes';}
-    const extras=content.querySelector('[data-original-id="精制台升级"]')?.closest('.ui-row');
+    const extras=content.querySelector('[data-original-id="改装功能"]')?.closest('.ui-row');
     if(extras){extras.classList.add('mode-eight-extra-features');extras.dataset.originalId='modo-oito-funcoes-extras';if(mode===7)extras.remove();}
   }
 

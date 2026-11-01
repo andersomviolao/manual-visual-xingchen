@@ -2,7 +2,7 @@
 
 Abra **index.html** no navegador. Não precisa instalar dependências, iniciar servidor nem conectar o bot real.
 
-A revisão de **31/10/2026** compara as 46 definições visuais do pacote oficial 1370. Elas permanecem iguais às da base 1368. Veja [a revisão atual](REVISAO_1370.md) para a cobertura e os limites.
+A revisão de **01/11/2026** compara as 46 definições visuais do pacote oficial 1372. O painel principal foi atualizado; as outras 45 definições permanecem iguais à versão 1370. Veja [a revisão atual](REVISAO_1372.md) para a cobertura e os limites.
 
 ## Como navegar
 
