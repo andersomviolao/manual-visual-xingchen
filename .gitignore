@@ -5,7 +5,7 @@
 /tmp/
 
 # Capturas, resultados de testes e arquivos temporários.
-/HTML/conferencia/
+/docs/conferencia/
 /verificacao/
 __pycache__/
 *.pyc

@@ -46,6 +46,12 @@ O ícone em `system/bot-icon.png` foi extraído do APK local, preservando a arte
 - `dados/`: fontes XML, traduções e registro da conferência visual.
 - `system/`: ícone original do aplicativo.
 
-Após editar, execute `scripts/preparar-publicacao.ps1`, na raiz. O script atualiza `docs/`, incluindo o manual e os arquivos do simulador. O teste `scripts/verificar-publicacao.cjs` verifica o site sob uma subpasta, o fluxo de entrada, navegação Android, gestos, campos por modo, janelas, imagens, manual e exercícios.
+A pasta `docs/` é a fonte única do site e também a pasta publicada pelo GitHub Pages. A antiga pasta `HTML/` foi incorporada aqui; não existe mais uma cópia para sincronizar. O endereço público continua o mesmo.
 
-Os testes também conferem as opções mutuamente exclusivas, a independência dos campos de muros, a importação de exercícios antigos e a recuperação de dados locais inválidos. Os comandos `npm test` e `npm run test:referencia` apenas exibem resultados; acrescente `-- --artefatos` se precisar guardar relatórios e capturas.
+Na raiz do projeto ficam somente `docs/` (site e ferramentas), `instaladores/` (APK local) e `materiais/` (documentos de origem locais), além dos arquivos de controle do Git. Instaladores e materiais continuam fora do GitHub.
+
+Após editar, execute `./docs/scripts/preparar-publicacao.ps1`, na raiz do projeto. O script valida os arquivos necessários e atualiza os endereços de cache dos recursos no próprio HTML. Não cria outra pasta de publicação.
+
+Para conferir o site, execute `node docs/scripts/verificar-publicacao.cjs`. Ele testa o site sob uma subpasta, incluindo navegação, imagens, manual, atalhos e exercícios. Para conferir as larguras de tela, execute `node docs/scripts/conferir-layout.cjs`. Esses testes precisam de Node.js, Playwright e um navegador compatível (Microsoft Edge no Windows).
+
+Os testes apenas exibem resultados. Acrescente `--artefatos` somente quando quiser guardar relatórios e capturas; `BOT_TEST_OUTPUT` permite escolher outra pasta. Os arquivos de teste e manutenção ficam em `scripts/`, dentro desta pasta. O gerador das definições permanece em `dados/gerar.py`.
