@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Stop'
 # docs é a fonte única do site e a pasta publicada pelo GitHub Pages.
 $taskSiteDir = Split-Path -Parent $PSScriptRoot
 $taskUtf8 = [System.Text.UTF8Encoding]::new($false)
-foreach ($taskFileName in @('index.html','estilo.css','aplicativo.js','dados.js','manual/Manual_Xingchen_Portugues_BR.pdf')) {
+foreach ($taskFileName in @('index.html','estilo.css','aplicativo.js','dados.js','Manual_Xingchen_Portugues_BR.pdf')) {
     if (-not (Test-Path -LiteralPath (Join-Path $taskSiteDir $taskFileName) -PathType Leaf)) {
         throw "Arquivo do site ausente: $taskFileName"
     }

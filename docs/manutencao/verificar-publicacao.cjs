@@ -135,7 +135,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   assert(await page.locator('#screen iframe').count()===1,'Tutorial local não abriu.');
   assert(await page.locator('#app-surface > .confirm-wrap').isHidden(),'Tutorial exibiu confirmação externa.');
   const tutorialPdf=await page.locator('#screen iframe').getAttribute('src');
-  assert(tutorialPdf.startsWith(base+'manual/'),'Tutorial aponta para PDF fora da publicação.');
+  assert(tutorialPdf.startsWith(base+'Manual_Xingchen_Portugues_BR.pdf'),'Tutorial aponta para PDF fora da publicação.');
   assert((await context.request.get(tutorialPdf)).status()===200,'PDF do tutorial retornou erro.');
   await page.evaluate(()=>ReferenceApp.go('多号独立设置'));
   const accountIndex=page.locator('#screen input[data-original-id="多账号序号"]');
@@ -200,9 +200,9 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   }));
   await page.evaluate(()=>ReferenceApp.go('界面设置'));
   await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('6');
-  const manual=await page.locator('#manual-link').evaluate(el=>el.href);assert(manual.startsWith(base+'manual/'),'Link do manual fora do site.');
+  const manual=await page.locator('#manual-link').evaluate(el=>el.href);assert(manual.startsWith(base+'Manual_Xingchen_Portugues_BR.pdf'),'Link do manual fora do site.');
   const r=await context.request.get(manual);assert(r.status()===200,'Manual ausente.');const bytes=await r.body();
-  assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'manual','Manual_Xingchen_Portugues_BR.pdf'))),'PDF diferente.');
+  assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'Manual_Xingchen_Portugues_BR.pdf'))),'PDF diferente.');
   const reportHref=await page.locator('#review').getAttribute('href');
   assert((await context.request.get(new URL(reportHref,base).href)).status()===200,'Relatório de revisão ausente após reorganização.');
   const sourceIndex=fs.readFileSync(path.join(publish,'index.html'),'utf8');

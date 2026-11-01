@@ -2,7 +2,7 @@
 
 Abra **index.html** no navegador. Não precisa instalar dependências, iniciar servidor nem conectar o bot real.
 
-A revisão de **31/10/2026** compara as 46 definições visuais do pacote oficial 1370. Elas permanecem iguais às da base 1368. Veja [a revisão atual](revisoes/REVISAO_1370.md) para a cobertura e os limites.
+A revisão de **31/10/2026** compara as 46 definições visuais do pacote oficial 1370. Elas permanecem iguais às da base 1368. Veja [a revisão atual](REVISAO_1370.md) para a cobertura e os limites.
 
 ## Como navegar
 
@@ -31,11 +31,11 @@ Os campos continuam salvos no navegador. O formato dos exercícios anteriores fo
 
 ## Fidelidade e limites
 
-A base contém 46 definições do APK e três estruturas adicionais: 49 telas e 58 páginas/abas. As conferências de versões anteriores estão em `revisoes/`. A navegação Android é simulada para estudo.
+A base contém 46 definições do APK e três estruturas adicionais: 49 telas e 58 páginas/abas. Os relatórios antigos podem ser consultados no histórico do Git. A navegação Android é simulada para estudo.
 
 A tradução pode exigir quebras de linha e rolagem diferentes do chinês. Conteúdos remotos, contas, licença, compras, arquivos na nuvem, instalação e ações no jogo não são executados. Não se afirma igualdade visual pixel a pixel ou equivalência funcional integral.
 
-O ícone em `system/bot-icon.png` foi extraído do APK local, preservando a arte original. Os demais 264 recursos de imagem continuam em `assets/`.
+O ícone em `bot-icon.png` foi extraído do APK local, preservando a arte original. Os demais 264 recursos de imagem continuam em `assets/`.
 
 ## Onde editar e verificar
 
@@ -43,15 +43,15 @@ O ícone em `system/bot-icon.png` foi extraído do APK local, preservando a arte
 - `estilo.css`: controles, janelas e apresentação do dispositivo.
 - `aplicativo.js`: navegação, estados do Android e renderização dos controles.
 - `dados.js`: definições, traduções e metadados da conferência.
-- `dados/`: fontes XML, traduções e registro da conferência visual.
-- `system/`: ícone original do aplicativo.
+- `manutencao/`: fontes XML, traduções, conferência atual e ferramentas.
+- `bot-icon.png`: ícone original do aplicativo.
 
 A pasta `docs/` é a fonte única do site e também a pasta publicada pelo GitHub Pages. A antiga pasta `HTML/` foi incorporada aqui; não existe mais uma cópia para sincronizar. O endereço público continua o mesmo.
 
 Na raiz do projeto ficam somente `docs/` (site e ferramentas), `instaladores/` (APK local) e `materiais/` (documentos de origem locais), além dos arquivos de controle do Git. Instaladores e materiais continuam fora do GitHub.
 
-Após editar, execute `./docs/scripts/preparar-publicacao.ps1`, na raiz do projeto. O script valida os arquivos necessários e atualiza os endereços de cache dos recursos no próprio HTML. Não cria outra pasta de publicação.
+Após editar, execute `./docs/manutencao/preparar-publicacao.ps1`, na raiz do projeto. O script valida os arquivos necessários e atualiza os endereços de cache dos recursos no próprio HTML. Não cria outra pasta de publicação.
 
-Para conferir o site, execute `node docs/scripts/verificar-publicacao.cjs`. Ele testa o site sob uma subpasta, incluindo navegação, imagens, manual, atalhos e exercícios. Para conferir as larguras de tela, execute `node docs/scripts/conferir-layout.cjs`. Esses testes precisam de Node.js, Playwright e um navegador compatível (Microsoft Edge no Windows).
+Para conferir o site, execute `node docs/manutencao/verificar-publicacao.cjs`. Ele testa o site sob uma subpasta, incluindo navegação, imagens, manual, atalhos e exercícios. Para conferir as larguras de tela, execute `node docs/manutencao/conferir-layout.cjs`. Esses testes precisam de Node.js, Playwright e um navegador compatível (Microsoft Edge no Windows).
 
-Os testes apenas exibem resultados. Acrescente `--artefatos` somente quando quiser guardar relatórios e capturas; `BOT_TEST_OUTPUT` permite escolher outra pasta. Os arquivos de teste e manutenção ficam em `scripts/`, dentro desta pasta. O gerador das definições permanece em `dados/gerar.py`.
+Os testes apenas exibem resultados. Acrescente `--artefatos` somente quando quiser guardar relatórios e capturas; `BOT_TEST_OUTPUT` permite escolher outra pasta. Os arquivos de teste, manutenção e o gerador `gerar.py` ficam juntos em `manutencao/`. O PDF e a revisão atual estão diretamente em `docs/`. Somente `assets/` e `manutencao/` são subpastas; cópias de relatórios e conferências antigas foram removidas.

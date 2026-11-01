@@ -7,9 +7,9 @@ Comparação integral: os 46 arquivos XML e os recursos visuais do pacote 1370 s
 ## Organização e limpeza
 
 - `instaladores/` contém somente o APK 1370. Removidos APKs anteriores e downloads incompletos.
-- Manual chinês original em `materiais/manuais/`; PDF traduzido mantido em `docs/manual/`, sem duplicação na raiz.
+- Manual chinês original em `materiais/manuais/`; PDF traduzido mantido em `docs/Manual_Xingchen_Portugues_BR.pdf`.
 - Registros de ajustes das instâncias preservados em `materiais/registros/`.
-- Revisões reunidas em `HTML/revisoes/`, com cópia de publicação em `docs/revisoes/`.
+- Site mantido apenas em `docs/`; fontes e ferramentas em `docs/manutencao/`. Relatórios antigos estão disponíveis no histórico do Git.
 - Script de publicação usa uma lista de relatórios, eliminando cópias específicas por versão.
 - Removida constante de versão não utilizada; nome da função de composição dos modos corrigido.
 - Atualizados README, guia e destino dos diagnósticos de layout.
