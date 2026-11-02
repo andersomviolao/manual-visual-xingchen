@@ -148,7 +148,7 @@
     $('#android-launcher').inert=runtime;
     $('#app-surface').hidden=systemView!=='app';
     $('#android-recents').hidden=systemView!=='recents';
-    $('#floating-bot').hidden=!floatingAvailable||systemView!=='home';
+    $('#floating-bot').hidden=true;
     $('#floating-bot').classList.toggle('running',running);
     $('#phone').classList.toggle('launcher-visible',systemView!=='app'||!['星辰国际','应用设置'].includes(current));
     $('#phone').dataset.view=systemView;
@@ -457,9 +457,9 @@
   $('#confirm').onclick=()=>{
     save();
     if(current==='星辰国际'){
-      floatingAvailable=true;running=false;taskOpen=false;noticeShown=false;history=[];systemView='home';syncSystem();
+      floatingAvailable=false;running=false;taskOpen=true;noticeShown=true;history=[];current='界面设置';page=0;androidNoticeDismissed=false;systemView='app';render();syncSystem();
     }else if(current==='界面设置'&&page===0){
-      running=true;floatingAvailable=true;
+      running=true;floatingAvailable=false;
       if(mode===0||mode===10){go(mode===0?'自助切号':'刷经验');}
       else{systemView='home';syncSystem();toast('Execução iniciada na simulação');}
     }else if(history.length)back();

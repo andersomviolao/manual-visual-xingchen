@@ -49,12 +49,8 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.locator('#android-back').click();
   assert(await page.evaluate(()=>ReferenceApp.current)==='星辰国际','Voltar não retornou à entrada.');
   await page.locator('#confirm').click();
-  assert(await page.locator('#android-launcher').isVisible(),'Confirmar entrada não retornou ao Android.');
-  assert(await page.locator('#floating-bot').isVisible(),'Ícone flutuante ausente.');
-  await page.locator('#floating-bot').click();
-  assert(await page.evaluate(()=>ReferenceApp.current)==='免费模式说明','Aviso inicial ausente.');
-  await page.locator('#android-back').click();
-  assert(await page.evaluate(()=>ReferenceApp.current)==='界面设置','Voltar não fechou aviso.');
+  assert(await page.evaluate(()=>ReferenceApp.current)==='界面设置','Confirmar não abriu o painel diretamente.');
+  assert(await page.locator('#floating-bot').isHidden(),'Ícone flutuante apareceu.');
   const beforeNotice=await page.locator('#screen select[data-original-id="功能选择开关"]').boundingBox();
   const beforeNoticeState=await page.evaluate(()=>ReferenceApp.system);
   await page.locator('#screen button[data-original-id="关闭紧急通知"]').click();
@@ -88,10 +84,10 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.locator('#confirm').click();
   assert(await page.evaluate(()=>ReferenceApp.system.running),'Confirmar não iniciou estado simulado.');
   assert(await page.locator('#android-launcher').isVisible(),'Estado em execução não retornou ao Android.');
-  await page.locator('#floating-bot').click();await page.locator('#screen button[data-original-id="停止运行"]').click();
+  await page.locator('#launch-bot').click();await page.locator('#screen button[data-original-id="停止运行"]').click();
   assert(!await page.evaluate(()=>ReferenceApp.system.running),'Parar não encerrou estado simulado.');
   assert(await page.locator('#floating-bot').isHidden(),'Ícone permaneceu ativo após parada.');
-  await page.locator('#launch-bot').click();await page.locator('#confirm').click();await page.locator('#floating-bot').click();await page.locator('#android-back').click();
+  await page.locator('#launch-bot').click();await page.locator('#confirm').click();
   for(let mode=0;mode<11;mode++){
    await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption(String(mode));
    const count=id=>page.locator('#screen [data-original-id="'+id+'"]').count();
@@ -245,7 +241,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.locator('#android-back').click();
   assert(!errors.length,'Erros JavaScript: '+errors);assert(!missing.length,'Recursos ausentes: '+missing);
   assert(requests.every(u=>u.startsWith(base)||u.startsWith('blob:')),'Solicitação a um serviço externo.');assert(fs.existsSync(path.join(publish,'.nojekyll')),'.nojekyll ausente.');
-  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','49 telas e 58 páginas/abas','Recursos visuais com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','launcher, entrada e ícone flutuante','iniciar e parar estado de execução simulado','Voltar, Início e Aplicativos recentes','retomada de tarefa e limpeza de recentes','gestos entre páginas','Voltar dispensa edição e fecha janelas','Início preserva janela aberta','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas','exibição de campos nos 11 modos conferidos','seis diálogos sobre o painel e confirmação' ]};
+  const result={status:'aprovado',endereco_testado:prefix,telas:screens.length,paginas_abas:rendered,imagens:images.length,manual_pdf:'presente e idêntico ao arquivo local',erros_javascript:errors,recursos_ausentes:missing,verificacoes:['links relativos sob nome de repositório','49 telas e 58 páginas/abas','Recursos visuais com conteúdo idêntico','PDF dentro da publicação','navegação para tropas','launcher e entrada direta no painel','iniciar e parar estado de execução simulado','Voltar, Início e Aplicativos recentes','retomada de tarefa e limpeza de recentes','gestos entre páginas','Voltar dispensa edição e fecha janelas','Início preserva janela aberta','exportação e importação','persistência','português e chinês','largura de celular','sem solicitações externas','exibição de campos nos 11 modos conferidos','seis diálogos sobre o painel e confirmação' ]};
   result.verificacoes.push(...await require('./verificar-estado.cjs')(browser,base));
   if(writeArtifacts){
    const out=process.env.BOT_TEST_OUTPUT?path.resolve(process.env.BOT_TEST_OUTPUT):path.join(root,'verificacao');

@@ -17,7 +17,7 @@ O link de download usa o endereço contínuo do autor, sem fixar uma versão esp
 
 1. Abra o guia interativo pelo link acima.
 2. Toque no ícone **Xingchen** e confirme a entrada.
-3. Toque no ícone flutuante para abrir o painel e explorar as opções traduzidas.
+3. O painel abre diretamente. Explore as opções traduzidas.
 
 Na tela inicial também há atalhos para abrir o manual em português e baixar o bot. Em **Opções da simulação**, você pode alternar entre português e chinês para comparar os termos.
 
@@ -40,4 +40,4 @@ O site original apresenta o aplicativo como **星辰辅助** e **星辰国际**.
 
 O site está em **`docs/`**. As imagens ficam em `docs/assets/`, e as fontes de tradução e ferramentas ficam em `docs/manutencao/`.
 
-Para detalhes sobre navegação e manutenção, consulte o [guia do projeto](docs/LEIA-ME.md). A [revisão atual](docs/REVISAO_1372.md) descreve o que foi conferido e os limites da comparação.
+Para detalhes sobre navegação e manutenção, consulte o [guia do projeto](docs/LEIA-ME.md). A [revisão atual](docs/REVISAO_1373.md) descreve o que foi conferido e os limites da comparação.

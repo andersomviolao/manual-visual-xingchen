@@ -2,14 +2,14 @@
 
 Abra **index.html** no navegador. Não precisa instalar dependências, iniciar servidor nem conectar o bot real.
 
-A revisão de **01/11/2026** compara as 46 definições visuais do pacote oficial 1372. O painel principal foi atualizado; as outras 45 definições permanecem iguais à versão 1370. Veja [a revisão atual](REVISAO_1372.md) para a cobertura e os limites.
+A revisão de **02/11/2026** compara as 46 definições visuais do pacote oficial 1373. O painel principal foi reorganizado; as outras 45 definições permanecem iguais à versão 1372. Veja [a revisão atual](REVISAO_1373.md) para a cobertura e os limites.
 
 ## Como navegar
 
 1. A página começa na tela inicial do Android. Toque no ícone **Xingchen** para abrir o aplicativo.
 2. Na entrada, **Configurações** abre os ajustes nativos. O triângulo **Voltar**, na barra inferior, retorna à entrada.
-3. Confirme a entrada para voltar ao Android com o ícone flutuante do bot disponível na borda esquerda.
-4. Toque no ícone flutuante e feche o aviso gratuito pelo X ou pelo botão Voltar. O painel de configurações será exibido.
+3. Confirme a entrada para abrir diretamente o painel de configurações.
+4. A entrada foi simplificada para facilitar a consulta, sem precisar de um ícone flutuante.
 5. Navegue pelos botões, caixas, listas e abas da interface traduzida. Não há barra lateral, miniaturas ou atalhos para telas antigas.
 6. No painel principal, deslize para a esquerda para abrir a ativação de aparelhos na nuvem; deslize para a direita para voltar. Nas janelas com abas, também é possível trocar de página por gesto.
 
