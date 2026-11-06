@@ -161,3 +161,20 @@ body.android-simulator{background:#e9edf0;color:#283844;min-height:100dvh}
  .ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件捐兵'])>.ui-input,.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件不打'])>.ui-input{width:8vw!important;flex:0 1 8vw!important;font-size:11px!important}
 }
 .skinned-button{background-size:100% 100%!important;background-repeat:no-repeat!important;color:#111!important;padding-left:30px!important}
+
+/* As opções adicionadas na 1374 precisam de colunas com largura legível. */
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托']){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:auto!important;min-height:40px;align-items:center}
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托'])>.ui-check-group{width:auto!important;min-width:0;max-width:100%}
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托']) .ui-check span{overflow-wrap:normal!important;word-break:normal}
+@media(max-width:360px){
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托']){grid-template-columns:repeat(2,minmax(0,1fr));row-gap:5px;padding:4px 0}
+}
+
+.mode-eight-extra-features{height:auto!important;padding:3px 0;display:grid!important;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr);gap:4px 2px}
+.mode-eight-extra-features>.ui-check-group{width:auto!important;min-width:0!important}
+.mode-eight-extra-features>[data-original-id='打排位']{grid-column:1;grid-row:1}
+.mode-eight-extra-features>[data-original-id='求援']{grid-column:3;grid-row:1}
+.mode-eight-extra-features>[data-original-id='改装功能']{grid-column:1;grid-row:2}
+.mode-eight-extra-features>[data-original-id='改装logo']{grid-column:2;grid-row:2}
+.mode-eight-extra-features>[data-original-id='使用宝箱奖励']{grid-column:3;grid-row:2}
+.mode-eight-extra-features .ui-check span{overflow-wrap:normal!important;word-break:normal}
