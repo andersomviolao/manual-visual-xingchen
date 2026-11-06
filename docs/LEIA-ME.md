@@ -2,7 +2,7 @@
 
 Abra **index.html** no navegador. Não precisa instalar dependências, iniciar servidor nem conectar o bot real.
 
-A revisão de **02/11/2026** compara as 46 definições visuais do pacote oficial 1373. O painel principal foi reorganizado; as outras 45 definições permanecem iguais à versão 1372. Veja [a revisão atual](REVISAO_1373.md) para a cobertura e os limites.
+A revisão de **06/11/2026** compara as 46 definições visuais do pacote oficial 1374. O painel principal recebeu opções da edição chinesa; as outras 45 definições permanecem iguais à versão 1373. Veja [a revisão atual](REVISAO_1374.md) para a cobertura e os limites.
 
 ## Como navegar
 

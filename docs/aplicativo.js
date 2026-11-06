@@ -203,8 +203,7 @@
     if(has('打鱼时删兵重造'))return farm;
     if(has('定时下线'))return farm;
     if(has('自动审批'))return farm;
-    // A faixa de funções tem uma composição própria por modo; sua ordem
-    // e a remoção da linha de defesas temporárias no ciclo são aplicadas no render.
+    // A visibilidade das faixas de funções depende do modo selecionado.
     if(a.id==='自动审批布局'&&has('功能生效说明'))return farm||mode===7;
     if(a.id==='自动审批布局')return farm;
     if(a.id==='其他')return farm||mode===7;
@@ -393,7 +392,7 @@
     const row=content.querySelector('[data-original-id="超级充能"]')?.closest('.ui-row');
     if(row){row.classList.add('mode-eight-features');row.dataset.originalId='modo-oito-funcoes';}
     const extras=content.querySelector('[data-original-id="改装功能"]')?.closest('.ui-row');
-    if(extras){extras.classList.add('mode-eight-extra-features');extras.dataset.originalId='modo-oito-funcoes-extras';if(mode===7)extras.remove();}
+    if(extras){extras.classList.add('mode-eight-extra-features');extras.dataset.originalId='modo-oito-funcoes-extras';}
   }
 
   function render(keepScroll=false){

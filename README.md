@@ -40,4 +40,4 @@ O site original apresenta o aplicativo como **星辰辅助** e **星辰国际**.
 
 O site está em **`docs/`**. As imagens ficam em `docs/assets/`, e as fontes de tradução e ferramentas ficam em `docs/manutencao/`.
 
-Para detalhes sobre navegação e manutenção, consulte o [guia do projeto](docs/LEIA-ME.md). A [revisão atual](docs/REVISAO_1373.md) descreve o que foi conferido e os limites da comparação.
+Para detalhes sobre navegação e manutenção, consulte o [guia do projeto](docs/LEIA-ME.md). A [revisão atual](docs/REVISAO_1374.md) descreve o que foi conferido e os limites da comparação.
