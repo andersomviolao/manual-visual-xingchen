@@ -170,11 +170,12 @@ body.android-simulator{background:#e9edf0;color:#283844;min-height:100dvh}
 .ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托']){grid-template-columns:repeat(2,minmax(0,1fr));row-gap:5px;padding:4px 0}
 }
 
-.mode-eight-extra-features{height:auto!important;padding:3px 0;display:grid!important;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr);gap:4px 2px}
-.mode-eight-extra-features>.ui-check-group{width:auto!important;min-width:0!important}
-.mode-eight-extra-features>[data-original-id='打排位']{grid-column:1;grid-row:1}
-.mode-eight-extra-features>[data-original-id='求援']{grid-column:3;grid-row:1}
-.mode-eight-extra-features>[data-original-id='改装功能']{grid-column:1;grid-row:2}
-.mode-eight-extra-features>[data-original-id='改装logo']{grid-column:2;grid-row:2}
-.mode-eight-extra-features>[data-original-id='使用宝箱奖励']{grid-column:3;grid-row:2}
+/* Quatro opções na mesma faixa, como no painel chinês; ícone junto de Equipar. */
+.mode-eight-extra-features{height:auto!important;min-height:35px!important;padding:3px 0;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+.mode-eight-extra-features>.ui-check-group{width:auto!important;min-width:0!important;align-items:center;gap:0}
+.mode-eight-extra-features .ui-check{flex:1;gap:2px;padding:2px}
 .mode-eight-extra-features .ui-check span{overflow-wrap:normal!important;word-break:normal}
+.mode-eight-extra-features .ui-button.icon{flex:none!important;width:16px!important;height:16px!important}
+@media(max-width:360px){.mode-eight-extra-features{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:4px}}
+
+.mode-eight-extra-features [data-original-id="改装logo"]{color:#626d72;font:17px/1 Arial;background:transparent!important;border:0;min-height:18px}

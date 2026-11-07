@@ -392,7 +392,7 @@
     const row=content.querySelector('[data-original-id="超级充能"]')?.closest('.ui-row');
     if(row){row.classList.add('mode-eight-features');row.dataset.originalId='modo-oito-funcoes';}
     const extras=content.querySelector('[data-original-id="改装功能"]')?.closest('.ui-row');
-    if(extras){extras.classList.add('mode-eight-extra-features');extras.dataset.originalId='modo-oito-funcoes-extras';}
+    if(extras){extras.classList.add('mode-eight-extra-features');extras.dataset.originalId='modo-oito-funcoes-extras';const equipment=extras.querySelector('[data-original-id="改装功能"]'),icon=extras.querySelector('[data-original-id="改装logo"]');if(equipment&&icon){equipment.append(icon);icon.classList.add('icon');icon.textContent='⚙';icon.title=language==='zh'?'改装':'Equipar construções';icon.setAttribute('aria-label',icon.title);}}
   }
 
   function render(keepScroll=false){
