@@ -158,8 +158,9 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   for(const mode of [6,7,8,9]){
    await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption(String(mode));
    assert(await page.locator('#screen [data-original-id="精制台升级"],#screen [data-original-id="使用学徒"]').count()===0,'Controles removidos na 1372 ainda presentes.');
-   assert(await page.locator('#screen button[data-original-id="改装logo"]').count()===1,'Ícone de equipar construções ausente.');
+   assert(await page.locator('#screen button[data-original-id="改装logo"]').count()===1,'Ícone de aprimorar defesas ausente.');
    for(const id of ['夯木狂欢赠礼','国服委托'])assert(await page.locator('#screen [data-original-id="'+id+'"]').count()===(mode===7?0:1),'Nova opção ausente: '+id);
+   assert(await page.locator('#screen [data-original-id="改装功能"] label').innerText()==='Aprimorar defesas','Tradução de Gear Up incorreta.');
    const order=await page.locator('.mode-eight-features > [data-original-id]').evaluateAll(els=>els.map(el=>el.dataset.originalId));
    assert(order.join(',')==='功能生效说明,超级充能,充能logo,竞赛,竞赛logo,夜世界开荒,夜世界logo','Ordem da faixa inferior incorreta no modo '+(mode+1));
    assert(await page.locator('.mode-eight-extra-features').count()===1,'Linha de equipar construções incorreta no modo '+(mode+1));
