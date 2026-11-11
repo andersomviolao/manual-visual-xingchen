@@ -1,2 +1,89 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Guia indisponível</title><style>*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:28px;background:#f3f6f8;color:#263b47;font:17px/1.6 system-ui,sans-serif}main{max-width:480px;text-align:center}h1{font-size:28px;line-height:1.25;margin:0 0 16px}p{margin:0;color:#576c79}</style></head><body><main><h1>Guia indisponível</h1><p>O guia não está disponível para acesso público.</p></main></body></html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#272d37">
+  <title>Xingchen — Simulador Android em português</title>
+  <link rel="stylesheet" href="estilo.css?v=1b24d0c6e8a8">
+</head>
+<body class="android-simulator">
+  <section id="access-gate" class="access-gate" aria-labelledby="access-title">
+    <form id="access-form" class="access-card">
+      <img src="bot-icon.png" alt="" width="64" height="64">
+      <h1 id="access-title">Guia Xingchen</h1>
+      <p>Digite o PIN para acessar o guia.</p>
+      <label for="access-password">PIN</label>
+      <input id="access-password" type="password" inputmode="numeric" autocomplete="current-password" required autofocus aria-describedby="access-error">
+      <button type="submit">Entrar no guia</button>
+      <p id="access-error" role="alert" aria-live="polite"></p>
+      <noscript>Ative o JavaScript para abrir o guia.</noscript>
+    </form>
+    <section id="access-denied" class="access-card" aria-labelledby="access-denied-title" hidden>
+      <h1 id="access-denied-title" tabindex="-1">PIN incorreto, tente novamente.</h1>
+      <button id="access-retry" type="button">Tentar novamente</button>
+    </section>
+  </section>
+  <div id="guide-content" hidden>
+  <main class="device-stage" aria-label="Simulador Android">
+    <div class="device-frame" id="device-frame">
+      <div class="phone" id="phone">
+        <div class="statusbar"><time id="android-clock">21:00</time><span class="status-dot" aria-hidden="true"></span><span class="status-right" aria-hidden="true"><span class="wifi-symbol"></span><span class="battery-symbol"></span></span></div>
+        <div class="android-display" id="android-display">
+          <section id="android-launcher" class="android-launcher" aria-label="Tela inicial do Android">
+            <div class="launcher-search"><span aria-hidden="true">⌕</span><input id="launcher-search" aria-label="Pesquisar atalhos" placeholder="Pesquisar atalhos" autocomplete="off"></div>
+            <div class="launcher-apps">
+              <button id="launch-bot" class="launcher-app" aria-label="Abrir Xingchen" data-search-terms="xingchen assistente bot executar abrir"><img src="bot-icon.png" alt=""><span>Xingchen</span></button>
+              <a id="launch-manual" class="launcher-app" href="Manual_Xingchen_Portugues_BR.pdf" target="_blank" rel="noopener" aria-label="Abrir manual em português (PDF, nova aba)" data-search-terms="manual português pdf guia instruções">
+                <svg class="launcher-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="3" y="3" width="58" height="58" rx="14" fill="#327ec5"/><path d="M14 17h14c4 0 6 2 6 5v27c-2-3-4-4-8-4H14z" fill="#fff"/><path d="M50 17H38c-3 0-4 2-4 5v27c2-3 4-4 8-4h8z" fill="#d3eaff"/><path d="M34 22v27M19 25h8m-8 7h8m13-7h5m-5 7h5" fill="none" stroke="#327ec5" stroke-width="2" stroke-linecap="round"/></svg>
+                <span>Manual em português</span>
+              </a>
+              <a id="launch-download" class="launcher-app" href="https://921015.xyz/" target="_blank" rel="noopener noreferrer" aria-label="Baixar versão mais recente do bot (APK)" title="Site oficial: abra a seção de downloads para obter o APK atual" data-search-terms="baixar download apk bot atualização versão mais recente">
+                <svg class="launcher-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="3" y="3" width="58" height="58" rx="14" fill="#21876a"/><path d="M32 15v25m-10-9 10 10 10-10M17 43v6h30v-6" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Baixar bot</span>
+              </a>
+            </div>
+            <p id="launcher-empty" class="launcher-empty" hidden>Nenhum atalho encontrado</p>
+            <span class="launcher-page-dot" aria-hidden="true"></span>
+          </section>
+          <section id="app-surface" class="app-surface" aria-label="Aplicativo Xingchen" hidden>
+            <div id="page-tabs" class="page-tabs" role="tablist" hidden></div>
+            <div id="screen" class="screen" tabindex="-1"></div>
+            <div class="confirm-wrap"><button id="confirm" class="confirm">Confirmar</button></div>
+          <div id="info-dialog" class="android-dialog" role="dialog" aria-modal="true" aria-labelledby="info-title" hidden><div class="android-dialog-sheet"><div class="dialog-heading"><h2 id="info-title"></h2><button id="info-close" aria-label="Fechar">×</button></div><div id="info-body"></div><button id="info-confirm">Entendi</button></div></div>
+          </section>
+          <section id="android-recents" class="android-recents" aria-label="Aplicativos recentes" hidden>
+            <div class="recents-title">Aplicativos recentes</div>
+            <button id="recent-app" class="recent-app"><span class="recent-heading"><img src="bot-icon.png" alt="">Xingchen</span><span id="recent-preview" class="recent-preview" aria-hidden="true"></span></button>
+            <p id="recents-empty" class="recents-empty">Nenhum aplicativo recente</p>
+            <button id="clear-recents" class="clear-recents">Limpar tudo</button>
+          </section>
+          <button id="floating-bot" class="floating-bot" aria-label="Abrir painel do Xingchen" title="Abrir painel do Xingchen" hidden><img src="bot-icon.png" alt=""></button>
+
+          <div id="toast" role="status"></div>
+        </div>
+        <nav class="android-navbar" aria-label="Navegação do Android">
+          <button id="android-back" aria-label="Voltar" title="Voltar"><span class="android-back-icon" aria-hidden="true"></span></button>
+          <button id="android-home" aria-label="Início" title="Início"><span class="android-home-icon" aria-hidden="true"></span></button>
+          <button id="android-overview" aria-label="Aplicativos recentes" title="Aplicativos recentes"><span class="android-overview-icon" aria-hidden="true"></span></button>
+        </nav>
+      </div>
+    </div>
+  </main>
+  <footer class="simulation-footer">
+    <span>Simulação de interface · sem ações no jogo</span>
+    <details id="toolbar-options" class="simulation-options"><summary>Opções da simulação</summary><div class="simulation-tools">
+      <label>Idioma <select id="language" aria-label="Idioma"><option value="pt">Português do Brasil</option><option value="zh">Chinês original</option></select></label>
+      <button id="export">Salvar exercício</button><button id="import">Abrir exercício</button><button id="reset">Restaurar campos</button>
+      <a id="review" href="REVISAO_1380.md" target="_blank" rel="noopener">Revisão de 07/11 — versão 1375</a>
+      <a id="manual-link" href="Manual_Xingchen_Portugues_BR.pdf" target="_blank" rel="noopener">Manual em português</a>
+      <p>A estrutura do APK 1380 foi traduzida para estudo. Há telas e comportamentos ainda não verificados; esta simulação não reproduz todo o Android nem executa o bot.</p>
+      <input id="import-file" type="file" accept=".json" hidden>
+    </div></details>
+  </footer>
+  </div>
+  <script data-guide-src="dados.js?v=87b0ea56b1cc"></script>
+  <script data-guide-src="aplicativo.js?v=ccc59c4be732"></script>
+  <script src="acesso.js?v=c3974b5cb6d6"></script>
+</body>
+</html>

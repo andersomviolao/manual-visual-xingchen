@@ -1,0 +1,199 @@
+/* Controles do APK e apresentação do dispositivo Android. */
+:root{--phone-width:480px;--ink:#273c47;--border:#d8e4e9}
+*{box-sizing:border-box}body{margin:0;font:14px/1.5 'Segoe UI',Arial,sans-serif}button,input,select,textarea{font:inherit}button,select,label{touch-action:manipulation}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #4e9fc7;outline-offset:2px}[hidden]{display:none!important}
+.ui-page{min-width:0;width:100%;font-family:Arial,'Segoe UI',sans-serif;font-size:16.8px;color:#222;line-height:1.16}.ui-layout{display:flex;min-width:0;min-height:0;flex-shrink:0}.ui-row{flex-direction:row;align-items:center}.ui-col{flex-direction:column}.ui-card{background:linear-gradient(105deg,#fff 0%,#fff 70%,#eff7fb 100%);border:1px solid #bdd8e6;border-radius:5px}.ui-text{min-width:0;overflow-wrap:anywhere;display:flex;align-items:center;white-space:pre-wrap}.ui-text.center{justify-content:center;text-align:center}.ui-button{border:1px solid #60a5c9;border-radius:5px;background:linear-gradient(#7dc4e5,#65afd3);color:#fff;display:flex;align-items:center;justify-content:center;min-width:0;min-height:30px;padding:4px 6px;line-height:1.12;word-break:normal;overflow-wrap:normal;flex-shrink:0}.ui-button:hover{filter:brightness(1.06)}.ui-button.icon{border:0;background-color:transparent;background-repeat:no-repeat;background-position:center;background-size:contain;border-radius:0;padding:0;min-height:0;flex:none}.ui-ribbon{background-image:url('assets/bt.webp');background-size:100% 100%;background-color:transparent!important;border:0;border-radius:0;color:white;justify-content:center;text-align:center;padding:5px 22px!important;min-height:35px}.ui-note-ribbon{background-image:url('assets/tt.webp');background-size:100% 100%;color:#fff;text-align:center;justify-content:center;min-height:22px;padding:3px 9px!important}.ui-check-group,.ui-radio-group{display:flex;gap:3px;align-items:center;min-width:0;flex-shrink:0}.ui-check{display:flex;align-items:center;gap:5px;line-height:1.13;cursor:pointer;min-width:0;padding:2px 5px}.ui-check input{appearance:none;width:24px;height:24px;border:3px solid #8dbdd6;border-radius:1px;background:white;flex:none;margin:0;box-shadow:inset 0 0 2px #bdd8e5;position:relative;cursor:pointer}.ui-check input:checked{background:#7fbbd9}.ui-check input:checked:after{content:'✓';position:absolute;inset:-3px 0 0;text-align:center;font-size:23px;color:white}.ui-radio-group input{border-radius:50%}.ui-check span{min-width:0;flex:1 1 auto;overflow-wrap:normal;word-break:normal}.ui-select{appearance:none;border:2px solid #91bacd;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='18'%3E%3Cpath fill='%2385bbd5' d='M3 5h14l-7 8z'/%3E%3C/svg%3E") no-repeat right center;background-size:20px 18px;color:#ed454f;min-width:0;padding:3px 20px 3px 5px;border-radius:0;text-align:center;line-height:1.15;cursor:pointer}.ui-select option{background:white;color:#ec4652;font-size:14px}.ui-input{border:0;border-bottom:3px solid #8cbad1;background:transparent;border-radius:0;color:#ef3f83;text-align:center;min-width:0;padding:1px 2px;outline-offset:1px;line-height:1.15}.ui-input::-webkit-inner-spin-button{appearance:none}.ui-web{min-height:170px;border:1px solid #c5dce9;background:#f8fbfd;padding:24px;color:#75929f;text-align:center}.ui-page[data-name='自定义下兵'] .ui-row>.ui-input{flex-shrink:1!important}.ui-page[data-name='自定义下兵'] .ui-text{font-size:13px!important}.ui-page[data-name='进攻资源条件'] .ui-input{flex-shrink:1!important}.ui-page[data-name='进攻资源条件'] .ui-text{font-size:14px!important}.ui-page[data-name='界面设置'] .ui-check span{font-size:12.5px}.ui-page[data-name='界面设置'] .ui-select{font-size:15px!important}.ui-page[data-name='界面设置'] .ui-row .ui-text{font-size:15px!important}.ui-page[data-name='通用任务'] .ui-check span{font-size:14px}.ui-page .ui-check-group:has(.ui-check span:empty){flex:none!important}.ui-page .ui-row:has(>.ui-check-group:nth-child(9)){justify-content:space-around}.ui-page[data-name='升级建筑'] .ui-row:has(>.ui-select){flex-wrap:wrap;row-gap:5px;padding:4px}.ui-page[data-name='升级建筑'] .ui-row:has(>.ui-select) .ui-text{font-size:14px!important}.ui-page[data-name='多号独立设置'] .ui-row,.ui-page[data-name='语言设置'] .ui-row{flex-wrap:wrap}.ui-page[data-name='自定义下兵'] .ui-radio-group{flex-wrap:wrap}.ui-page[data-name='夜世界'] .ui-check span{font-size:13px}
+.ui-radio-group{max-width:100%;flex-wrap:wrap}.ui-radio-group .ui-check{flex:1 1 130px}.ui-page[data-name='自定义下兵'] .ui-radio-group{flex:1 1 0}.ui-page[data-name='界面设置'] .ui-button[data-original-id='查看教程']{padding:2px;font-size:12px!important}.ui-page[data-name='界面设置'] .ui-text[data-original-id='简单说明']{color:#ee4589;font-size:13px!important;line-height:1.2}
+.ui-page[data-name='界面设置'] .ui-check{padding:2px 4px}.ui-page .ui-button{padding-left:4px;padding-right:4px}.ui-page .ui-button.icon{padding:0}.ui-page .ui-input{color:#ef3f83}.ui-page .ui-row{align-items:center}
+.native-settings{font:20px/1.35 Arial,sans-serif;color:#888}.native-heading{padding:20px 12px;text-align:center;background:#fff;border-bottom:1px solid #aaa;color:#888;font:26px Arial,sans-serif;min-height:67px}.native-row{margin:4px 8px;min-height:65px;border:1px solid #888;border-radius:3px;padding:15px;display:flex;align-items:center;gap:12px}.native-toggle{justify-content:space-between;cursor:pointer}.native-toggle span{max-width:calc(100% - 85px);font-size:18px}.native-toggle input{appearance:none;position:relative;background:#eee;box-shadow:inset 0 0 2px #888;border-radius:22px;flex:none;width:68px;height:40px;margin:0;cursor:pointer}.native-toggle input:before{content:'';display:block;position:absolute;top:2px;left:2px;width:36px;height:36px;background:#fff;border:1px solid #eee;border-radius:50%;box-shadow:0 1px 2px #0003}.native-toggle input:checked{background:#41d75b}.native-toggle input:checked:before{left:30px}.native-green{width:100%;border:0;color:#fff;background:#42d65a;border-radius:5px;padding:12px;font-size:19px}.native-row:has(.native-green){padding:4px}.native-address{color:#ccc;justify-content:center}.initial-heading{display:flex;justify-content:center;position:relative}.initial-heading button{position:absolute;right:17px;top:22px;background:none;border:0;color:#888;font-size:18px}.ui-web.initial-notice{background:linear-gradient(120deg,#7c22ce,#4a0fb7);color:#fff;text-align:left;white-space:pre-line;line-height:1.55;font-size:16px;padding:10px;min-height:0;border:0;border-radius:2px}
+.ui-check-group,.ui-radio-group,.ui-check{max-width:100%}.ui-row>.ui-check-group:only-child{flex:1 1 0!important}
+.ui-page[data-name="界面设置"] select[data-original-id="自定义下兵方式"]{flex:0 0 52%!important;width:52%!important}.ui-page[data-name="界面设置"] [data-original-id="雷闪"]{flex:1 1 0!important}.ui-page[data-name="界面设置"] select[data-original-id="游戏版本"]{min-width:165px}
+.ui-page[data-name="界面设置"] .ui-layout[data-original-id="游戏版本布局1"]:has(>select[data-original-id="游戏版本"]){min-width:175px;flex-shrink:0!important}
+.runtime-page{position:relative;min-height:850px;overflow:hidden}.runtime-background{pointer-events:none;opacity:1}.runtime-popup{position:absolute;top:276px;left:20px;right:20px;background:#fff;border:4px solid #79746f;border-radius:8px;min-height:264px;box-shadow:0 2px 4px #0002;font:15px/1.45 Arial,sans-serif;z-index:2}.runtime-popup-head{position:relative;background:linear-gradient(#9b9490,#7e7773);color:white;text-align:center;padding:5px 34px 5px 10px;min-height:28px;font-size:14px;display:flex;align-items:center;justify-content:center}.runtime-close{position:absolute;right:2px;top:1px;background:#ef242c;color:white;font-weight:bold;border:2px solid #9a161b;border-radius:5px;padding:1px 5px;line-height:19px;cursor:pointer}.runtime-popup-body{padding:18px 12px;min-height:230px;white-space:pre-line;color:#171717;overflow-wrap:anywhere}
+/* Diálogos observados em execução na 1358. */
+.confirm-wrap[hidden]{display:none}
+.screen.has-observed-dialog{position:relative;overflow:hidden;isolation:isolate;padding:0}
+.observed-background{pointer-events:none;height:100%;overflow:hidden}
+.observed-layer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;z-index:2}
+.observed-sheet{background:#fff;border:1px solid #b4ccda;box-shadow:0 2px 8px #234b601a;max-width:100%;max-height:100%;display:flex;flex-direction:column;overflow:auto;padding:9px 6px}
+.observed-sheet>.ui-page{flex:1;min-height:0;height:auto!important}
+.observed-sheet .ui-row{flex-wrap:wrap;row-gap:4px}
+.observed-confirm{padding:14px 8px 0;margin-top:auto}
+.observed-confirm .confirm{height:53px}
+.observed-sheet .ui-page[data-name='军队配置链接']{min-height:250px}
+.versions-heading{flex-shrink:0;justify-content:center;padding:14px;color:#858585;border-bottom:1px solid #eee}
+
+.observed-background-confirm{position:absolute;bottom:10px;left:18px;right:18px;height:53px;border:1px solid #4e9fc7;border-radius:5px;background:linear-gradient(#72bcdf,#63b1d7);color:white;font-size:24px;text-align:center;line-height:53px;pointer-events:none}
+
+html,body{max-width:100%;overflow-x:hidden}
+body.android-simulator{background:#e9edf0;color:#283844;min-height:100dvh}
+.device-stage{display:flex;justify-content:center;align-items:center;padding:6px 0;min-height:calc(100dvh - 42px)}
+.device-frame{flex:none;position:relative}
+.phone{width:480px;height:853.333px;position:relative;display:flex;flex-direction:column;background:#fff;overflow:hidden;box-shadow:0 12px 45px #17233225,0 0 0 1px #b4bdc7;border-radius:4px;font-family:Arial,sans-serif}
+.statusbar{height:32px;flex:none;display:flex;align-items:center;gap:14px;padding:0 10px;background:#999;color:white;font:18px Arial,sans-serif}
+.status-dot{width:15px;height:15px;border-radius:50%;background:white}.status-right{margin-left:auto;display:flex;align-items:center;gap:12px}.wifi-symbol{width:0;height:0;border-top:13px solid white;border-left:10px solid transparent;border-right:10px solid transparent;border-radius:4px}.battery-symbol{width:10px;height:16px;background:white;position:relative;border-radius:1px}.battery-symbol:before{content:'';position:absolute;top:-2px;left:3px;width:4px;height:2px;background:white}
+.android-display{position:relative;flex:1;min-height:0;overflow:hidden;background:#fff}
+.app-surface{position:absolute;inset:0;display:flex;flex-direction:column;background:white}
+.screen{flex:1;min-height:0;overflow:auto;padding-bottom:7px;background:white;scrollbar-width:thin;scrollbar-color:#b5d3e4 transparent;touch-action:pan-y}
+.confirm-wrap{padding:6px 18px 10px;background:white;flex:none}.confirm{width:100%;height:53px;border:1px solid #4e9fc7;border-radius:5px;background:linear-gradient(#72bcdf,#63b1d7);color:white;font-size:24px;box-shadow:0 1px 2px #0002}.confirm:hover{filter:brightness(1.04)}
+.page-tabs{display:flex;flex:none;background:#fff;border-bottom:1px solid #eee;padding:8px 6px;gap:3px}.page-tabs button{flex:1;border:0;background:#fff;color:#888;padding:8px 4px;font-size:17px;line-height:1.2;border-bottom:2px solid transparent}.page-tabs button.active{color:#75b4d1;border-color:#75b4d1}
+.android-navbar{height:44px;display:flex;flex:none;background:#292f39;z-index:6}.android-navbar button{width:33.333%;display:flex;justify-content:center;align-items:center;border:0;background:transparent;color:#e1e5e9}.android-navbar button:active{background:#ffffff18}.android-back-icon{width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:14px solid #d4d9df}.android-home-icon{width:17px;height:17px;border:1.5px solid #d4d9df;border-radius:50%}.android-overview-icon{width:14px;height:14px;border:1.5px solid #d4d9df;border-radius:3px}
+.launcher-visible .statusbar{background:#363d49}.android-launcher{position:absolute;inset:0;background:linear-gradient(135deg,#40485480 25%,transparent 25%) 0 0/260px 260px,linear-gradient(225deg,#41495555 25%,transparent 25%) 0 0/300px 300px,radial-gradient(ellipse at 80% 0%,#434b58,#272d37 85%);color:#fff;padding:20px 32px}
+.launcher-search{display:flex;align-items:center;border:1px solid #ffffff22;border-radius:5px;background:#ffffff04;color:#c5c9ce;height:34px;gap:8px;padding:0 8px}.launcher-search>span{font-size:26px}.launcher-search input{width:100%;background:transparent;border:0;color:#fff;font-size:12px;outline-offset:4px}.launcher-search input::placeholder{color:#aeb4bd}
+.launcher-apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:start;padding-top:48px}.launcher-app{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0;background:none;border:0;color:white;padding:4px;font-size:13px;text-shadow:0 1px 3px #000;text-align:center;text-decoration:none;line-height:1.3}.launcher-app img{width:49px;height:49px;object-fit:contain}.launcher-icon{width:49px;height:49px;flex:none;filter:drop-shadow(0 2px 4px #0002)}.launcher-app:active img,.launcher-app:active .launcher-icon{transform:scale(.94)}.launcher-page-dot{position:absolute;bottom:100px;left:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:white}.launcher-empty{text-align:center;color:#bac2cc;font-size:13px;margin-top:70px}
+.floating-bot{position:absolute;left:-20px;top:57%;width:46px;height:46px;background:#192636cc;border:2px solid #223b54;border-radius:50%;padding:2px;z-index:7;box-shadow:0 2px 6px #0004}.floating-bot img{width:100%;height:100%;object-fit:contain}.floating-bot:hover,.floating-bot:focus-visible{left:0}.floating-bot.running{border-color:#6bbe86}
+.android-recents{position:absolute;inset:0;background:#333b48;display:flex;align-items:center;flex-direction:column;padding:28px 28px;color:white;gap:18px}.recents-title{font-size:16px;align-self:flex-start;color:#dce3ea}.recent-app{width:320px;max-height:calc(100% - 110px);overflow:hidden;border:0;padding:0;background:white;box-shadow:0 5px 28px #0005;border-radius:9px;text-align:left;flex-shrink:1;min-height:0}.recent-heading{display:flex;align-items:center;gap:9px;padding:10px;color:#536170;background:#f6f7f8;font-size:14px}.recent-heading img{width:25px;height:25px}.recent-preview{display:block;width:320px;height:518.3px;overflow:hidden;position:relative;pointer-events:none}.recent-copy{position:relative;width:480px;height:777.333px;transform:scale(.6666667);transform-origin:top left;pointer-events:none}.recent-copy *{pointer-events:none}.clear-recents{border:0;background:none;color:#e2e6ec;font-size:13px;letter-spacing:.3px;padding:10px 22px}.recents-empty{margin:auto;color:#b8c2cf;font-size:14px}
+.android-dialog{position:absolute;inset:0;z-index:20;background:transparent;display:flex;align-items:center;justify-content:center;padding:20px}.android-dialog-sheet{background:#fff;border:4px solid #79746f;border-radius:7px;max-height:100%;overflow:auto;width:100%;padding:0;color:#171717;font:16px/1.45 Arial,sans-serif;min-height:264px}.dialog-heading{display:flex;align-items:center;justify-content:center;gap:12px;position:relative;background:linear-gradient(#9b9490,#7e7773);color:white;padding:5px 32px 5px 8px;min-height:28px}.dialog-heading h2{font-size:14px;margin:0;font-weight:normal;text-align:center}.dialog-heading button{font-size:22px;line-height:19px;border:2px solid #9a161b;background:#ef242c;color:white;padding:1px 5px;position:absolute;right:2px;top:1px;border-radius:5px}#info-body{line-height:1.45;white-space:pre-line;margin:0;overflow-wrap:anywhere;display:flex;align-items:center;min-height:225px;padding:18px 12px}#info-confirm{display:none;margin-left:auto;border:0;border-radius:4px;background:#70b6d9;color:white;padding:8px 24px}
+#toast{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);background:#20252de8;color:#fff;padding:10px 18px;border-radius:5px;font-size:14px;z-index:30;opacity:0;pointer-events:none;max-width:90%;text-align:center;transition:opacity .15s}#toast.visible{opacity:1}
+.simulation-footer{display:flex;align-items:center;justify-content:center;gap:12px;color:#77848f;font-size:10px;min-height:30px;padding:4px 8px}.simulation-options{position:relative}.simulation-options summary{cursor:pointer;color:#566f83}.simulation-tools{position:absolute;bottom:calc(100% + 8px);right:0;width:260px;max-height:65dvh;overflow:auto;background:#fff;border:1px solid #cad3da;border-radius:7px;box-shadow:0 5px 30px #20304026;padding:14px;display:flex;flex-direction:column;gap:8px;z-index:50;color:#526776;font-size:12px}.simulation-tools button,.simulation-tools select{border:1px solid #cad7df;background:#f5f9fb;border-radius:4px;color:#47677e;padding:7px;text-align:left}.simulation-tools label{display:flex;flex-direction:column;gap:4px}.simulation-tools a{color:#356f94}.simulation-tools p{margin:0;line-height:1.5}
+@media(max-width:520px){
+  .device-stage{width:100%;min-height:calc(100dvh - 36px);padding:0;display:block}
+  .device-frame{width:100%!important;height:auto!important}
+  .phone{width:100%!important;height:calc(100dvh - 74px)!important;min-height:520px;border-radius:0;margin:0;transform:none!important;zoom:1!important}
+  .android-launcher{padding:20px 18px}
+  .launcher-apps{padding-top:42px;padding-right:4px}
+  .launcher-app{position:relative;z-index:2;min-width:0;min-height:112px;padding:12px 4px;touch-action:manipulation}
+  .launcher-app img,.launcher-icon{width:56px;height:56px}
+  .simulation-footer{font-size:9px;gap:8px}.simulation-tools{width:240px;right:0}
+}
+
+.initial-heading{padding-right:142px}.initial-heading>span{font-size:23px;line-height:1.25}.initial-heading button{right:12px;font-size:16px;top:24px}
+
+/* Janelas observadas durante a execução manual e de experiência em 17/10. */
+.screen.runtime-window-host{position:relative;background:transparent;overflow:auto;padding:0;display:flex;align-items:center;justify-content:center}
+.app-surface:has(.runtime-window-host){background:transparent}
+.execution-window[data-execution='自助切号']{width:450px;min-height:365px;background:white;border:1px solid #999;flex:none}
+.execution-window[data-execution='自助切号']>.ui-layout:nth-child(3){padding:28px 0 36px}
+.screen:has([data-execution='放大']){align-items:flex-start;justify-content:flex-end;padding-top:480px}
+.execution-window[data-execution='放大']{width:135px;background:white;border:1px solid #90b5c9;min-height:40px}
+.execution-window[data-execution='放大'] .ui-button{border:0;border-radius:0;background:white}
+.screen:has([data-execution='刷经验']){align-items:flex-end;justify-content:flex-end}
+.execution-window[data-execution='刷经验']{width:270px;background:black;border:2px solid #a8c4d5;min-height:380px}
+.execution-window[data-execution='刷经验'] .ui-text,.execution-window[data-execution='刷经验'] .ui-check{color:#888}
+.execution-window[data-execution='刷经验'] [data-original-id='更新公告']{background:transparent!important;color:white}
+.execution-window[data-execution='刷经验'] .ui-check input{background:transparent}
+.execution-window[data-execution='刷经验'] .ui-radio-group input:checked:after{content:'';inset:3px;border-radius:50%;background:#7fbbd9}
+.execution-window[data-execution='刷经验'] .ui-input{color:#888}
+.execution-window[data-execution='刷经验'] .ui-row>.ui-check-group{flex:1 1 0!important}
+.execution-window[data-execution='刷经验'] .ui-check{padding:2px;gap:3px;font-size:11px}
+.execution-window[data-execution='刷经验'] .ui-check span{overflow-wrap:normal;word-break:normal}
+.execution-window[data-execution='刷经验'] .ui-check input{width:21px;height:21px}
+.tutorial-host>.ui-page{height:100%;display:flex;flex-direction:column}
+.tutorial-host>.ui-page>.ui-col{flex:1!important;min-height:0}
+.tutorial-host .ui-col:has(>.ui-web){flex:1!important;min-height:0}
+.tutorial-host .ui-web{display:flex;flex-direction:column;flex:1!important;padding:0;min-height:0;background:white}
+.tutorial-host iframe{border:0;flex:1;width:100%;min-height:400px}
+.tutorial-substitution{font-size:12px;margin:0;padding:7px;background:#f4f4f4;color:#555}
+
+.mode-eight-features{min-height:30px!important;align-items:center!important;gap:0}
+.mode-eight-features>.ui-button.icon{flex:0 0 18px!important;width:18px!important}
+.mode-eight-features>.ui-check-group{flex:1 1 0!important;min-width:0}
+.mode-eight-extra-features{min-height:30px!important;align-items:center!important;gap:0}
+.mode-eight-extra-features>.ui-check-group{flex:1 1 0!important;min-width:0}
+
+/* A tela do APK usa colunas estáveis: o texto pode quebrar, mas a caixa de
+   seleção conserva a mesma posição em todas as linhas. */
+.ui-page[data-name='界面设置'] [data-original-id='加入部落'],
+.ui-page[data-name='界面设置'] [data-original-id='退出部落'],
+.ui-page[data-name='界面设置'] [data-original-id='多号升级'],
+.ui-page[data-name='界面设置'] [data-original-id='限时活动'],
+.ui-page[data-name='界面设置'] [data-original-id='升级建筑'],
+.ui-page[data-name='界面设置'] [data-original-id='升级科技'],
+.ui-page[data-name='界面设置'] [data-original-id='升级战宠'],
+.ui-page[data-name='界面设置'] [data-original-id='升级武器'],
+.ui-page[data-name='界面设置'] [data-original-id='都城偷袭'],
+.ui-page[data-name='界面设置'] [data-original-id='捐都城币'],
+.ui-page[data-name='界面设置'] [data-original-id='智能换阵'],
+.ui-page[data-name='界面设置'] [data-original-id='买卖药水'],
+.ui-page[data-name='界面设置'] [data-original-id='打排位'],
+.ui-page[data-name='界面设置'] [data-original-id='等援兵'],
+.ui-page[data-name='界面设置'] [data-original-id='国服签到'],
+.ui-page[data-name='界面设置'] [data-original-id='使用宝箱奖励'],
+.ui-page[data-name='界面设置'] [data-original-id='删援兵'],
+.ui-page[data-name='界面设置'] [data-original-id='求援'],
+.ui-page[data-name='界面设置'] [data-original-id='不下攻城'],
+.ui-page[data-name='界面设置'] [data-original-id='捐兵']{flex:1 1 0!important;min-width:0}
+.ui-page[data-name='界面设置'] .ui-row:has(> .ui-layout[data-original-id='私人定制'])> .ui-layout[data-original-id='私人定制']{flex:1 1 0!important;min-width:0}
+.ui-page[data-name='界面设置'] .ui-row:has(> .ui-layout[data-original-id='私人定制'])> .ui-layout[data-original-id='私人定制']>.ui-check-group{width:100%;flex:1 1 0!important;min-width:0}
+.ui-page[data-name='界面设置'] [data-original-id='竞赛'],
+.ui-page[data-name='界面设置'] [data-original-id='夜世界开荒'],
+.ui-page[data-name='界面设置'] [data-original-id='宝石加速']{flex:1 1 0!important;min-width:0}
+
+@media(max-width:520px){
+  .screen{overflow-x:hidden}
+  .mode-eight-features>.ui-check-group .ui-check{padding-left:3px;padding-right:3px}
+  .mode-eight-extra-features>.ui-check-group .ui-check{padding-left:3px;padding-right:3px}
+  .ui-page[data-name='界面设置'] .ui-check{gap:3px;padding:2px 3px;align-items:flex-start}
+  .ui-page[data-name='界面设置'] .ui-check span{font-size:12px!important;line-height:1.06;display:block}
+  .ui-page[data-name='界面设置'] .ui-check input{width:24px;height:24px;margin-top:1px}
+  .ui-page[data-name='界面设置'] .ui-row:has(> .ui-check-group){align-items:stretch}
+  .ui-page[data-name='界面设置'] .ui-button:not(.icon){font-size:13px;line-height:1.08}
+}
+
+/* Conferência na instância construtor muros 1, 24/10/2026. */
+.ui-check{width:100%}
+
+.ui-page[data-name='界面设置'] .ui-row:has(> .ui-layout[data-original-id='私人定制'])> .ui-check-group{flex:1 1 0!important;min-width:0}
+.ui-page[data-name='多号独立设置'] .ui-row:has([data-original-id='同步复制按钮']){flex-wrap:nowrap}
+.ui-page[data-name='多号独立设置'] .ui-row:has([data-original-id='同步复制按钮']) .ui-text{font-size:12px!important}
+.ui-page[data-name='多号独立设置'] [data-original-id='同步复制按钮']{min-width:45px}
+.native-settings>.native-heading{position:sticky;top:0;z-index:1}
+.ui-page[data-name='界面设置'] [data-original-id='紧急通知说明']{min-height:clamp(36px,10.8vw,52px)}
+.ui-page:not([data-name='界面设置']) .ui-check{gap:4px;padding:2px 4px}
+.ui-page:not([data-name='界面设置']) .ui-check span{font-size:12px;line-height:1.1;hyphens:auto}
+.ui-page[data-name='夜世界'] .ui-check span{font-size:12px}
+.ui-page[data-name='夜世界'] [data-original-id='夜世界打资源']{flex:0 0 23%!important}
+.ui-page[data-name='夜世界'] .ui-row:has(>[data-original-id='夜世界进攻次数'])>.ui-text{white-space:nowrap;flex:0 0 auto!important;font-size:11px!important}
+.ui-page[data-name='夜世界'] [data-original-id='夜世界除草'],.ui-page[data-name='夜世界'] [data-original-id='夜世界采集资源']{flex:0 0 25%!important}
+.ui-page[data-name='夜世界'] [data-original-id='夜世界下完兵不重启游戏']{flex:1 1 0!important}
+.ui-page[data-name='夜世界'] .ui-row:has(>[data-original-id='指定夜世界大本营等级'])>.ui-text{white-space:nowrap;flex:0 0 auto!important;font-size:12px!important}
+.ui-page:not([data-name='界面设置']) .ui-row:has(>.ui-check-group)>.ui-check-group{min-width:0;flex-shrink:1}
+.ui-page[data-name='通用任务'] .ui-check span{font-size:12px}
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件捐兵']),.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件不打']){flex-wrap:nowrap!important}
+.ui-page[data-name='界面设置'] [data-original-id='按资源条件捐兵'],.ui-page[data-name='界面设置'] [data-original-id='按资源条件不打']{flex:1 1 0!important}
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件捐兵'])>.ui-text,.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件不打'])>.ui-text{flex:0 0 auto!important;white-space:nowrap;font-size:11px!important}
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件捐兵'])>.ui-text:last-child,.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件不打'])>.ui-text:last-child{flex:0 1 75px!important;white-space:normal}
+@media(max-width:520px){
+ .ui-page:not([data-name='界面设置']) .ui-check{gap:3px;padding:2px 3px}
+ .ui-page:not([data-name='界面设置']) .ui-check span{font-size:11px}
+ .ui-page:not([data-name='界面设置']) .ui-button.icon{max-width:9vw;max-height:9vw}
+ .page-tabs button{font-size:13px;padding:8px 2px}
+ .ui-page[data-name='多号独立设置'] .ui-button{font-size:11px!important}
+ .ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件捐兵'])>.ui-input,.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='按资源条件不打'])>.ui-input{width:8vw!important;flex:0 1 8vw!important;font-size:11px!important}
+}
+.skinned-button{background-size:100% 100%!important;background-repeat:no-repeat!important;color:#111!important;padding-left:30px!important}
+
+/* As opções adicionadas na 1374 precisam de colunas com largura legível. */
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托']){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:auto!important;min-height:40px;align-items:center}
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托'])>.ui-check-group{width:auto!important;min-width:0;max-width:100%}
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托']) .ui-check span{overflow-wrap:normal!important;word-break:normal}
+@media(max-width:360px){
+.ui-page[data-name='界面设置'] .ui-row:has(>[data-original-id='国服委托']){grid-template-columns:repeat(2,minmax(0,1fr));row-gap:5px;padding:4px 0}
+}
+
+/* Quatro opções na mesma faixa, como no painel chinês; ícone junto de Equipar. */
+.mode-eight-extra-features{height:auto!important;min-height:35px!important;padding:3px 0;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+.mode-eight-extra-features>.ui-check-group{width:auto!important;min-width:0!important;align-items:center;gap:0}
+.mode-eight-extra-features .ui-check{flex:1;gap:2px;padding:2px}
+.mode-eight-extra-features .ui-check span{overflow-wrap:normal!important;word-break:normal}
+.mode-eight-extra-features .ui-button.icon{flex:none!important;width:16px!important;height:16px!important}
+@media(max-width:360px){.mode-eight-extra-features{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:4px}}
+
+.mode-eight-extra-features [data-original-id="改装logo"]{color:#626d72;font:17px/1 Arial;background:transparent!important;border:0;min-height:18px}
+
+.ui-page[data-name='满资源设置'] .ui-row:has(>[data-original-id='下线休息']){height:auto!important;min-height:38px;padding:6px 3px}
+.ui-page[data-name='满资源设置'] [data-original-id='下线休息']{height:auto!important}
+.ui-page[data-name='更新公告'] .update-cancel{background:#d94343;border-color:#b43131}
+.ui-page[data-name='更新公告'] .update-install{background:#4baf63;border-color:#338448}
+
+/* Revisão 1380: opções longas e novo aviso de atualização. */
+.ui-page[data-name='满资源设置'] .ui-row:has(>[data-original-id='继续进攻奖励']){height:auto!important;min-height:38px;padding:6px 3px}
+.ui-page[data-name='满资源设置'] [data-original-id='继续进攻奖励']{height:auto!important}
+.ui-page[data-name='更新公告'] .update-cancel,.ui-page[data-name='更新公告'] .update-install{color:#121212!important;min-height:32px}
+.ui-page[data-name='更新公告'] [data-original-id='关闭倒计时']{flex:none!important;background:transparent!important;border:0;color:#c53333!important}
+
+.access-gate{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#1d2c40,#355775);color:#20374b}
+.access-card{width:min(100%,380px);padding:32px;background:#fff;border-radius:22px;box-shadow:0 20px 60px #08182655;display:grid;gap:12px}
+.access-card>img{border-radius:16px}.access-card h1{margin:4px 0;font-size:26px}.access-card p{margin:0;line-height:1.5;color:#526779}
+.access-card label{font-weight:600;margin-top:8px}.access-card input{width:100%;min-height:48px;border:1px solid #adc2d3;border-radius:9px;padding:10px 12px;font-size:20px}
+.access-card button{min-height:48px;margin-top:4px;border:0;border-radius:9px;background:#216797;color:white;font-weight:600}.access-card button:disabled{opacity:.6;cursor:wait}
+.access-card #access-error{min-height:24px;color:#a52e35;font-size:14px}
