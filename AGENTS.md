@@ -4,3 +4,4 @@
 - `docs/` é a fonte principal do site e a pasta publicada no GitHub Pages.
 - Preserve APKs, backups, documentos de origem e exercícios preenchidos fora da publicação, respeitando `.gitignore`.
 - Se o envio ou a publicação falhar, informe o impedimento e não declare que o site foi atualizado.
+- Ao terminar, deixe a área de trabalho organizada: feche abas e janelas abertas para a tarefa e restaure o estado anterior dos aplicativos usados, inclusive janelas que estavam minimizadas. Preserve o trabalho do usuário e não deixe navegadores visíveis sem necessidade.
