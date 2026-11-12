@@ -11,7 +11,7 @@ foreach ($taskFileName in @('index.html','estilo.css','aplicativo.js','dados.js'
 }
 $taskIndexPath = Join-Path $taskSiteDir 'index.html'
 $taskIndex = [IO.File]::ReadAllText($taskIndexPath)
-foreach ($taskResource in @('estilo.css','dados.js','aplicativo.js','acesso.js')) {
+foreach ($taskResource in @('estilo.css','dados.js','aplicativo.js','acesso.js','Manual_Xingchen_Portugues_BR.pdf')) {
     $taskHash = (Get-FileHash -LiteralPath (Join-Path $taskSiteDir $taskResource) -Algorithm SHA256).Hash.Substring(0,12).ToLowerInvariant()
     $taskPattern = '((?:src|href|data-guide-src)="' + [regex]::Escape($taskResource) + ')(?:\?[^" ]*)?"'
     if (-not [regex]::IsMatch($taskIndex, $taskPattern)) { throw "Recurso ausente no HTML: $taskResource" }

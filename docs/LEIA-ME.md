@@ -8,7 +8,7 @@ O ícone Xingchen abre a simulação. Os controles permitem estudar configuraç�
 
 **Baixar bot** abre https://921015.xyz/. No site, escolha **辅助游戏下载** e depois **辅助下载**. A versão anunciada na conferência era 1380. O link não fixa um APK antigo nem depende do antigo atalho /fz.
 
-O manual PDF incluído permanece como referência histórica; a revisão 1380 é do guia interativo. A simulação não executa o jogo, instalações, compras ou serviços remotos.
+O manual PDF foi revisado em **12/11/2026**, com 29 páginas: duas páginas de atualizações oficiais até 1380 e a tradução ilustrada do manual histórico. O original chinês atual foi exportado novamente e comparado nas 24 páginas, sem novas instruções identificadas. As capturas históricas não representam toda a interface atual. Consulte [a conferência do manual](REVISAO_MANUAL_2026-11-12.md). A simulação não executa o jogo, instalações, compras ou serviços remotos.
 
 ## Organização e manutenção
 

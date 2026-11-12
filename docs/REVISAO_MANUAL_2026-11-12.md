@@ -1,0 +1,46 @@
+# Conferência do manual - 12/11/2026
+
+## Original chinês obtido novamente
+
+O [site oficial](https://921015.xyz/) aponta, na seção de tutoriais, para o [documento 星辰国际教程 no Tencent Docs](https://docs.qq.com/doc/DSnRwSW9xYktBVnJU). O documento foi aberto no navegador e exportado por sua função de impressão, com Microsoft Print to PDF, em 12/11/2026.
+
+Cópia preservada: `materiais/manuais/Manual_Xingchen_Original_Chines_2026-11-12.pdf`, com 24 páginas. O original anterior permanece em `materiais/manuais/Manual_Xingchen_Original_Chines.pdf`. Os materiais de origem ficam fora do Git.
+
+Os metadados públicos do documento indicam última edição em **25/03/2025 às 14:48:22 UTC**. Essa data pertence ao documento, não ao bot. O contador do editor mostra 4.615; não foi tratado como contagem de palavras em português.
+
+As 24 páginas foram renderizadas e comparadas visualmente com o original local. Não foram identificadas novas instruções, novos modos ou novas funções. Existem diferenças de renderização de texto e de posicionamento das imagens; os PDFs não são binariamente idênticos. Portanto, não há evidência de uma nova edição do manual acompanhando a 1380.
+
+## Nova edição em português
+
+O arquivo `docs/Manual_Xingchen_Portugues_BR.pdf` foi substituído por uma edição de **29 páginas**:
+
+- Duas páginas novas de revisão, com situação do manual, tradução do histórico oficial desde 1366 até 1380, fontes e limites.
+- As 27 páginas da tradução ilustrada existente, reaproveitadas após a conferência do original atual.
+- As 24 referências visuais chinesas foram substituídas pela exportação recém-obtida, preservando os textos em português ao lado.
+- Marcadores do PDF ajustados à nova paginação. A numeração interna 1-27 pertence à parte ilustrada; original 1-24 identifica a página chinesa.
+
+A edição anterior foi preservada em `materiais/manuais/historico/Manual_Xingchen_Portugues_BR_1366.pdf`. O script `manutencao/atualizar-manual.py` recompõe a edição a partir desses arquivos locais. O registro JSON de conferência contém os hashes SHA-256. O site mantém o nome público do PDF, com parâmetro de cache calculado pelo script de publicação.
+
+## Últimas mudanças do bot, segundo o autor
+
+Fonte: [histórico oficial](http://xccoc.fun/msg/log.txt), obtido em 12/11/2026. O site anuncia APK **1380**; o histórico também informa atualização interna **1380**, com data **10 de novembro**. As datas do histórico são publicadas sem ano.
+
+| Versão | Data no histórico | Alterações descritas |
+| --- | --- | --- |
+| 1380 | 10 nov. | Correção de reservar construtor para melhorar muros. |
+| 1376 | 8 nov. | Registro contém apenas “?”. Não é possível afirmar o que mudou. |
+| 1375 | 7 nov. | Correção da melhoria contínua de muros em certas condições; farm em alguns MuMu; opção de permanecer conectado com recursos cheios. |
+| 1374 | 6 nov. | Poções e aprendizes com zero construtores livres; novas tarefas delegadas e coleta de recompensas do evento chinês 夯木狂欢; correções de reconhecimento da tela de melhoria e do botão do clã. “Celebração da Madeira” no PDF é tradução descritiva, sem título oficial em português confirmado. |
+| 1373 | 2 nov. | Correções na participação na liga, nos reforços de liga e na avaliação do desconto de recursos ao melhorar o CV. |
+| 1372 | 1 nov. | Correções no acionamento dos muros e na detecção de recursos cheios. |
+| 1371 | 1 nov. | Correções na reserva de construtor ao melhorar construções, no ganho de experiência e em outros erros. |
+| 1370 | 30 out. | Correções após a mudança de interface do jogo internacional. |
+| 1369 | 30 out. | Correção temporária de reconhecimento de cargos e ataques na Base do Construtor no servidor chinês. |
+| 1368 | 28 out. | Correção de bloqueios na Base do Construtor internacional; criptografia/descriptografia no envio e recebimento de arquivos. |
+| 1367 | 26 out. | Correções relatadas por usuários, sem detalhamento. |
+
+As mudanças de interface verificadas localmente em 1380 continuam documentadas em [REVISAO_1380.md](REVISAO_1380.md): bônus de estrelas com recursos cheios, remoção de duas tarefas gerais e simplificação do aviso de atualização. Elas são distintas das correções de execução anunciadas no histórico.
+
+## Validação e limites
+
+O PDF foi reaberto, sua contagem de páginas e seus marcadores foram conferidos e as páginas foram renderizadas para inspeção. As páginas novas e amostras da parte ilustrada foram inspecionadas em resolução de leitura. Não foram executados bot, instalações ou ações no jogo; as correções de execução são afirmações do autor. Vídeos citados no manual continuam externos. Esta atualização é local; não foi enviado commit nem feita publicação no GitHub.
