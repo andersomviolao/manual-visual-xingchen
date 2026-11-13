@@ -1,11 +1,11 @@
 async function unlock(page){
- await page.locator('#access-password').fill('1983');await page.locator('#access-form button').click();
+ await page.locator('#access-password').fill(process.env.BOT_TEST_PIN || (()=>{throw new Error('Defina BOT_TEST_PIN para testar o acesso.');})());await page.locator('#access-form button').click();
  await page.locator('#access-gate').waitFor({state:'hidden'});
 }
 /* Testa o site sob /referencia-bot/, como em um repositório no Pages. */
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require('playwright');
-const root=path.resolve(__dirname,'../../..'),publish=path.resolve(__dirname,'..'),prefix='/referencia-bot/';
+const root=path.resolve(__dirname,'..'),publish=path.resolve(__dirname,'../docs'),prefix='/referencia-bot/';
 const writeArtifacts=process.argv.includes('--artefatos')||Boolean(process.env.BOT_TEST_OUTPUT);
 const assert=(ok,message)=>{if(!ok)throw new Error(message);};
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.md':'text/plain; charset=utf-8','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.pdf':'application/pdf'};
@@ -33,10 +33,10 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   assert(await page.locator('#access-denied-title').innerText()==='PIN incorreto, tente novamente.','Texto de PIN incorreto.');
   assert(await page.locator('#guide-content').isHidden(),'Senha incorreta liberou o guia.');
   await page.locator('#access-retry').click();
-  await page.locator('#access-password').fill('1983');await page.locator('#access-form button').click();
+  await page.locator('#access-password').fill(process.env.BOT_TEST_PIN || (()=>{throw new Error('Defina BOT_TEST_PIN para testar o acesso.');})());await page.locator('#access-form button').click();
   await page.locator('#access-gate').waitFor({state:'hidden'});await page.waitForFunction(()=>window.ReferenceApp);
   const versionedResources=await page.locator('script[src],link[rel="stylesheet"]').evaluateAll(els=>els.map(el=>el.getAttribute('src')||el.getAttribute('href')));
-  for(const name of ['estilo.css','dados.js','aplicativo.js']){
+  for(const name of ['r/40ee78a6/d07ffefd/33067e5cd1aa6ff2.css','r/feee7e6b/8c5ef3dc/7c2488f4a8663413.js','r/d19ee7bc/846bf152/a179235114fbc100.js']){
    const resource=versionedResources.find(url=>url.startsWith(name+'?v='));
    const hash=require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(publish,name))).digest('hex').slice(0,12);
    assert(resource===name+'?v='+hash,'Versão de cache não corresponde ao conteúdo: '+name);
@@ -145,7 +145,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   assert(await page.locator('#screen iframe').count()===1,'Tutorial local não abriu.');
   assert(await page.locator('#app-surface > .confirm-wrap').isHidden(),'Tutorial exibiu confirmação externa.');
   const tutorialPdf=await page.locator('#screen iframe').getAttribute('src');
-  assert(tutorialPdf.startsWith(base+'Manual_Xingchen_Portugues_BR.pdf'),'Tutorial aponta para PDF fora da publicação.');
+  assert(tutorialPdf.startsWith(base+'r/0629895b/c57ff5a8/7c2a95b4876da032.pdf'),'Tutorial aponta para PDF fora da publicação.');
   assert((await context.request.get(tutorialPdf)).status()===200,'PDF do tutorial retornou erro.');
   await page.evaluate(()=>ReferenceApp.go('多号独立设置'));
   const accountIndex=page.locator('#screen input[data-original-id="多账号序号"]');
@@ -165,7 +165,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await page.locator('#screen button[data-original-id="账号2设置"]').click();
   assert(await page.locator('#screen input[data-original-id="控杯值"]').inputValue()==='2222','Valor da conta 2 não foi preservado.');
   await page.evaluate(()=>ReferenceApp.go('应用设置'));
-  assert((await page.locator('#screen').innerText()).includes('APK de referência: 1380'),'Versão do APK instalado incorreta.');
+  assert((await page.locator('#screen').innerText()).includes('APK de referência: 1382'),'Versão do APK instalado incorreta.');
   await page.evaluate(()=>ReferenceApp.go('界面设置'));
   await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('6');
   assert(await page.locator('#screen [data-original-id="通用任务"]').innerText()==='Tarefas gerais','Novo botão de tarefas não foi traduzido.');
@@ -214,30 +214,34 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
   await restBox.uncheck();await page.reload();await unlock(page);await page.waitForFunction(()=>window.ReferenceApp);await page.evaluate(()=>ReferenceApp.go('满资源设置'));
   assert(!await restBox.isChecked(),'Preferência de continuar online não foi preservada.');
   const rewardBox=page.locator('#screen [data-original-id="继续进攻奖励"] input');
-  assert(await rewardBox.isChecked(),'Bônus de estrelas deve iniciar marcado conforme XML 1380.');
+  assert(await rewardBox.isChecked(),'Bônus de estrelas deve iniciar marcado conforme XML 1382.');
   await rewardBox.uncheck();await page.reload();await unlock(page);await page.waitForFunction(()=>window.ReferenceApp);await page.evaluate(()=>ReferenceApp.go('满资源设置'));
   assert(!await rewardBox.isChecked(),'Preferência do bônus de estrelas não foi preservada.');
   await page.evaluate(()=>ReferenceApp.go('通用任务'));
-  assert(await page.locator('#screen [data-original-id="领取商店免费福利"],#screen [data-original-id="铸造都城币"]').count()===0,'Tarefas removidas ainda presentes.');
+  assert(await page.locator('#screen [data-original-id="领取商店免费福利"]').count()===0,'Benefício removido ainda presente.');
+  const forge=page.locator('#screen [data-original-id="铸造都城币"] input');
+  assert(await forge.count()===1,'Forja da Capital não retornou na 1382.');
+  await forge.check();await page.reload();await unlock(page);await page.waitForFunction(()=>window.ReferenceApp);await page.evaluate(()=>ReferenceApp.go('通用任务'));
+  assert(await forge.isChecked(),'Preferência da forja não foi preservada.');
   await page.evaluate(()=>ReferenceApp.go('更新公告'));
   assert(await page.locator('#screen button[data-original-id="取消更新"]').innerText()==='Agora não','Cancelar atualização sem tradução.');
   assert(await page.locator('#screen button[data-original-id="开始更新"]').innerText()==='Atualizar','Atualização sem tradução.');
   assert(await page.locator('#screen button[data-original-id="开始更新1"]').count()===0,'Botão removido ainda presente.');
-  const images=fs.readdirSync(path.join(publish,'assets'));
+  const images=fs.readdirSync(path.join(publish,'r/7f31a9c2/c84e206b/ae93d604'));
   for(let i=0;i<images.length;i+=8)await Promise.all(images.slice(i,i+8).map(async name=>{
-   const r=await context.request.get(base+'assets/'+encodeURIComponent(name));assert(r.status()===200,'Imagem ausente: '+name);
-   assert((await r.body()).equals(fs.readFileSync(path.join(publish,'assets',name))),'Imagem diferente: '+name);
+   const r=await context.request.get(base+'r/7f31a9c2/c84e206b/ae93d604/'+encodeURIComponent(name));assert(r.status()===200,'Imagem ausente: '+name);
+   assert((await r.body()).equals(fs.readFileSync(path.join(publish,'r/7f31a9c2/c84e206b/ae93d604',name))),'Imagem diferente: '+name);
   }));
   await page.evaluate(()=>ReferenceApp.go('界面设置'));
   await page.locator('#screen select[data-original-id="功能选择开关"]').selectOption('6');
-  const manual=await page.locator('#manual-link').evaluate(el=>el.href);assert(manual.startsWith(base+'Manual_Xingchen_Portugues_BR.pdf'),'Link do manual fora do site.');
+  const manual=await page.locator('#manual-link').evaluate(el=>el.href);assert(manual.startsWith(base+'r/0629895b/c57ff5a8/7c2a95b4876da032.pdf'),'Link do manual fora do site.');
   const r=await context.request.get(manual);assert(r.status()===200,'Manual ausente.');const bytes=await r.body();
-  assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'Manual_Xingchen_Portugues_BR.pdf'))),'PDF diferente.');
+  assert(bytes.subarray(0,5).toString()==='%PDF-','PDF inválido.');assert(bytes.equals(fs.readFileSync(path.join(publish,'r/0629895b/c57ff5a8/7c2a95b4876da032.pdf'))),'PDF diferente.');
   const reportHref=await page.locator('#review').getAttribute('href');
   assert((await context.request.get(new URL(reportHref,base).href)).status()===200,'Relatório de revisão ausente após reorganização.');
   const sourceIndex=fs.readFileSync(path.join(publish,'index.html'),'utf8');
-  const sourceHref=sourceIndex.match(/id="manual-link" href="([^"]+)"/)[1];
-  const localPdf=path.resolve(publish,sourceHref);
+  const sourceHref=Buffer.from(sourceIndex.match(/id="manual-link" data-destination="([^"]+)"/)[1],'base64').toString();
+  const localPdf=path.resolve(publish,sourceHref.split('?')[0]);
   assert(fs.existsSync(localPdf),'Manual do HTML local ausente.');
   assert(fs.readFileSync(localPdf).subarray(0,5).toString()==='%PDF-','Manual local inválido.');
   await page.locator('#screen button[data-original-id="打鱼造兵设置"]').click();assert(await page.evaluate(()=>ReferenceApp.current)==='打鱼造兵设置','Navegação falhou.');

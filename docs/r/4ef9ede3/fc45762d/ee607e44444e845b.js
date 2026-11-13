@@ -22,15 +22,16 @@
   let opened = false;
   async function open() {
     if (opened) return;
-    for (const source of document.querySelectorAll('script[data-guide-src]')) {
+    for (const source of document.querySelectorAll('script[data-guide-code]')) {
       await new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = source.dataset.guideSrc;
+        script.src = atob(source.dataset.guideCode);
         script.onload = resolve;
         script.onerror = () => reject(new Error('Não foi possível carregar o guia. Recarregue a página.'));
         document.body.append(script);
       });
     }
+    for (const link of document.querySelectorAll('[data-destination]')) link.href = atob(link.dataset.destination);
     opened = true;
     content.hidden = false;
     gate.hidden = true;

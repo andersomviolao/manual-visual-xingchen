@@ -224,7 +224,7 @@
     if(a.background==='bt.webp')el.classList.add('ui-ribbon');
     if(a.background==='tt.webp')el.classList.add('ui-note-ribbon');
     if(a.background==='背景框.png'){css.backgroundColor='#70b6d9';css.borderRadius='4px';}
-    if(['上.png','上1.png','下.png','中上.png','中.png','中.webp','lbg.png','lbj.png','文本框.webp','w.webp'].includes(a.background)){css.backgroundImage=`url("assets/${a.background}")`;css.backgroundSize='100% 100%';}
+    if(['上.png','上1.png','下.png','中上.png','中.png','中.webp','lbg.png','lbj.png','文本框.webp','w.webp'].includes(a.background)){css.backgroundImage=`url("r/7f31a9c2/c84e206b/ae93d604/${a.background}")`;css.backgroundSize='100% 100%';}
   }
   function keyFor(n,path){const id=n.a.id;return `${screenScope()}/${page}/${repeatedControlKeys.get(n)||(id&&!['文本','占位符','idLabel1','idButton','私人定制','水平布局','idLayoutHor1'].includes(id)?id:path)}`;}
   function saveCheckedValue(n,key,index,checked){
@@ -247,7 +247,7 @@
       for(const [id,def]of [['音量加(+)控制脚本开始/停止',true],['脚本停止或者结束的时候振动提醒',true],['开机自启动脚本',false],['开启或者关闭节点服务',true]]){
         const label=document.createElement('label');label.className='native-row native-toggle';const text=document.createElement('span');text.textContent=localized(id);const input=document.createElement('input');input.type='checkbox';input.setAttribute('role','switch');input.setAttribute('aria-label',tr(id));const k='native/'+id;input.checked=getVal(k,def);input.onchange=()=>{values[k]=input.checked;save();};label.title=localized(id);label.append(text,input);el.append(label);
       }
-      for(const [zh,pt]of [['当前系统型号: SM-A805N','Modelo do sistema: SM-A805N'],['当前系统版本: 9','Versão do Android: 9'],['当前分辨率: 720X1280:320(DPI)','Resolução: 720 × 1280 · 320 dpi'],['系统总共内存: 3945(M)','Memória total: 3945 MB'],['虚拟按键: 无','Botões virtuais: nenhum'],['参考apk版本号:1380','Versão do APK de referência: 1380'],['当前引擎版本3.8.6','Versão do mecanismo: 3.8.6']]){const row=document.createElement('div');row.className='native-row';row.textContent=language==='zh'?zh:pt;row.title=zh;el.append(row);}
+      for(const [zh,pt]of [['当前系统型号: SM-A805N','Modelo do sistema: SM-A805N'],['当前系统版本: 9','Versão do Android: 9'],['当前分辨率: 720X1280:320(DPI)','Resolução: 720 × 1280 · 320 dpi'],['系统总共内存: 3945(M)','Memória total: 3945 MB'],['虚拟按键: 无','Botões virtuais: nenhum'],['参考apk版本号:1382','Versão do APK de referência: 1382'],['当前引擎版本3.8.6','Versão do mecanismo: 3.8.6']]){const row=document.createElement('div');row.className='native-row';row.textContent=language==='zh'?zh:pt;row.title=zh;el.append(row);}
       for(const [zh,pt]of [['打开日志','Abrir registros'],['连接远程电脑开发助手','Conectar ao auxiliar de desenvolvimento remoto']]){const row=document.createElement('div');row.className='native-row';const b=document.createElement('button');b.textContent=language==='zh'?zh:pt;b.className='native-green';b.onclick=()=>info(pt,'Controle reproduzido para consulta. Não abre registros nem inicia conexão remota.');row.append(b);el.append(row);}
       const address=document.createElement('div');address.className='native-row native-address';address.textContent='127.0.0.1:10082';el.append(address);
     }else if(tag==='Page'||tag==='LinearLayout'){
@@ -271,8 +271,8 @@
       if(current==='界面设置'&&a.id==='卡密说明'&&language==='zh')el.textContent='送卡密';
       if(current==='界面设置'&&a.id==='关闭界面')el.textContent=language==='zh'?'星辰国际':'Xingchen International';
       if(current==='更新公告'&&['取消更新','开始更新'].includes(a.id)){el.classList.add(a.id==='取消更新'?'update-cancel':'update-install');}
-      if(['战斗2.webp','资源.webp','多选.webp'].includes(a.background)){el.classList.add('skinned-button');el.style.backgroundImage=`url("assets/${a.background}")`;}
-      else if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("assets/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
+      if(['战斗2.webp','资源.webp','多选.webp'].includes(a.background)){el.classList.add('skinned-button');el.style.backgroundImage=`url("r/7f31a9c2/c84e206b/ae93d604/${a.background}")`;}
+      else if(a.background&&D.assets.includes(a.background)&&!['bt.webp','tt.webp'].includes(a.background)){el.classList.add('icon');el.style.backgroundImage=`url("r/7f31a9c2/c84e206b/ae93d604/${a.background}")`;el.title=(language==='zh'?a.background.replace(/\.[^.]+$/,''):assetName(a.background));el.setAttribute('aria-label',el.title||'Informações');}
       else el.title=localized(a.title||a.id||'');
       if(current==='更新公告'&&a.id==='关闭倒计时'){el.textContent='×';el.title=language==='zh'?'关闭':'Fechar aviso';el.setAttribute('aria-label',el.title);}
       el.onclick=()=>action(a.id||'',n);

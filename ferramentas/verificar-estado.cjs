@@ -1,5 +1,5 @@
 async function unlock(page){
- await page.locator('#access-password').fill('1983');await page.locator('#access-form button').click();
+ await page.locator('#access-password').fill(process.env.BOT_TEST_PIN || (()=>{throw new Error('Defina BOT_TEST_PIN para testar o acesso.');})());await page.locator('#access-form button').click();
  await page.locator('#access-gate').waitFor({state:'hidden'});
 }
 /* Regressões de persistência e importação; usa um navegador isolado dos exercícios do usuário. */

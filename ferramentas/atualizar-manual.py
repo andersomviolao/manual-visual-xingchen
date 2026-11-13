@@ -12,11 +12,11 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 LOCAL = ROOT / 'materiais/manuais'
 BASE = LOCAL / 'historico/Manual_Xingchen_Portugues_BR_1366.pdf'
 SOURCE = LOCAL / 'Manual_Xingchen_Original_Chines_2026-11-12.pdf'
-OUTPUT = ROOT / 'docs/Manual_Xingchen_Portugues_BR.pdf'
+OUTPUT = ROOT / 'docs' / json.loads((ROOT/'ferramentas/caminhos.json').read_text(encoding='utf8'))['Manual_Xingchen_Portugues_BR.pdf']
 W, H = 1190.551, 841.89
 NAVY = colors.HexColor('#123247')
 BLUE = colors.HexColor('#007395')
@@ -107,5 +107,5 @@ for i in [0,1,5,10,20,28]:
     check[i].get_pixmap(matrix=fitz.Matrix(1,1)).save(ROOT/f'tmp/manual/final-{i+1}.png')
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 record={'consulted':'2026-11-12','manual_url':'https://docs.qq.com/doc/DSnRwSW9xYktBVnJU','official_site':'https://921015.xyz/','changelog_url':'http://xccoc.fun/msg/log.txt','manual_last_modified_utc':'2025-03-25T14:48:22Z','source_pages':24,'translated_pages':29,'advertised_apk':'1380','advertised_hot_update':'1380','changelog_latest_date_literal':'11月10日','comparison':'24 páginas comparadas visualmente. Sem novas instruções identificadas; diferenças de renderização e posicionamento. Não há igualdade binária. Tradução ilustrada reaproveitada e referências visuais substituídas pela nova exportação.','source_sha256':sha(SOURCE),'previous_source_sha256':sha(LOCAL/'Manual_Xingchen_Original_Chines.pdf'),'previous_translation_sha256':sha(BASE),'translation_sha256':sha(OUTPUT)}
-(ROOT/'docs/manutencao/conferencia-manual-2026-11-12.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+(ROOT/'ferramentas/conferencia-manual-2026-11-12.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print('Manual revisado:',len(check),'páginas; SHA-256',sha(OUTPUT))

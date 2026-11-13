@@ -1,5 +1,5 @@
 async function unlock(page){
- await page.locator('#access-password').fill('1983');await page.locator('#access-form button').click();
+ await page.locator('#access-password').fill(process.env.BOT_TEST_PIN || (()=>{throw new Error('Defina BOT_TEST_PIN para testar o acesso.');})());await page.locator('#access-form button').click();
  await page.locator('#access-gate').waitFor({state:'hidden'});
 }
 /* Diagnóstico visual local: não controla nem se conecta ao bot real. */
@@ -7,14 +7,14 @@ const fs=require('node:fs'),path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require('playwright');
 (async()=>{
- const root=path.resolve(__dirname,'../../..');
+ const root=path.resolve(__dirname,'..');
  const writeArtifacts=process.argv.includes('--artefatos')||Boolean(process.env.BOT_TEST_OUTPUT);
  const out=process.env.BOT_TEST_OUTPUT?path.resolve(process.env.BOT_TEST_OUTPUT):path.join(root,'verificacao','layout-atual');
  if(writeArtifacts)fs.mkdirSync(out,{recursive:true});
  const browser=await chromium.launch({headless:true,...(process.platform==='win32'?{channel:'msedge'}:{})});
  try{
   const page=await browser.newPage({viewport:{width:1000,height:1000}}),report=[];
-  await page.goto(pathToFileURL(path.join(__dirname,'..','index.html')).href);
+  await page.goto(pathToFileURL(path.join(__dirname,'../docs','index.html')).href);
   await unlock(page);await page.waitForFunction(()=>window.ReferenceApp);
   const screens=await page.evaluate(()=>Object.entries(BOT_DATA.screens).map(([name,n])=>({name,pages:n.children.filter(c=>c.tag==='Page').length})));
   const screenshots=['界面设置','夜世界','通用任务','多号独立设置','升级建筑','打鱼造兵设置','竞赛','通用切号'];
