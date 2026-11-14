@@ -35,7 +35,7 @@ A melhoria do prédio do laboratório e a melhoria do prédio da Casa de Animais
 
 1. Confirmar a instância indicada, fechá-la e registrar o horário.
 2. Agendar sua abertura para 10 minutos depois, sem verificações periódicas durante a espera.
-3. Abrir a instância pelo gerenciador do emulador, abrir o Xingchen e iniciar o bot com as configurações já salvas.
+3. Abrir a instância diretamente, sem abrir o LDMultiPlayer, abrir o Xingchen e iniciar o bot com as configurações já salvas.
 4. Confirmar a execução e deixá-lo rodar por pelo menos 8 minutos.
 5. Pausar o bot e consultar os temporizadores das duas vilas e dos animais disponíveis.
 6. Ordenar os horários de conclusão e registrar os três primeiros. Aplicar a regra de agrupamento se houver uma conclusão iminente; caso contrário, fechar a instância e agendar a primeira conclusão mais a margem de 2 minutos.
@@ -43,7 +43,7 @@ A melhoria do prédio do laboratório e a melhoria do prédio da Casa de Animais
 ## Ciclos seguintes e duração variável
 
 1. Ao despertar, adquirir a trava da instância e verificar a fase registrada. Um disparo duplicado não pode abrir outro ciclo.
-2. Abrir a instância e iniciar o bot. A primeira conclusão registrada no ciclo anterior determina esse despertar.
+2. Abrir a instância diretamente, sem abrir o LDMultiPlayer, e iniciar o bot. A primeira conclusão registrada no ciclo anterior determina esse despertar.
 3. Definir o encerramento inicial para 8 minutos após o início confirmado do bot.
 4. Comparar a segunda conclusão registrada com esse encerramento:
    - Se ocorrer durante a execução, incluí-la no mesmo ciclo. Garantir que o encerramento permita a margem de 2 minutos após sua conclusão.
@@ -78,6 +78,7 @@ Registrar localmente: instância, identificador do ciclo, fase, início real da 
 
 ## Esperas, limites e encerramento
 
+- Não é necessário abrir o LD Multiplayer para iniciar uma instância. Preferir a abertura direta da instância indicada, por seu atalho ou pela interface de linha de comando instalada do LDPlayer. Comando disponível neste computador: `C:\LDPlayer\LDPlayer9\ldconsole.exe launch --name "conta upando 3"`. Para outras instâncias, substituir apenas pelo nome exato autorizado e conferir sua identidade antes de iniciar. Usar a interface visual para controlar o bot e ler o jogo.
 - Usar o agendador disponível no aplicativo para os despertares e verificar se o agendamento foi aceito. Não tratar instruções escritas em um prompt como prova de que um reagendamento foi realizado.
 - Não consultar telas ou chamar o modelo periodicamente enquanto se aguarda um prazo conhecido. O objetivo é concentrar o consumo nas intervenções necessárias.
 - Se o agendador não suportar o horário variável necessário, informar o impedimento e interromper a repetição automática em vez de manter consultas frequentes.
