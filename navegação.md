@@ -4,6 +4,7 @@ Registro contínuo das orientações do proprietário e dos caminhos confirmados
 
 ## Instância e acesso
 
+- Ao abrir uma instância do LDPlayer, pode surgir uma propaganda no meio da tela do emulador ou no canto inferior direito da área de trabalho do Windows. Se aparecer, fechá-la pelo pequeno **X**, geralmente no canto superior direito da própria propaganda. Conferir a tela atual para distinguir esse X do botão de fechar a instância; não clicar no anúncio. Orientação do proprietário em 14/11/2026.
 - Para fechar instâncias, encerrar diretamente os processos específicos da instância alvo. Por exigência do proprietário, não usar a habilidade de controle de computador para esse fechamento. Identificar a instância e seus processos antes de encerrar; não usar encerramento genérico por nome que afete outras contas. Conferir depois que a instância fechou.
 - Conferir o nome da instância na barra de título antes de agir.
 - Abrir a instância diretamente pelo próprio atalho ou pelo `ldconsole.exe`, conforme `automação.md`. Manter o LD Multiplayer fechado.
