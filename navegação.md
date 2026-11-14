@@ -4,7 +4,7 @@ Registro contínuo das orientações do proprietário e dos caminhos confirmados
 
 ## Instância e acesso
 
-- Para fechar instâncias, o proprietário autoriza encerrar diretamente os processos específicos da instância alvo, dispensando controle visual para esse fechamento. Identificar a instância e seus processos antes de encerrar; não usar encerramento genérico por nome que afete outras contas. Conferir depois que a instância fechou.
+- Para fechar instâncias, encerrar diretamente os processos específicos da instância alvo. Por exigência do proprietário, não usar a habilidade de controle de computador para esse fechamento. Identificar a instância e seus processos antes de encerrar; não usar encerramento genérico por nome que afete outras contas. Conferir depois que a instância fechou.
 - Conferir o nome da instância na barra de título antes de agir.
 - Abrir a instância diretamente pelo próprio atalho ou pelo `ldconsole.exe`, conforme `automação.md`. Manter o LD Multiplayer fechado.
 - Preservar as demais instâncias e suas configurações.

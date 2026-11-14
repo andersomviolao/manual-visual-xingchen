@@ -25,6 +25,7 @@ Conferir os nomes reais antes da primeira execução. Nunca substituir uma conta
 - Agrupar conclusões com proximidade de até 2 minutos após o encerramento previsto e garantir margem de 2 minutos após cada conclusão incluída.
 - Não gastar gemas, usar acelerações nem alterar as configurações salvas dos bots.
 - Abrir cada instância diretamente pelo atalho ou `C:\LDPlayer\LDPlayer9\ldconsole.exe launch --name "nome exato"`. Manter o LD Multiplayer fechado.
+- Fechar instâncias encerrando diretamente os processos específicos de cada uma. Não usar a habilidade de controle de computador para esse fechamento. Identificar os processos da conta alvo e confirmar o encerramento; não usar finalização genérica por nome que possa atingir outras contas. Operar bots e consultar temporizadores continua sendo feito pela interface visual.
 
 ## Modelo de concorrência
 

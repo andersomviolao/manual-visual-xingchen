@@ -78,6 +78,7 @@ Registrar localmente: instância, identificador do ciclo, fase, início real da 
 
 ## Esperas, limites e encerramento
 
+- Para fechar uma instância, encerrar diretamente seus processos específicos, sem usar a habilidade de controle de computador para o fechamento. Identificar corretamente os processos da instância alvo, preservar as demais e confirmar que ela encerrou. Não finalizar processos por um nome genérico que afete várias contas. A operação do bot e a leitura do jogo continuam pela interface visual.
 - Sempre abrir a instância indicada diretamente, por seu atalho ou pela interface de linha de comando instalada do LDPlayer. Não abrir o LD Multiplayer/LDMultiPlayer; manter esse gerenciador fechado. Isso não impede abrir o emulador da própria instância, necessário para executar o jogo e o bot. Comando disponível neste computador: `C:\LDPlayer\LDPlayer9\ldconsole.exe launch --name "conta upando 3"`. Para outras instâncias, substituir apenas pelo nome exato autorizado e conferir sua identidade antes de iniciar. Usar a interface visual para controlar o bot e ler o jogo.
 - Usar o agendador disponível no aplicativo para os despertares e verificar se o agendamento foi aceito. Não tratar instruções escritas em um prompt como prova de que um reagendamento foi realizado.
 - Não consultar telas ou chamar o modelo periodicamente enquanto se aguarda um prazo conhecido. O objetivo é concentrar o consumo nas intervenções necessárias.
