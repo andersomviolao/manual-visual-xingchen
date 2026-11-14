@@ -51,6 +51,7 @@ O proprietário orientou usar também as abas inferiores nesta vila. Caminhos co
 
 ## Bot e retorno ao jogo
 
+- Abertura rápida orientada pelo proprietário: tocar no ícone do Xingchen e confirmar no botão grande inferior da primeira tela. Aguardar o processamento; se aparecer a pergunta de atualização, aceitar. Ao chegar ao painel de opções salvas, tocar diretamente em **Confirmar** no rodapé, mesmo com o aviso central visível. Não fechar esse aviso nem esperar sua contagem regressiva: o bot prossegue sozinho. Confirmar depois que está executando para registrar o início dos 30 minutos. Caminho sem fechar o aviso confirmado na CV15 em 14/11/2026. Evitar capturas e esperas desnecessárias nesse percurso.
 - Na sessão observada, o controle de volume + da barra lateral do emulador interrompeu o bot e retornou ao iniciador Android.
 - Para consultar o jogo depois dessa interrupção, abrir novamente o ícone do Clash of Clans. Confirmar o estado da tela e que o bot está parado antes de navegar.
 - Se houver batalha ainda em andamento, aguardar a tela de resultado e usar o botão de retorno à vila.
