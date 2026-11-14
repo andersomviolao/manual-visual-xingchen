@@ -2,6 +2,7 @@
 
 - Sempre publique no GitHub as mudanças feitas neste projeto, conforme instrução expressa do proprietário em 12/11/2026. Após validar, faça commit e push para o repositório configurado e confira o resultado da publicação no GitHub Pages.
 - `docs/` é a fonte principal do site e a pasta publicada no GitHub Pages.
+- Consulte `navegação.md` na raiz para os caminhos confirmados no jogo e acrescente ali as novas orientações de navegação do proprietário e descobertas verificadas na interface.
 - Preserve APKs, backups, documentos de origem e exercícios preenchidos fora da publicação, respeitando `.gitignore`.
 - Se o envio ou a publicação falhar, informe o impedimento e não declare que o site foi atualizado.
 - Ao terminar, deixe a área de trabalho organizada: feche abas e janelas abertas para a tarefa e restaure o estado anterior dos aplicativos usados, inclusive janelas que estavam minimizadas. Preserve o trabalho do usuário e não deixe navegadores visíveis sem necessidade.
