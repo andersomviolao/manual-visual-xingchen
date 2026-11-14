@@ -13,6 +13,8 @@ Este arquivo define o procedimento; sua criação não inicia bots nem agenda ex
 | 1 | conta upando 1 |
 | 2 | conta upando 2 |
 | 3 | conta upando 3 |
+| CV18 | conta cv 18 |
+| CV15 | conta cv 15 |
 
 Conferir os nomes reais antes da primeira execução. Nunca substituir uma conta por outra. A lista é extensível: cada nova instância recebe estado e ciclo próprios, sem reiniciar as demais.
 
@@ -116,9 +118,11 @@ Ao pedir uma nova instância:
 
 1. Acrescentar seu nome exato à tabela deste arquivo e publicar a alteração conforme `AGENTS.md`.
 2. Se a multi estiver parada, apenas atualizar a configuração; não iniciar sem comando de execução.
-3. Se estiver ativa, conferir identidade e ausência de outro controlador. Incorporar a nova conta com seu primeiro ciclo: fechar, esperar 10 minutos e iniciar. Não reiniciar ciclos existentes.
+3. Se estiver ativa, conferir identidade e ausência de outro controlador. Registrar o horário do pedido de inclusão `P_i`: a nova conta tem abertura inicial `A_i = P_i + 10 minutos`. Fechá-la se estiver aberta, sem reiniciar a contagem a partir do fechamento ou do fim da edição dos arquivos. Se o atendimento já ultrapassou esse prazo, tratar sua abertura como vencida. Não reiniciar ciclos existentes.
 4. Recalcular o menor evento e atualizar o mesmo agendamento central.
 
-Ao remover uma participante durante a execução, pausar seu bot, fechar somente ela e retirar seu evento; preservar os ciclos das demais. Ao encerrar toda a automação, cancelar o disparo central primeiro, marcar o estado como encerrado, pausar e fechar as instâncias participantes controladas e liberar as travas. Não modificar instâncias fora da lista.
+Ao remover uma participante durante a execução, pausar seu bot, fechar somente ela e retirar seu evento; preservar os ciclos das demais. Adições e remoções nunca recalculam os horários de início, encerramento ou próxima abertura das outras contas. Recalcular apenas qual evento existente é o menor para o disparo central. Uma instância reincluída recebe nova espera de 10 minutos a partir do novo pedido, sem afetar as outras.
+
+Ao encerrar toda a automação, cancelar o disparo central primeiro, marcar o estado como encerrado, pausar e fechar as instâncias participantes controladas e liberar as travas. Não modificar instâncias fora da lista.
 
 Ao finalizar cada intervenção, restaurar janelas e manter a área de trabalho organizada. Aguardar sem abrir telas até o próximo evento aceito pelo agendador. A criação deste documento não comprova que o agendamento foi iniciado: informar ativação somente depois da confirmação real da ferramenta.
